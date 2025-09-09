@@ -18,6 +18,7 @@ return new class extends Migration
         $table->integer('quantity');
         $table->string('phone');
         $table->string('status')->default('pending'); // pending, confirmed, completed
+        
         $table->string('ip_address');
         $table->string('user_agent')->nullable();
         $table->timestamps();
