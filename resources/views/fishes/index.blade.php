@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Zivju Veikals</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .fish-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .fish-card { border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
     <h1>Ģimenes Zivju Veikaliņš</h1>
     
     <div class="fish-grid">
@@ -21,5 +13,4 @@
             </div>
         @endforeach
     </div>
-</body>
-</html>
+@endsection

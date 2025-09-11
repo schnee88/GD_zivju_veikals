@@ -51,9 +51,8 @@ class FishController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Fish $fish) // Instead of string $id
     {
-        $fish = Fish::with('availabilityDays')->findOrFail($id);
         return view('fishes.show', compact('fish'));
     }
 

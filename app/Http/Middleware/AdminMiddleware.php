@@ -16,6 +16,6 @@ class AdminMiddleware
         }
 
         // Ja nav administrators, novirzīt uz sākumlapu ar kļūdas ziņojumu
-        return redirect('/')->with('error', 'Jums nav administratora tiesību!');
+         return redirect()->route('home')->with('error', 'Nav administratora tiesību!');
     }
 }
