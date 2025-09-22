@@ -97,6 +97,119 @@
           button:hover {
                background: #2980b9;
           }
+
+          h1 { 
+              text-align: center;
+              margin-top: 20px;
+              margin-bottom: 20px;
+          }
+
+          .fish-grid {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center; /* Centrerē kartītes lapā */
+              gap: 20px; /* Atstarpe starp kartītēm */
+              padding: 20px 0; /*padding augšpusē apakšpusē */
+          }
+
+          .fish-card {
+              border: 1px solid #ddd;
+              border-radius: 8px;
+              padding: 15px;
+              text-align: center;
+              width: 280px; /* kartītes platums */
+              box-shadow: 0 4px 8px rgba(0,0,0,0.2); /*ēna */
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between; /* Izlīdzina saturu vertikāli */
+              background-color: #fff;
+          }
+
+          .fish-card h2 {
+              margin-top: 0;
+              margin-bottom: 10px;
+              color: #333;
+          }
+
+          .fish-card img {
+              width: 100%; /* Attēla platums */
+              height: 200px; /* Attēla augstums visām kartītēm */
+              object-fit: cover; /* Svarīgi: Aizpilda konteineru, nogriežot malas, saglabājot aspektu attiecību */
+              display: block;
+              margin-bottom: 15px; /* Atstarpe zem attēla */
+              border-radius: 4px; /* Nelielas noapaļotas malas attēlam */
+          }
+
+          .fish-card .no-image {
+              width: 100%;
+              height: 200px; /* Saglabājiet tādu pašu augstumu kā attēliem */
+              background-color: #f8f8f8;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #999;
+              border: 1px dashed #ccc;
+              border-radius: 4px;
+              margin-bottom: 15px;
+              font-style: italic;
+          }
+
+          .fish-card p {
+              font-size: 0.95em;
+              color: #555;
+              margin-bottom: 8px;
+          }
+
+          .fish-card a {
+              display: inline-block; /* Lai pogai līdzīgs izskats */
+              background: #3498db;
+              color: white;
+              padding: 8px 15px;
+              border-radius: 4px;
+              text-decoration: none;
+              margin-top: auto; /* Pārvieto "Skatīt vairāk" uz kartītes apakšu */
+          }
+
+          .fish-card a:hover {
+              background: #2980b9;
+          }
+
+          /* --- STIĻI PRIEKŠ FORMAS LAUKIEM, LAI IZSKATĪTOS LABĀK --- */
+          form label {
+              font-weight: bold;
+              margin-top: 10px;
+              display: block;
+          }
+
+          form input[type="text"],
+          form textarea,
+          form input[type="file"] {
+              width: calc(100% - 16px); /* Ņem vērā padding */
+              padding: 8px;
+              margin-top: 5px;
+              margin-bottom: 10px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              box-sizing: border-box; /* Ieskaitīt padding un border platumā */
+          }
+          
+          form input[type="file"] {
+            border: none; /* Failu ievadei borderi parasti nav nepieciešami */
+            padding-left: 0;
+          }
+
+          form button[type="submit"] {
+              margin-top: 15px;
+              padding: 10px 20px;
+              font-size: 1em;
+          }
+
+          /* Mazākiem ekrāniem */
+          @media (max-width: 768px) {
+              .fish-card {
+                  width: calc(100% - 40px); /* Ļauj kartītei aizņemt gandrīz visu platumu mazākos ekrānos */
+              }
+          }
      </style>
 </head>
 

@@ -23,7 +23,7 @@ class FishController extends Controller
      */
     public function create()
     {
-        return view('fishes.create');
+        return view('admin.create');
     }
 
     /**
@@ -33,9 +33,9 @@ class FishController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
 
         if ($request->hasFile('image')) {

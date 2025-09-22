@@ -31,6 +31,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+
+    Route::get('/admin/fishes/create', [FishController::class, 'create'])->name('fishes.create');
+    Route::post('/admin/fishes', [FishController::class, 'store'])->name('fishes.store');
+    Route::get('/admin/fish', [FishController::class, 'index'])->name('fish.index');
+    Route::delete('/admin/fish/{id}', [FishController::class, 'destroy'])->name('fish.destroy');
     
     Route::resource('fish', FishController::class)->except(['show', 'index']);
     Route::get('/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
