@@ -12,5 +12,6 @@
 
     <div class="features">
         <h2>Izvēlies mūsu zivis!</h2>
+        <p>Lai veiktu pasūtījumu <a href="{{ route('register') }}"> reģistrējies šeit</a> !</p>
     </div>
 @endsection

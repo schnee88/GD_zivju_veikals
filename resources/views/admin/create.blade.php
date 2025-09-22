@@ -16,7 +16,7 @@
         <br>
 
         <label>Cena (€):</label><br>
-        <input type="text" step="0.01" name="price" value="{{ old('price') }}"><br>
+        <input type="number" step="0.01" name="price" value="{{ old('price') }}"><br>
         @error('price') <small style="color:red">{{ $message }}</small> @enderror
         <br>
 

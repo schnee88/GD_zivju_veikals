@@ -40,7 +40,7 @@ class FishController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
@@ -81,7 +81,7 @@ class FishController extends Controller
         
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
@@ -98,7 +98,7 @@ class FishController extends Controller
 
         $fish->update($validated);
 
-        return redirect()->route('fish.index')->with('success', 'Zivs veiksmīgi atjaunināta!');
+        return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi atjaunināta!');
     }
 
     /**
