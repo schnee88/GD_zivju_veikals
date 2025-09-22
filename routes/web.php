@@ -11,7 +11,7 @@ Route::get('/', function () { return view('home');})->name('home');
 
 // Zivju saraksts (atsevišķā lapa)
 Route::get('/fish', [FishController::class, 'index'])->name('fish.index');
-Route::get('/fish/{id}', [FishController::class, 'show'])->name('fish.show');
+Route::get('/fish/{fish}', [FishController::class, 'show'])->name('fish.show');
 
 // Autentifikācija
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');

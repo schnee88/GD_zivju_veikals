@@ -225,7 +225,7 @@
                     @if(auth()->user()->is_admin)
                     <a href="{{ route('admin.dashboard') }}">Admin Panelis</a>
                     @endif
-                    <a href="{{ route('orders.index') }}">Mani pasūtījumi</a>
+                    <a href="{{ route('fish.index') }}">Mani pasūtījumi</a>
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                          @csrf
                          <button type="submit" style="background:#e74c3c; padding:5px 10px;">
