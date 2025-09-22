@@ -18,6 +18,13 @@ class FishController extends Controller
         return view('fishes.index', compact('fishes'));
     }
 
+    public function adminIndex()
+    {
+        $fishes = Fish::with('availabilityDays')->get();
+        return view('admin.index', compact('fishes'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -51,7 +58,7 @@ class FishController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Fish $fish) // Instead of string $id
+    public function show(Fish $fish)
     {
         return view('fishes.show', compact('fish'));
     }
@@ -62,7 +69,7 @@ class FishController extends Controller
     public function edit(string $id)
     {
         $fish = Fish::findOrFail($id);
-        return view('fishes.edit', compact('fish'));
+        return view('admin.edit', compact('fish'));
     }
 
     /**
@@ -108,6 +115,6 @@ class FishController extends Controller
         
         $fish->delete();
 
-        return redirect()->route('fish.index')->with('success', 'Zivs veiksmīgi dzēsta!');
+        return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi dzēsta!');
     }
 }

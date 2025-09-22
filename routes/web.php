@@ -32,10 +32,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
-    Route::get('/admin/fishes/create', [FishController::class, 'create'])->name('fishes.create');
-    Route::post('/admin/fishes', [FishController::class, 'store'])->name('fishes.store');
-    Route::get('/admin/fish', [FishController::class, 'index'])->name('fish.index');
-    Route::delete('/admin/fish/{id}', [FishController::class, 'destroy'])->name('fish.destroy');
+    Route::get('/fish', [FishController::class, 'adminIndex'])->name('admin.fish.index');
+    Route::get('/fish/create', [FishController::class, 'create'])->name('admin.fish.create');
+    Route::post('/fish', [FishController::class, 'store'])->name('admin.fish.store');
+    Route::get('/fish/{id}/edit', [FishController::class, 'edit'])->name('admin.fish.edit');
+    Route::put('/fish/{id}', [FishController::class, 'update'])->name('admin.fish.update');
+    Route::delete('/fish/{id}', [FishController::class, 'destroy'])->name('admin.fish.destroy');
     
     Route::resource('fish', FishController::class)->except(['show', 'index']);
     Route::get('/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');

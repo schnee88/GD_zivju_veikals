@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Ģimenes Zivju Veikaliņš</h1>
+    <h1>Zivju Veikaliņš</h1>
     
     <div class="fish-grid">
         @foreach($fishes as $fish)
