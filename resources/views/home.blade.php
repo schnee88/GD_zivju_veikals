@@ -14,4 +14,11 @@
         <h2>Izvēlies mūsu zivis!</h2>
         <p>Lai veiktu pasūtījumu <a href="{{ route('register') }}"> reģistrējies šeit</a> !</p>
     </div>
+
+    <div style="text-align: center; margin-top: 30px; padding: 20px; background: #e8f4fd; border-radius: 8px;">
+        <h3 style="color: #2c3e50;">Kā pasūtīt?</h3>
+        <p>Zvaniet mums pa telefonu: <strong style="font-size: 1.2em;">+371 XXXXXXXX</strong></p>
+        <p>Darba laiks: P-P 9:00-18:00</p>
+    </div>
+    
 @endsection

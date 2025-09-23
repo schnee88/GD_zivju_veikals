@@ -27,4 +27,17 @@ class Fish extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function batches()
+    {
+        return $this->belongsToMany(Batch::class, 'batch_fish')
+                ->withPivot('quantity', 'unit', 'available_quantity');
+    }
+
+    public function getCurrentAvailableQuantityAttribute()
+    {
+        return $this->batches()
+            ->where('status', 'available', 'preparing')
+            ->sum('batch_fish.available_quantity');
+    }
 }

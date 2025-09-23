@@ -7,7 +7,10 @@
         <p style="color: green">{{ session('success') }}</p>
     @endif
 
-    <a href="{{ route('fish.create') }}">+ Pievienot jaunu zivi</a>
+    <form action="{{ route('fish.create') }}">
+        @csrf
+        <button type="submit" style="background:#2596be; padding:5px 10px;">Pievienot jaunu zivi</button>
+    </form>
 
     <table border="1" cellpadding="8" cellspacing="0" style="margin-top:20px; width:100%;">
         <thead>

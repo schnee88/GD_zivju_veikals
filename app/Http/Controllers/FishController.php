@@ -52,7 +52,7 @@ class FishController extends Controller
 
         $fish = Fish::create($validated);
 
-        return redirect()->route('fish.index')->with('success', 'Zivs veiksmīgi pievienota!');
+        return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi pievienota!');
     }
 
     /**
@@ -87,7 +87,6 @@ class FishController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Dzēst veco bildi
             if ($fish->image) {
                 Storage::disk('public')->delete($fish->image);
             }
