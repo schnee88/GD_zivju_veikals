@@ -7,7 +7,9 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Galvenā mājas lapa ar info par veikalu
-Route::get('/', function () { return view('home');})->name('home');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
 // Zivju saraksts (atsevišķā lapa)
 Route::get('/fish', [FishController::class, 'index'])->name('fish.index');
@@ -40,14 +42,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/batches/create', [BatchController::class, 'create'])->name('admin.batches.create');
     Route::post('/batches', [BatchController::class, 'store'])->name('admin.batches.store');
     Route::get('/batches/{batch}/edit', [BatchController::class, 'edit'])->name('admin.batches.edit');
-
+    Route::put('/batches/{batch}', [BatchController::class, 'update'])->name('admin.batches.update'); // UPDATE METODE
     Route::get('/batches/{batch}', [BatchController::class, 'show'])->name('admin.batches.show');
     Route::patch('/batches/{batch}/status', [BatchController::class, 'updateStatus'])->name('admin.batches.update-status');
     Route::delete('/batches/{batch}', [BatchController::class, 'destroy'])->name('admin.batches.destroy');
 
     Route::post('/batches/update-fish-status', [BatchController::class, 'updateFishStatus'])->name('admin.batches.update-fish-status');
     Route::post('/batches/bulk-update-fish-status', [BatchController::class, 'bulkUpdateFishStatus'])->name('admin.batches.bulk-update-fish-status');
-    
-    
+
+
     Route::resource('fish', FishController::class)->except(['show', 'index']);
 });

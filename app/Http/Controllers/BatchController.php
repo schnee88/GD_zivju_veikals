@@ -85,12 +85,73 @@ class BatchController extends Controller
           return back()->with('success', 'Žāvējuma statuss atjaunināts!');
      }
 
+     public function edit(Batch $batch)
+     {
+          $fishes = Fish::all();
+          return view('admin.batches.edit', compact('batch', 'fishes'));
+     }
+
+     public function update(Request $request, Batch $batch)
+     {
+          // Validācija
+          $validated = $request->validate([
+               'name' => 'required|string|max:255',
+               'description' => 'nullable|string',
+               'batch_date' => 'required|date',
+               'fishes' => 'nullable|array',
+               'fishes.*.fish_id' => 'required|exists:fishes,id',
+               'fishes.*.quantity' => 'required|numeric|min:0',
+               'fishes.*.available_quantity' => 'required|numeric|min:0',
+               'fishes.*.unit' => 'required|in:kg,pieces'
+          ]);
+
+          try {
+               // Sākt datu bāzes transakciju
+               DB::beginTransaction();
+
+               // Atjaunināt batch pamatdatus
+               $batch->update([
+                    'name' => $validated['name'],
+                    'description' => $validated['description'],
+                    'batch_date' => $validated['batch_date']
+               ]);
+
+               // Ja ir norādītas zivis, atjaunināt batch_fish tabulu
+               if (isset($validated['fishes'])) {
+                    // Dzēst esošās saites
+                    $batch->fishes()->detach();
+
+                    // Pievienot jaunās zivis
+                    foreach ($validated['fishes'] as $fishData) {
+                         if (!empty($fishData['fish_id']) && !empty($fishData['quantity'])) {
+                              // Pārbaudīt, vai pieejamais daudzums nav lielāks par kopējo
+                              $availableQuantity = min($fishData['available_quantity'], $fishData['quantity']);
+
+                              $batch->fishes()->attach($fishData['fish_id'], [
+                                   'quantity' => $fishData['quantity'],
+                                   'available_quantity' => $availableQuantity,
+                                   'unit' => $fishData['unit']
+                              ]);
+                         }
+                    }
+               }
+
+               DB::commit();
+
+               return redirect()->route('admin.batches.index')
+                    ->with('success', 'Žāvējums veiksmīgi atjaunināts!');
+          } catch (\Exception $e) {
+               DB::rollBack();
+
+               return back()->with('error', 'Kļūda atjauninot žāvējumu: ' . $e->getMessage())
+                    ->withInput();
+          }
+     }
 
      public function destroy(Batch $batch)
      {
           $batch->fishes()->detach();
           $batch->delete();
-
           return redirect()->route('admin.batches.index')->with('success', 'Žāvējums veiksmīgi izdzēsts!');
      }
 }

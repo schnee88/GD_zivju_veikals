@@ -108,11 +108,9 @@
                display: flex;
                flex-wrap: wrap;
                justify-content: center;
-               /* Centrerē kartītes lapā */
                gap: 20px;
-               /* Atstarpe starp kartītēm */
+
                padding: 20px 0;
-               /*padding augšpusē apakšpusē */
           }
 
           .fish-card {
@@ -121,13 +119,10 @@
                padding: 15px;
                text-align: center;
                width: 280px;
-               /* kartītes platums */
                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-               /*ēna */
                display: flex;
                flex-direction: column;
                justify-content: space-between;
-               /* Izlīdzina saturu vertikāli */
                background-color: #fff;
           }
 
@@ -139,22 +134,16 @@
 
           .fish-card img {
                width: 100%;
-               /* Attēla platums */
                height: 200px;
-               /* Attēla augstums visām kartītēm */
                object-fit: cover;
-               /* Svarīgi: Aizpilda konteineru, nogriežot malas, saglabājot aspektu attiecību */
                display: block;
                margin-bottom: 15px;
-               /* Atstarpe zem attēla */
                border-radius: 4px;
-               /* Nelielas noapaļotas malas attēlam */
           }
 
           .fish-card .no-image {
                width: 100%;
                height: 200px;
-               /* Saglabājiet tādu pašu augstumu kā attēliem */
                background-color: #f8f8f8;
                display: flex;
                align-items: center;
@@ -174,14 +163,12 @@
 
           .fish-card a {
                display: inline-block;
-               /* Lai pogai līdzīgs izskats */
                background: #3498db;
                color: white;
                padding: 8px 15px;
                border-radius: 4px;
                text-decoration: none;
                margin-top: auto;
-               /* Pārvieto "Skatīt vairāk" uz kartītes apakšu */
           }
 
           .fish-card a:hover {
@@ -198,11 +185,20 @@
                transition: background 0.3s;
           }
 
+          .edit-btn {
+               background: green;
+               color: white;
+               padding: 8px 15px;
+               border: none;
+               border-radius: 4px;
+               cursor: pointer;
+               transition: background 0.3s;
+          }
+
           .delete-btn:hover {
                background: #c82333;
           }
 
-          /* --- STIĻI PRIEKŠ FORMAS LAUKIEM, LAI IZSKATĪTOS LABĀK --- */
           form label {
                font-weight: bold;
                margin-top: 10px;
@@ -213,19 +209,16 @@
           form textarea,
           form input[type="file"] {
                width: calc(100% - 16px);
-               /* Ņem vērā padding */
                padding: 8px;
                margin-top: 5px;
                margin-bottom: 10px;
                border: 1px solid #ccc;
                border-radius: 4px;
                box-sizing: border-box;
-               /* Ieskaitīt padding un border platumā */
           }
 
           form input[type="file"] {
                border: none;
-               /* Failu ievadei borderi parasti nav nepieciešami */
                padding-left: 0;
           }
 
@@ -239,8 +232,36 @@
           @media (max-width: 768px) {
                .fish-card {
                     width: calc(100% - 40px);
-                    /* Ļauj kartītei aizņemt gandrīz visu platumu mazākos ekrānos */
                }
+          }
+
+          @media (max-width: 768px) {
+               .fish-row>div {
+                    grid-template-columns: 1fr !important;
+                    gap: 10px !important;
+               }
+          }
+
+          .fish-row {
+               transition: all 0.3s ease;
+          }
+
+          .fish-row:hover {
+               background: #f0f0f0 !important;
+          }
+
+          .form-group {
+               margin-bottom: 0;
+          }
+
+          .form-group label {
+               font-size: 0.9em;
+               margin-bottom: 3px;
+          }
+
+          .form-group input,
+          .form-group select {
+               margin-bottom: 0;
           }
      </style>
 </head>

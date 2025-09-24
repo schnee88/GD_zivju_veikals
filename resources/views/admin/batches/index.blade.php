@@ -78,26 +78,31 @@
                               </select>
                          </form>
                     </div>
-
-                    <!-- Delete Button -->
-                    <form action="{{ route('admin.batches.destroy', $batch) }}" method="POST" style="display: inline;">
-                         @csrf
-                         @method('DELETE')
-                         <button type="submit" onclick="return confirm('Vai tiešām vēlaties dzēst šo žāvējumu?')" class="delete-btn">
-                              Dzēst žāvējumu
-                         </button>
-                    </form>
+                    <div>
+                         <a href="{{ route('admin.batches.edit', $batch) }}" class="btn btn-secondary"
+                              style="padding: 8px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;">
+                              Rediģēt
+                         </a>
+                         <form action="{{ route('admin.batches.destroy', $batch) }}" method="POST" style="display: inline;">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" onclick="return confirm('Vai tiešām vēlaties dzēst šo žāvējumu?')" class="delete-btn">
+                                   Dzēst žāvējumu
+                              </button>
+                         </form>
+                    </div>
                </div>
-          </div>
-          @endforeach
-     </div>
-     @endif
-</div>
 
-<!-- Add some JavaScript for better confirmation dialog -->
-<script>
-     function confirmDelete() {
-          return confirm('Vai tiešām vēlaties dzēst šo žāvējumu? Šo darbību nevarēs atsaukt!');
-     }
-</script>
-@endsection
+
+               @endforeach
+          </div>
+          @endif
+     </div>
+
+     <!-- Add some JavaScript for better confirmation dialog -->
+     <script>
+          function confirmDelete() {
+               return confirm('Vai tiešām vēlaties dzēst šo žāvējumu? Šo darbību nevarēs atsaukt!');
+          }
+     </script>
+     @endsection
