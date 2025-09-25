@@ -8,8 +8,8 @@
             <div class="fish-card">
                 <h2>{{ $fish->name }}</h2>
 
-                @if($fish->image)
-                    <img src="{{ asset('storage/' . $fish->image) }}" alt="{{ $fish->name }}">
+                @if($fish->image_url)
+                    <img src="{{ $fish->image_url }}" alt="{{ $fish->name }}" style="max-width: 200px; height: auto;">
                 @else
                     <div class="no-image">Nav bildes</div>
                 @endif

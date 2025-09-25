@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // "Žāvējums: 14.00 2025.23.09."
+            $table->string('name');
             $table->dateTime('batch_date');
             $table->enum('status', ['available', 'sold_out', 'preparing'])->default('preparing');
-            $table->text('description')->nullable(); // Papildus informācija
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

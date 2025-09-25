@@ -40,4 +40,11 @@ class Fish extends Model
             ->where('status', 'available', 'preparing')
             ->sum('batch_fish.available_quantity');
     }
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/fish_images/' . $this->image);
+        }
+        return null;
+    }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
         $table->foreignId('fish_id')->constrained()->onDelete('cascade');
         $table->integer('quantity');
         $table->string('phone');
-        $table->string('status')->default('pending'); // pending, confirmed, completed
+        $table->string('status')->default('pending');
         
         $table->string('ip_address');
         $table->string('user_agent')->nullable();

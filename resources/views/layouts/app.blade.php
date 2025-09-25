@@ -115,30 +115,47 @@
 
           .fish-card {
                border: 1px solid #ddd;
-               border-radius: 8px;
-               padding: 15px;
+               border-radius: 12px;
+               padding: 20px;
                text-align: center;
-               width: 280px;
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+               width: 300px;
+               box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
                display: flex;
                flex-direction: column;
                justify-content: space-between;
                background-color: #fff;
+               transition: transform 0.3s ease, box-shadow 0.3s ease;
           }
 
           .fish-card h2 {
                margin-top: 0;
-               margin-bottom: 10px;
-               color: #333;
+               margin-bottom: 12px;
+               color: #2c3e50;
+               font-size: 1.4em;
+               min-height: 50px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+          }
+
+          .fish-card .price {
+               font-size: 1.3em;
+               font-weight: bold;
+               color: #27ae60;
+               margin: 10px 0;
           }
 
           .fish-card img {
                width: 100%;
                height: 200px;
-               object-fit: cover;
+               object-fit: contain;
                display: block;
                margin-bottom: 15px;
-               border-radius: 4px;
+               border-radius: 8px;
+               background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+               padding: 15px;
+               border: 1px solid #e9ecef;
+               transition: opacity 0.3s ease;
           }
 
           .fish-card .no-image {
@@ -165,14 +182,18 @@
                display: inline-block;
                background: #3498db;
                color: white;
-               padding: 8px 15px;
-               border-radius: 4px;
+               padding: 10px 20px;
+               border-radius: 6px;
                text-decoration: none;
                margin-top: auto;
+               transition: background 0.3s ease;
+               font-weight: bold;
           }
+
 
           .fish-card a:hover {
                background: #2980b9;
+               transform: scale(1.05);
           }
 
           .delete-btn {
@@ -263,6 +284,7 @@
           .form-group select {
                margin-bottom: 0;
           }
+
      </style>
 </head>
 

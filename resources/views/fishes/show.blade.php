@@ -5,7 +5,7 @@
     <h1>{{ $fish->name }}</h1>
 
     @if($fish->image)
-        <img src="{{ asset('storage/' . $fish->image) }}" alt="{{ $fish->name }}" style="width:100%; max-height:400px; object-fit:cover; border-radius:8px;">
+        <img src="{{ asset('storage/fish_images/' . $fish->image) }}" alt="{{ $fish->name }}" style="width:100%; max-height:400px; object-fit:contain; border-radius:8px; background:#f8f9fa; padding:20px;">
     @else
         <div style="width:100%; height:300px; background:#f0f0f0; display:flex; align-items:center; justify-content:center; border-radius:8px;">
             Nav bildes

@@ -2,60 +2,55 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Models\Fish;
 
 class FishSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // Izslēdzam ārzemju atslēgu pārbaudi
-        DB::statement("PRAGMA foreign_keys = OFF");
-
         $fishes = [
             [
-                'name' => 'Lasis',
-                'price' => 12.50,
-                'description' => 'Svaigs Norvēģijas lasis',
-                'image' => 'lasis.jpg',
-                'created_at' => now(),
-                'updated_at' => now()
+                'name' => 'Salmon',
+                'price' => 24.99,
+                'description' => 'Fresh Atlantic salmon, perfect for grilling or baking.',
+                'image' => 'salmon.png'
             ],
             [
-                'name' => 'Reņģe',
-                'price' => 8.00,
-                'description' => 'Baltijas jūras reņģes',
-                'image' => 'renge.jpg',
-                'created_at' => now(),
-                'updated_at' => now()
+                'name' => 'Goldfish',
+                'price' => 8.99,
+                'description' => 'Beautiful ornamental goldfish for your aquarium.',
+                'image' => 'gold_fish.png'
             ],
             [
-                'name' => 'Karpis',
-                'price' => 7.50,
-                'description' => 'Vietējais karpis',
-                'image' => 'karpis.jpg',
-                'created_at' => now(),
-                'updated_at' => now()
+                'name' => 'Tuna',
+                'price' => 32.50,
+                'description' => 'Premium bluefin tuna, great for sushi and sashimi.',
+                'image' => 'salmon.png'
+            ],
+            [
+                'name' => 'Cod',
+                'price' => 18.75,
+                'description' => 'White flaky cod, ideal for fish and chips.',
+                'image' => 'salmon.png'
+            ],
+            [
+                'name' => 'Rainbow Fish',
+                'price' => 22.00,
+                'description' => 'Colorful tropical fish for aquariums.',
+                'image' => 'gold_fish.png'
+            ],
+            [
+                'name' => 'Koi',
+                'price' => 45.00,
+                'description' => 'Japanese ornamental pond fish.',
+                'image' => 'gold_fish.png'
             ]
         ];
 
-        foreach ($fishes as $fishData) {
-            $fishId = DB::table('fishes')->insertGetId($fishData);
-            
-            // Pievieno pieejamības dienas
-            for ($i = 1; $i <= 7; $i++) {
-                DB::table('availability_days')->insert([
-                    'fish_id' => $fishId,
-                    'date' => Carbon::now()->addDays($i),
-                    'quantity_available' => rand(5, 20),
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
-            }
+        foreach ($fishes as $fish) {
+            Fish::create($fish);
         }
-
-        // Atkal ieslēdzam ārzemju atslēgu pārbaudi
-        DB::statement("PRAGMA foreign_keys = ON");
     }
 }

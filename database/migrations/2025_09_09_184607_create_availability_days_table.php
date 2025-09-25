@@ -13,7 +13,7 @@ return new class extends Migration
 {
     Schema::create('availability_days', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('fish_id')->constrained('fishes')->onDelete('cascade'); // Pārliecinieties, ka ir 'fishes'
+        $table->foreignId('fish_id')->constrained('fishes')->onDelete('cascade');
         $table->date('date');
         $table->integer('quantity_available')->default(0);
         $table->timestamps();
