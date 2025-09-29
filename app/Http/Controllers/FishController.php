@@ -47,7 +47,7 @@ class FishController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('fish_images', 'public');
-            $validated['image'] = $path;
+            $validated['image'] = basename($path);
         }
 
         $fish = Fish::create($validated);
@@ -78,7 +78,7 @@ class FishController extends Controller
     public function update(Request $request, string $id)
     {
         $fish = Fish::findOrFail($id);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0.01',
@@ -90,7 +90,7 @@ class FishController extends Controller
             if ($fish->image) {
                 Storage::disk('public')->delete($fish->image);
             }
-            
+
             $path = $request->file('image')->store('fish_images', 'public');
             $validated['image'] = $path;
         }
@@ -106,12 +106,12 @@ class FishController extends Controller
     public function destroy(string $id)
     {
         $fish = Fish::findOrFail($id);
-        
+
         // Dzēst bildi
         if ($fish->image) {
             Storage::disk('public')->delete($fish->image);
         }
-        
+
         $fish->delete();
 
         return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi dzēsta!');

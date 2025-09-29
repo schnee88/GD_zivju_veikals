@@ -13,7 +13,7 @@
     @endif
 
     <p style="margin-top:15px; font-size:1.1em;">{{ $fish->description ?? 'Nav apraksta' }}</p>
-    <p style="font-weight:bold; font-size:1.2em;">Cena: {{ $fish->price }} € (Eur/kg)</p>
+    <p style="margin: 0; color: #27ae60; font-size: 1.4em; font-weight: bold;">Cena: {{ $fish->price }} € (Eur/kg)</p>
 
     <a href="{{ route('fish.index') }}" style="display:inline-block; margin-top:20px; background:#3498db; color:white; padding:10px 20px; border-radius:5px; text-decoration:none;">
         Atpakaļ uz sarakstu

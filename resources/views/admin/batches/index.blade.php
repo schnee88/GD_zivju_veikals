@@ -2,107 +2,122 @@
 
 @section('content')
 <div class="batch-management">
-     <h2>Žāvējumu Pārvaldība</h2>
+    <h1>Žāvējumu Pārvaldība</h1>
 
-     <div style="margin-bottom: 20px;">
-          <a href="{{ route('admin.batches.create') }}" class="btn btn-primary">+ Jauns žāvējums</a>
-     </div>
+    <div style="margin-bottom: 30px; text-align: center;">
+        <a href="{{ route('admin.batches.create') }}" class="btn btn-primary" 
+           style="background: #3498db; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">
+            + Jauns žāvējums
+        </a>
+    </div>
 
-     @if($batches->isEmpty())
-     <p>Vēl nav izveidotu žāvējumu.</p>
-     @else
-     <div class="batches-list">
-          @foreach($batches as $batch)
-          <div class="batch-card" style="border: 2px solid {{ $batch->status_color }}; border-radius: 8px; padding: 15px; margin-bottom: 25px; background: white;">
-               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <h3 style="margin: 0; color: #333;">{{ $batch->name }}</h3>
-                    <span style="background: {{ $batch->status_color }}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.9em;">
-                         {{ $batch->status_text }}
-                    </span>
-               </div>
-
-               <p style="margin: 5px 0; color: #666;">
-                    <strong>Datums:</strong> {{ $batch->batch_date->format('d.m.Y H:i') }}
-               </p>
-
-               @if($batch->description)
-               <p style="margin: 5px 0; color: #666;">
-                    <strong>Apraksts:</strong> {{ $batch->description }}
-               </p>
-               @endif
-
-               <h4 style="margin: 15px 0 10px 0;">Zivis šajā žāvējumā:</h4>
-
-               @if($batch->fishes->isEmpty())
-               <p style="color: #999;">Nav pievienotu zivju</p>
-               @else
-               <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
-                    <thead>
-                         <tr style="background: #f8f9fa;">
-                              <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Zivs</th>
-                              <th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Kopējais daudzums</th>
-                              <th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Pieejams</th>
-                              <th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Mērvienība</th>
-                         </tr>
-                    </thead>
-                    <tbody>
-                         @foreach($batch->fishes as $fish)
-                         <tr>
-                              <td style="padding: 10px; border: 1px solid #ddd;">
-                                   <strong>{{ $fish->name }}</strong>
-                              </td>
-                              <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">
-                                   {{ $fish->pivot->quantity }}
-                              </td>
-                              <td style="padding: 10px; text-align: center; border: 1px solid #ddd; color: {{ $fish->pivot->available_quantity > 0 ? '#28a745' : '#dc3545' }}; font-weight: bold;">
-                                   {{ $fish->pivot->available_quantity }}
-                              </td>
-                              <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">
-                                   {{ $fish->pivot->unit == 'kg' ? 'kg' : 'gab.' }}
-                              </td>
-                         </tr>
-                         @endforeach
-                    </tbody>
-               </table>
-               @endif
-
-               <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                         <span style="font-weight: bold;">Mainīt statusu:</span>
-                         <form action="{{ route('admin.batches.update-status', $batch) }}" method="POST" style="display: inline;">
-                              @csrf @method('PATCH')
-                              <select name="status" onchange="this.form.submit()" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
-                                   <option value="preparing" {{ $batch->status == 'preparing' ? 'selected' : '' }}>Gatavošanā</option>
-                                   <option value="available" {{ $batch->status == 'available' ? 'selected' : '' }}>Pieejams</option>
-                                   <option value="sold_out" {{ $batch->status == 'sold_out' ? 'selected' : '' }}>Izpārdots</option>
-                              </select>
-                         </form>
+    @if($batches->isEmpty())
+        <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
+            <p style="font-size: 1.1em; color: #666;">Vēl nav izveidotu žāvējumu.</p>
+        </div>
+    @else
+        <div class="batches-list">
+            @foreach($batches as $batch)
+                <div class="batch-card" style="border: 3px solid {{ $batch->status_color }}; border-radius: 12px; padding: 20px; margin-bottom: 30px; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    
+                    <!-- Header, status -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0;">
+                        <h2 style="margin: 0; color: #2c3e50; font-size: 1.5em;">{{ $batch->name }}</h2>
+                        <span style="background: {{ $batch->status_color }}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.95em; font-weight: bold;">
+                            {{ $batch->status_text }}
+                        </span>
                     </div>
-                    <div>
-                         <a href="{{ route('admin.batches.edit', $batch) }}" class="btn btn-secondary"
-                              style="padding: 8px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;">
-                              Rediģēt
-                         </a>
-                         <form action="{{ route('admin.batches.destroy', $batch) }}" method="POST" style="display: inline;">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" onclick="return confirm('Vai tiešām vēlaties dzēst šo žāvējumu?')" class="delete-btn">
-                                   Dzēst žāvējumu
-                              </button>
-                         </form>
+
+                    <!-- Date and descript -->
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin: 8px 0; color: #555; font-size: 1em;">
+                            <strong style="color: #2c3e50;">📅 Datums:</strong> {{ $batch->batch_date->format('d.m.Y H:i') }}
+                        </p>
+
+                        @if($batch->description)
+                            <p style="margin: 8px 0; color: #555; font-size: 1em;">
+                                <strong style="color: #2c3e50;">📝 Apraksts:</strong> {{ $batch->description }}
+                            </p>
+                        @endif
                     </div>
-               </div>
 
+                    <!-- Fish list section -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 1.2em;">🐟 Zivis šajā žāvējumā:</h3>
 
-               @endforeach
-          </div>
-          @endif
-     </div>
+                        @if($batch->fishes->isEmpty())
+                            <p style="color: #999; font-style: italic; text-align: center; padding: 10px;">Nav pievienotu zivju</p>
+                        @else
+                            <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden;">
+                                <thead>
+                                    <tr style="background: #2c3e50; color: white;">
+                                        <th style="padding: 12px; text-align: left;">Zivs</th>
+                                        <th style="padding: 12px; text-align: center;">Kopējais daudzums</th>
+                                        <th style="padding: 12px; text-align: center;">Pieejams</th>
+                                        <th style="padding: 12px; text-align: center;">Mērvienība</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($batch->fishes as $fish)
+                                        <tr style="border-bottom: 1px solid #e9ecef;">
+                                            <td style="padding: 12px;">
+                                                <strong style="color: #2c3e50;">{{ $fish->name }}</strong>
+                                            </td>
+                                            <td style="padding: 12px; text-align: center; font-weight: bold;">
+                                                {{ $fish->pivot->quantity }}
+                                            </td>
+                                            <td style="padding: 12px; text-align: center; color: {{ $fish->pivot->available_quantity > 0 ? '#27ae60' : '#e74c3c' }}; font-weight: bold; font-size: 1.1em;">
+                                                {{ $fish->pivot->available_quantity }}
+                                            </td>
+                                            <td style="padding: 12px; text-align: center;">
+                                                {{ $fish->pivot->unit == 'kg' ? 'kg' : 'gab.' }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
 
-     <!-- Add some JavaScript for better confirmation dialog -->
-     <script>
-          function confirmDelete() {
-               return confirm('Vai tiešām vēlaties dzēst šo žāvējumu? Šo darbību nevarēs atsaukt!');
-          }
-     </script>
-     @endsection
+                    <!-- Actions -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; padding-top: 15px; border-top: 2px solid #f0f0f0;">
+                        
+                        <!-- Status chg -->
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span style="font-weight: bold; color: #2c3e50;">Mainīt statusu:</span>
+                            <form action="{{ route('admin.batches.update-status', $batch) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('PATCH')
+                                <select name="status" onchange="this.form.submit()" 
+                                        style="padding: 8px 12px; border: 2px solid #ddd; border-radius: 6px; background: white; cursor: pointer; font-size: 0.95em;">
+                                    <option value="preparing" {{ $batch->status == 'preparing' ? 'selected' : '' }}>Gatavošanā</option>
+                                    <option value="available" {{ $batch->status == 'available' ? 'selected' : '' }}>Pieejams</option>
+                                    <option value="sold_out" {{ $batch->status == 'sold_out' ? 'selected' : '' }}>Izpārdots</option>
+                                </select>
+                            </form>
+                        </div>
+
+                        <!-- Edit and Delete btn -->
+                        <div style="display: flex; gap: 10px;">
+                            <a href="{{ route('admin.batches.edit', $batch) }}" 
+                               style="padding: 10px 20px; background: #27ae60; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: background 0.3s;">
+                                ✏️ Rediģēt
+                            </a>
+                            <form action="{{ route('admin.batches.destroy', $batch) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        onclick="return confirm('Vai tiešām vēlaties dzēst šo žāvējumu? Šo darbību nevarēs atsaukt!')" 
+                                        style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;">
+                                    🗑️ Dzēst
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
+@endsection
