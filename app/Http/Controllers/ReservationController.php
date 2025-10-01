@@ -15,14 +15,12 @@ class ReservationController extends Controller
         $batch = Batch::findOrFail($batchId);
         $fish = Fish::findOrFail($fishId);
 
-        // Pārbauda vai batch vēl ir pieejams
         $batchFish = $batch->fishes()->where('fish_id', $fishId)->first();
 
         if (!$batchFish || $batchFish->pivot->available_quantity <= 0) {
             return redirect()->back()->with('error', 'Šī zivs vairs nav pieejama rezervācijai.');
         }
 
-        // Pārbauda vai lietotājam nav pārāk daudz aktīvo rezervāciju
         if (Auth::user()->hasMaxActiveReservations(3)) {
             return redirect()->back()->with('error', 'Jums jau ir 3 aktīvās rezervācijas. Lūdzu, gaidiet to apstrādi.');
         }
@@ -30,10 +28,8 @@ class ReservationController extends Controller
         return view('reservations.create', compact('batch', 'fish', 'batchFish'));
     }
 
-    // Saglabāt jaunu rezervāciju
     public function store(Request $request)
     {
-        // Validācija
         $validated = $request->validate([
             'batch_id' => 'required|exists:batches,id',
             'fish_id' => 'required|exists:fishes,id',
@@ -45,12 +41,10 @@ class ReservationController extends Controller
             'quantity.min' => 'Daudzumam jābūt vismaz 1',
         ]);
 
-        // Pārbauda aktīvo rezervāciju limitu
         if (Auth::user()->hasMaxActiveReservations(3)) {
             return redirect()->back()->with('error', 'Jums jau ir 3 aktīvās rezervācijas.');
         }
 
-        // Pārbauda IP limitu (max 5 rezervācijas dienā)
         $ipAddress = $request->ip();
         $todayReservations = Reservation::where('ip_address', $ipAddress)
             ->whereDate('created_at', today())
@@ -60,15 +54,12 @@ class ReservationController extends Controller
             return redirect()->back()->with('error', 'No šīs IP adreses šodien ir veiktas pārāk daudz rezervācijas.');
         }
 
-        // Pārbauda vai pietiek daudzuma
         $batch = Batch::findOrFail($validated['batch_id']);
         $batchFish = $batch->fishes()->where('fish_id', $validated['fish_id'])->first();
 
         if (!$batchFish || $batchFish->pivot->available_quantity < $validated['quantity']) {
             return redirect()->back()->with('error', 'Nav pietiekami daudz zivju pieejamībā.');
         }
-
-        // Izveido rezervāciju
         $reservation = Reservation::create([
             'user_id' => Auth::id(),
             'batch_id' => $validated['batch_id'],
@@ -85,12 +76,10 @@ class ReservationController extends Controller
             ->with('success', 'Rezervācija veiksmīgi izveidota! Administratoris drīzumā sazināsies ar jums.');
     }
 
-    // Parādīt vienu rezervāciju
     public function show($id)
     {
         $reservation = Reservation::with(['batch', 'fish'])->findOrFail($id);
 
-        // Pārbauda vai lietotājs var skatīt šo rezervāciju
         if ($reservation->user_id !== Auth::id() && !Auth::user()->is_admin) {
             abort(403);
         }
@@ -98,7 +87,6 @@ class ReservationController extends Controller
         return view('reservations.show', compact('reservation'));
     }
 
-    // Lietotāja rezervāciju saraksts
     public function index()
     {
         $reservations = Auth::user()->reservations()

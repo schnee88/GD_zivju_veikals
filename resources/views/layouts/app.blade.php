@@ -352,7 +352,6 @@
                background: #2980b9;
           }
 
-
           .empty-state {
                text-align: center;
                padding: 60px 20px;
@@ -452,6 +451,172 @@
                margin-top: 20px;
           }
 
+          /* Checkout Styles */
+          .checkout-container {
+               max-width: 1000px;
+               margin: 0 auto;
+               padding: 20px;
+          }
+          
+          .checkout-grid {
+               display: grid;
+               grid-template-columns: 1fr 400px;
+               gap: 30px;
+               margin-top: 20px;
+          }
+          
+          .checkout-section {
+               background: white;
+               padding: 25px;
+               border-radius: 8px;
+               box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+               margin-bottom: 20px;
+          }
+          
+          .section-title {
+               font-size: 1.3em;
+               font-weight: bold;
+               color: #2c3e50;
+               margin-bottom: 20px;
+               padding-bottom: 10px;
+               border-bottom: 2px solid #ecf0f1;
+          }
+          
+          .form-label {
+               display: block;
+               margin-bottom: 8px;
+               font-weight: 600;
+               color: #2c3e50;
+          }
+          
+          .form-input {
+               width: 100%;
+               padding: 12px;
+               border: 2px solid #ecf0f1;
+               border-radius: 6px;
+               font-size: 1em;
+               transition: border-color 0.3s;
+          }
+          
+          .form-input:focus {
+               outline: none;
+               border-color: #3498db;
+          }
+          
+          .form-textarea {
+               min-height: 100px;
+               resize: vertical;
+          }
+          
+          .error-message {
+               color: #e74c3c;
+               font-size: 0.9em;
+               margin-top: 5px;
+          }
+          
+          .cart-item {
+               background: #f8f9fa;
+               padding: 15px;
+               margin-bottom: 10px;
+               border-radius: 6px;
+               border-left: 4px solid #3498db;
+          }
+          
+          .cart-item-header {
+               display: flex;
+               justify-content: space-between;
+               align-items: start;
+               margin-bottom: 8px;
+          }
+          
+          .item-name {
+               font-weight: bold;
+               color: #2c3e50;
+               font-size: 1.1em;
+          }
+          
+          .item-price {
+               font-weight: bold;
+               color: #27ae60;
+          }
+          
+          .item-details {
+               color: #666;
+               font-size: 0.9em;
+               line-height: 1.4;
+          }
+          
+          .item-details p {
+               margin: 3px 0;
+          }
+          
+          .summary-row {
+               display: flex;
+               justify-content: space-between;
+               padding: 12px 0;
+               border-bottom: 1px solid #ecf0f1;
+          }
+          
+          .summary-total {
+               font-size: 1.3em;
+               font-weight: bold;
+               color: #2c3e50;
+               padding-top: 15px;
+               border-top: 2px solid #ecf0f1;
+          }
+          
+          .checkout-btn {
+               width: 100%;
+               background: #27ae60;
+               color: white;
+               padding: 15px;
+               border: none;
+               border-radius: 6px;
+               font-size: 1.1em;
+               font-weight: bold;
+               cursor: pointer;
+               margin-top: 20px;
+               transition: background 0.3s;
+          }
+          
+          .checkout-btn:hover {
+               background: #229954;
+          }
+          
+          .checkout-btn:disabled {
+               background: #95a5a6;
+               cursor: not-allowed;
+          }
+          
+          .back-btn {
+               display: inline-block;
+               background: #757575;
+               color: white;
+               padding: 12px 24px;
+               border-radius: 6px;
+               text-decoration: none;
+               margin-top: 15px;
+               transition: background 0.3s;
+          }
+          
+          .back-btn:hover {
+               background: #616161;
+          }
+          
+          .info-box {
+               background: #d1ecf1;
+               border: 1px solid #bee5eb;
+               border-radius: 6px;
+               padding: 15px;
+               margin-bottom: 20px;
+               color: #0c5460;
+          }
+          
+          .info-box p {
+               margin: 5px 0;
+               font-size: 0.9em;
+          }
+
           /* Responsive Design */
           @media (max-width: 768px) {
                .batch-card h2 {
@@ -495,6 +660,11 @@
                     width: 100%;
                     justify-content: center;
                }
+
+               /* Checkout Responsive */
+               .checkout-grid {
+                    grid-template-columns: 1fr;
+               }
           }
      </style>
 </head>
@@ -512,7 +682,15 @@
                     @if(auth()->user()->is_admin)
                     <a href="{{ route('admin.dashboard') }}">Admin Panelis</a>
                     @endif
-                    <a href="{{ route('reservations.index') }}">Mani pasūtījumi</a>
+                    <a href="{{ route('cart.index') }}">
+                         🛒 Grozs
+                         @if(auth()->user()->getCartCount() > 0)
+                         <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.85em; margin-left: 5px;">
+                              {{ auth()->user()->getCartCount() }}
+                         </span>
+                         @endif
+                    </a>
+                    <a href="{{ route('reservations.index') }}">Manas rezervācijas</a>
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                          @csrf
                          <button type="submit" style="background:#e74c3c; padding:5px 10px;">

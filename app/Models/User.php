@@ -20,7 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin', 
+        'is_admin',
         'phone',
     ];
 
@@ -38,7 +38,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean'
     ];
-    
+
     /**
      * Get the attributes that should be cast.
      *
@@ -63,10 +63,12 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
+    //rezervations
+
     public function hasMaxActiveReservations(): bool
     {
         $maxReservations = config('reservations.max_active_per_user', 3);
-        
+
         return $this->activeReservations()->count() >= $maxReservations;
     }
 
@@ -78,5 +80,21 @@ class User extends Authenticatable
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+    //shop cart
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function getCartTotal()
+    {
+        return $this->cartItems->sum(function ($item) {
+            return $item->quantity * $item->fish->price;
+        });
+    }
+    public function getCartCount()
+    {
+        return $this->cartItems->count();
     }
 }
