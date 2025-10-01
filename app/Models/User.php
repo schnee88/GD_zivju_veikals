@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -62,5 +61,22 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->is_admin;
+    }
+
+    public function hasMaxActiveReservations(): bool
+    {
+        $maxReservations = config('reservations.max_active_per_user', 3);
+        
+        return $this->activeReservations()->count() >= $maxReservations;
+    }
+
+    public function activeReservations()
+    {
+        return $this->reservations()->where('status', 'active');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

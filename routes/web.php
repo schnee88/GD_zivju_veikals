@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\FishController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 // Galvenā mājas lapa ar info par veikalu
@@ -24,6 +25,14 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Rezervācijas (tikai autentificētiem lietotājiem)
+Route::middleware('auth')->group(function () {
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/batch/{batch}/fish/{fish}/reserve', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+});
 
 // Administratora panelis
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
@@ -42,14 +51,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/batches/create', [BatchController::class, 'create'])->name('admin.batches.create');
     Route::post('/batches', [BatchController::class, 'store'])->name('admin.batches.store');
     Route::get('/batches/{batch}/edit', [BatchController::class, 'edit'])->name('admin.batches.edit');
-    Route::put('/batches/{batch}', [BatchController::class, 'update'])->name('admin.batches.update'); // UPDATE METODE
+    Route::put('/batches/{batch}', [BatchController::class, 'update'])->name('admin.batches.update');
     Route::get('/batches/{batch}', [BatchController::class, 'show'])->name('admin.batches.show');
     Route::patch('/batches/{batch}/status', [BatchController::class, 'updateStatus'])->name('admin.batches.update-status');
     Route::delete('/batches/{batch}', [BatchController::class, 'destroy'])->name('admin.batches.destroy');
 
     Route::post('/batches/update-fish-status', [BatchController::class, 'updateFishStatus'])->name('admin.batches.update-fish-status');
     Route::post('/batches/bulk-update-fish-status', [BatchController::class, 'bulkUpdateFishStatus'])->name('admin.batches.bulk-update-fish-status');
-
 
     Route::resource('fish', FishController::class)->except(['show', 'index']);
 });

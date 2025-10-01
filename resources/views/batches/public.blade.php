@@ -6,8 +6,8 @@
     
     @if($batches->isEmpty())
         <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
-            <p style="font-size: 1.1em; color: #666;">Šobrīd nav pieejamu žāvējumu.</p>
-            <p style="color: #999;">Lūdzu, vēlaties vēlāk vai sazinieties ar mums pa telefonu!</p>
+            <p style="font-size: 1.1em; color: #666;">Šobrīd nav pieejamu kūpinājumu.</p>
+            <p style="color: #999;">Lūdzu, apmeklējiet vēlāk vai sazinieties ar mums pa telefonu!</p>
         </div>
     @else
         <div class="batches-list">
@@ -48,7 +48,7 @@
                                         <th style="padding: 12px; text-align: center;">Pieejams</th>
                                         <th style="padding: 12px; text-align: center;">Mērvienība</th>
                                         <th style="padding: 12px; text-align: center;">Cena</th>
-                                        <th style="padding: 12px; text-align: center;">Pasūtīt</th>
+                                        <th style="padding: 12px; text-align: center;">Darbības</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,7 +60,7 @@
                                                     <br><small style="color: #666; line-height: 1.4;">{{ $fish->description }}</small>
                                                 @endif
                                             </td>
-                                            <td style="padding: 12px; text-align: center; font-weight: bold; color: #27ae60; font-size: 1.1em;">
+                                            <td style="padding: 12px; text-align: center; font-weight: bold; color: {{ $fish->pivot->available_quantity > 0 ? '#27ae60' : '#e74c3c' }}; font-size: 1.1em;">
                                                 {{ $fish->pivot->available_quantity }}
                                             </td>
                                             <td style="padding: 12px; text-align: center; color: #555;">
@@ -70,11 +70,24 @@
                                                 {{ number_format($fish->price, 2) }} €
                                             </td>
                                             <td style="padding: 12px; text-align: center;">
-                                                <a href="tel:+371XXXXXXXX" 
-                                                   style="background: {{ $batch->status == 'available' ? '#27ae60' : '#f39c12' }}; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; transition: background 0.3s; white-space: nowrap;">
-                                                    📞 Zvanīt
-                                                </a>
-                                                <small style="display: block; margin-top: 5px; color: #999; font-size: 0.85em;">Tikai pa telefonu</small>
+                                                @auth
+                                                    @if($batch->status == 'available' && $fish->pivot->available_quantity > 0)
+                                                        <a href="{{ route('reservations.create', ['batch' => $batch->id, 'fish' => $fish->id]) }}" 
+                                                           style="background: #27ae60; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; transition: background 0.3s; white-space: nowrap;">
+                                                            🛒 Rezervēt
+                                                        </a>
+                                                    @else
+                                                        <span style="color: #999; font-style: italic; font-size: 0.9em;">
+                                                            {{ $fish->pivot->available_quantity <= 0 ? 'Nav pieejams' : 'Vēl nav gatavs' }}
+                                                        </span>
+                                                    @endif
+                                                @else
+                                                    <a href="{{ route('login') }}" 
+                                                       style="background: #3498db; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; transition: background 0.3s; white-space: nowrap;">
+                                                        🔐 Pieteikties
+                                                    </a>
+                                                    <small style="display: block; margin-top: 5px; color: #999; font-size: 0.85em;">lai rezervētu</small>
+                                                @endauth
                                             </td>
                                         </tr>
                                     @endforeach
@@ -90,13 +103,9 @@
 
     <!-- Contact info box -->
     <div style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
-        <h3 style="margin: 0 0 15px 0; font-size: 1.4em;">📞 Kā pasūtīt?</h3>
-        <p style="margin: 10px 0; font-size: 1.05em;">Zvaniet mums pa telefonu:</p>
-        <p style="margin: 15px 0;">
-            <a href="tel:+371XXXXXXXX" style="color: white; font-size: 1.5em; font-weight: bold; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; display: inline-block;">
-                +371 XXXXXXXX
-            </a>
-        </p>
+        <h3 style="margin: 0 0 15px 0; font-size: 1.4em;">ℹ️ Informācija</h3>
+        <p style="margin: 10px 0; font-size: 1.05em;">Rezervējiet zivis tiešsaistē un mēs sazināsimies ar jums!</p>
+        <p style="margin: 10px 0; font-size: 0.95em; opacity: 0.9;">Maksājums notiek tikai saņemot preci klātienē.</p>
         <p style="margin: 10px 0; font-size: 0.95em; opacity: 0.9;">⏰ Darba laiks: Pirmdiena-Piektdiena 9:00-18:00</p>
     </div>
 </div>

@@ -115,6 +115,14 @@
 
           .delete-btn {
                background: #dc3545;
+               color: white;
+               padding: 8px 20px;
+               border-radius: 4px;
+               text-decoration: none;
+               white-space: nowrap;
+               border: none;
+               cursor: pointer;
+               font-size: 14px;
           }
 
           .delete-btn:hover {
@@ -260,6 +268,190 @@
                background: #f0f0f0 !important;
           }
 
+          .reservation-container {
+               max-width: 600px;
+               margin: 0 auto;
+               background: white;
+               padding: 30px;
+               border-radius: 8px;
+               box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .reservation-item {
+               background: white;
+               padding: 20px;
+               margin-bottom: 15px;
+               border-radius: 8px;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               transition: transform 0.2s;
+          }
+
+          .reservation-item:hover {
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          }
+
+          .reservation-info {
+               flex: 1;
+          }
+
+          .reservation-info h3 {
+               margin: 0 0 10px 0;
+               color: #2c3e50;
+          }
+
+          .reservation-info p {
+               margin: 5px 0;
+               color: #555;
+               font-size: 14px;
+          }
+
+          .status-badge {
+               display: inline-block;
+               padding: 5px 15px;
+               border-radius: 20px;
+               font-weight: bold;
+               font-size: 13px;
+               margin-right: 10px;
+          }
+
+          .status-pending {
+               background: #fff3cd;
+               color: #856404;
+          }
+
+          .status-confirmed {
+               background: #d1ecf1;
+               color: #0c5460;
+          }
+
+          .status-completed {
+               background: #d4edda;
+               color: #155724;
+          }
+
+          .status-cancelled {
+               background: #f8d7da;
+               color: #721c24;
+          }
+
+          .view-btn {
+               background: #3498db;
+               color: white;
+               padding: 8px 20px;
+               border-radius: 4px;
+               text-decoration: none;
+               white-space: nowrap;
+               margin-right: 10px;
+          }
+
+          .view-btn:hover {
+               background: #2980b9;
+          }
+
+
+          .empty-state {
+               text-align: center;
+               padding: 60px 20px;
+               color: #999;
+          }
+
+          .empty-state i {
+               font-size: 48px;
+               margin-bottom: 20px;
+          }
+
+          .reservation-actions {
+               display: flex;
+               gap: 10px;
+               align-items: center;
+          }
+
+          .button-group {
+               display: flex;
+               gap: 10px;
+               margin-top: 20px;
+          }
+
+          .btn-secondary {
+               background: #757575;
+               color: white;
+               padding: 10px 20px;
+               border-radius: 4px;
+               text-decoration: none;
+               display: inline-block;
+          }
+
+          .btn-secondary:hover {
+               background: #616161;
+          }
+
+          .reservation-container {
+               max-width: 600px;
+               margin: 0 auto;
+               background: white;
+               padding: 30px;
+               border-radius: 8px;
+               box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .fish-info {
+               background: #f9f9f9;
+               padding: 15px;
+               border-radius: 5px;
+               margin-bottom: 25px;
+               border-left: 4px solid #4CAF50;
+          }
+
+          .fish-info p {
+               margin: 5px 0;
+               color: #555;
+          }
+
+          .info-text {
+               font-size: 13px;
+               color: #666;
+               margin-top: 5px;
+          }
+
+          .detail-section {
+               background: #f9f9f9;
+               padding: 20px;
+               border-radius: 5px;
+               margin: 20px 0;
+          }
+
+          .detail-row {
+               display: flex;
+               justify-content: space-between;
+               padding: 10px 0;
+               border-bottom: 1px solid #e0e0e0;
+          }
+
+          .detail-row:last-child {
+               border-bottom: none;
+          }
+
+          .detail-label {
+               font-weight: bold;
+               color: #555;
+          }
+
+          .detail-value {
+               color: #333;
+          }
+
+          .notes-box {
+               background: #fffbf0;
+               padding: 15px;
+               border-radius: 5px;
+               border-left: 4px solid #ffc107;
+               margin-top: 20px;
+          }
+
           /* Responsive Design */
           @media (max-width: 768px) {
                .batch-card h2 {
@@ -313,14 +505,14 @@
                <div>
                     <a href="{{ route('home') }}">Mājas</a>
                     <a href="{{ route('fish.index') }}">Zivis</a>
-                    <a href="{{ route('batches.public') }}">Žāvējumi</a>
+                    <a href="{{ route('batches.public') }}">Kūpinājumi</a>
                </div>
                <div>
                     @auth
                     @if(auth()->user()->is_admin)
                     <a href="{{ route('admin.dashboard') }}">Admin Panelis</a>
                     @endif
-                    <a href="{{ route('fish.index') }}">Mani pasūtījumi</a>
+                    <a href="{{ route('reservations.index') }}">Mani pasūtījumi</a>
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                          @csrf
                          <button type="submit" style="background:#e74c3c; padding:5px 10px;">
