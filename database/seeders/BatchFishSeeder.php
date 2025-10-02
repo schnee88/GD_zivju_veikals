@@ -20,36 +20,36 @@ class BatchFishSeeder extends Seeder
         $fishes = Fish::all();
 
         $batchFishData = [
-            // Batch 1 - Rīta žāvējums
+            // Batch 1 - Rīta
             [
                 'batch_id' => 1,
-                'fish_id' => 1, // Salmon
-                'quantity' => 50.5,
+                'fish_id' => 1,
+                'quantity' => 20,
                 'unit' => 'kg',
-                'available_quantity' => 35.2,
+                'available_quantity' => 20,
                 'status' => 'available'
             ],
             [
                 'batch_id' => 1,
-                'fish_id' => 2, // Goldfish
-                'quantity' => 100,
+                'fish_id' => 2,
+                'quantity' => 10,
                 'unit' => 'pieces',
-                'available_quantity' => 75,
+                'available_quantity' => 7,
                 'status' => 'available'
             ],
             [
                 'batch_id' => 1,
-                'fish_id' => 3, // Tuna
+                'fish_id' => 3,
                 'quantity' => 25.0,
                 'unit' => 'kg',
-                'available_quantity' => 10.5,
+                'available_quantity' => 23.0,
                 'status' => 'available'
             ],
 
-            // Batch 2 - Vakara partija
+            // Batch 2 - Vakara
             [
                 'batch_id' => 2,
-                'fish_id' => 4, // Cod
+                'fish_id' => 4,
                 'quantity' => 40.0,
                 'unit' => 'kg',
                 'available_quantity' => 40.0,
@@ -57,17 +57,17 @@ class BatchFishSeeder extends Seeder
             ],
             [
                 'batch_id' => 2,
-                'fish_id' => 5, // Rainbow Fish
+                'fish_id' => 5, 
                 'quantity' => 60,
-                'unit' => 'pieces',
+                'unit' => 'kg',
                 'available_quantity' => 60,
                 'status' => 'reserved'
             ],
 
-            // Batch 3 - Nedēļas nogāzes partija
+            // Batch 3 - Nedēļas nogales
             [
                 'batch_id' => 3,
-                'fish_id' => 1, // Salmon
+                'fish_id' => 1, 
                 'quantity' => 30.0,
                 'unit' => 'kg',
                 'available_quantity' => 0,
@@ -75,7 +75,7 @@ class BatchFishSeeder extends Seeder
             ],
             [
                 'batch_id' => 3,
-                'fish_id' => 3, // Tuna
+                'fish_id' => 3,
                 'quantity' => 15.0,
                 'unit' => 'kg',
                 'available_quantity' => 0,
@@ -85,7 +85,7 @@ class BatchFishSeeder extends Seeder
             // Batch 4 - Jaunais žāvējums
             [
                 'batch_id' => 4,
-                'fish_id' => 2, // Goldfish
+                'fish_id' => 2, 
                 'quantity' => 80,
                 'unit' => 'pieces',
                 'available_quantity' => 80,
@@ -93,7 +93,7 @@ class BatchFishSeeder extends Seeder
             ],
             [
                 'batch_id' => 4,
-                'fish_id' => 6, // Koi
+                'fish_id' => 6,
                 'quantity' => 25,
                 'unit' => 'pieces',
                 'available_quantity' => 25,

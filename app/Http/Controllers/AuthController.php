@@ -19,7 +19,6 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'phone' => 'required|string|regex:/^(\+[1-9]{1}[0-9]{0,3})?[0-9]{4,14}$/', 
         ]);
         if ($validator->fails()) {
             return redirect()->back()
@@ -31,7 +30,6 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'phone' => $request->phone,
         ]);
         auth()->login($user);
 

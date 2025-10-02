@@ -38,6 +38,11 @@ class CartController extends Controller
             return redirect()->back()->with('error', 'Šī zivs nav pieejama šajā kūpinājumā.');
         }
 
+        // Pārbauda vai gabali ir veseli skaitļi
+        if ($batchFish->pivot->unit == 'pieces' && floor($validated['quantity']) != $validated['quantity']) {
+            return redirect()->back()->with('error', 'Gabalu daudzumam jābūt veselam skaitlim.');
+        }
+
         if ($batchFish->pivot->available_quantity < $validated['quantity']) {
             return redirect()->back()->with('error', 'Nav pietiekami daudz pieejamības. Pieejams: ' . $batchFish->pivot->available_quantity . ' ' . $batchFish->pivot->unit);
         }
@@ -78,10 +83,13 @@ class CartController extends Controller
         $validated = $request->validate([
             'quantity' => 'required|numeric|min:0.1',
         ]);
-
-        // Pārbauda pieejamību
+        
         $batch = $cartItem->batch;
         $batchFish = $batch->fishes()->where('fish_id', $cartItem->fish_id)->first();
+
+        if ($batchFish->pivot->unit == 'pieces' && floor($validated['quantity']) != $validated['quantity']) {
+            return redirect()->back()->with('error', 'Gabalu daudzumam jābūt veselam skaitlim.');
+        }
 
         if ($validated['quantity'] > $batchFish->pivot->available_quantity) {
             return redirect()->back()->with('error', 'Pārsniegts pieejamais daudzums.');

@@ -27,13 +27,6 @@
             </div>
 
             <div class="form-group">
-                <label for="phone">Telefons:</label>
-                <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required 
-                       placeholder="22222222">
-                <small>Formāts: Var vadīt ar vai bez valsts koda</small>
-            </div>
-
-            <div class="form-group">
                 <label for="password">Parole:</label>
                 <input type="password" name="password" id="password" required>
             </div>

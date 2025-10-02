@@ -37,5 +37,17 @@ class CartItem extends Model
     {
         return $this->quantity * $this->fish->price;
     }
-    
+
+    public function getUnit()
+    {
+        $batchFish = $this->batch->fishes()->where('fish_id', $this->fish_id)->first();
+        return $batchFish ? $batchFish->pivot->unit : 'kg';
+    }
+
+    // Iegūst pieejamo daudzumu
+    public function getAvailableQuantity()
+    {
+        $batchFish = $this->batch->fishes()->where('fish_id', $this->fish_id)->first();
+        return $batchFish ? $batchFish->pivot->available_quantity : 0;
+    }
 }

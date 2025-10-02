@@ -79,9 +79,9 @@
                                         <input type="number"
                                             name="quantity"
                                             value="1"
-                                            min="0.1"
+                                            min="{{ $fish->pivot->unit == 'kg' ? '0.1' : '1' }}"
                                             max="{{ $fish->pivot->available_quantity }}"
-                                            step="0.1"
+                                            step="{{ $fish->pivot->unit == 'kg' ? '0.1' : '1' }}"
                                             style="width: 70px; padding: 5px; border: 1px solid #ddd; border-radius: 4px; margin-right: 5px;">
                                         <button type="submit"
                                             style="background: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;">

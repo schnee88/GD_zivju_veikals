@@ -16,28 +16,28 @@ class BatchSeeder extends Seeder
     {
         $batches = [
             [
-                'name' => 'Rīta žāvējums',
+                'name' => 'Rīta kūpinājums',
                 'batch_date' => Carbon::today()->setTime(8, 0),
                 'status' => 'available',
-                'description' => 'Svaigi nožāvētas zivis no rīta nozvejas',
+                'description' => 'Svaigi nožāvētas zivis',
             ],
             [
-                'name' => 'Vakara partija',
+                'name' => 'Vakara kūpinājums',
                 'batch_date' => Carbon::today()->setTime(18, 0),
                 'status' => 'preparing',
-                'description' => 'Vakara žāvējums, gatavs nākamajā dienā',
+                'description' => 'Vakara kūpinājums, gatavs nākamajai dienai',
             ],
             [
-                'name' => 'Nedēļas nogāzes partija',
+                'name' => 'Nedēļas nogales kūpinājums',
                 'batch_date' => Carbon::parse('next friday')->setTime(12, 0),
                 'status' => 'sold_out',
-                'description' => 'Īpašais nedēļas nogāzes žāvējums',
+                'description' => 'Īpašais nedēļas nogales kūpinājums',
             ],
             [
-                'name' => 'Jaunais žāvējums',
+                'name' => 'Jaunais kūpinājums',
                 'batch_date' => Carbon::tomorrow()->setTime(10, 0),
                 'status' => 'available',
-                'description' => 'Svaigi žāvētas zivis ar īpašu garšu',
+                'description' => 'Svaigi žāvētas zivis ar īpašu recepti',
             ]
         ];
 

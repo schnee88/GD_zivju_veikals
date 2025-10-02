@@ -7,7 +7,7 @@
         <p style="color: green">{{ session('success') }}</p>
     @endif
 
-    <form action="{{ route('fish.create') }}">
+    <form action="{{ route('admin.fish.create') }}">
         @csrf
         <button type="submit" style="background:#2596be; padding:5px 10px;">Pievienot jaunu zivi</button>
     </form>
@@ -42,7 +42,7 @@
                         <a href="{{ route('admin.fish.edit', $fish->id) }}">✏️ Rediģēt</a>
 
                         {{-- Delete forma --}}
-                        <form action="{{ route('fish.destroy', $fish->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tiešām dzēst šo zivi?')">
+                        <form action="{{ route('admin.fish.destroy', $fish->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tiešām dzēst šo zivi?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" style="color:red">🗑️ Dzēst</button>

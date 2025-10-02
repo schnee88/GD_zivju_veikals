@@ -21,7 +21,7 @@ class FishController extends Controller
     public function adminIndex()
     {
         $fishes = Fish::with('availabilityDays')->get();
-        return view('admin.index', compact('fishes'));
+        return view('admin.fish.index', compact('fishes'));
     }
 
 
@@ -30,7 +30,7 @@ class FishController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        return view('admin.fish.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class FishController extends Controller
     public function edit(string $id)
     {
         $fish = Fish::findOrFail($id);
-        return view('admin.edit', compact('fish'));
+        return view('admin.fish.edit', compact('fish'));
     }
 
     /**

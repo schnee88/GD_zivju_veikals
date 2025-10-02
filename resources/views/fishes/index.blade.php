@@ -70,7 +70,7 @@
     <!-- Info box -->
     <div style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
         <h3 style="margin: 0 0 15px 0; font-size: 1.4em;">🛒 Kā iegādāties?</h3>
-        <p style="margin: 10px 0; font-size: 1.05em;">Visi produkti pieejami tikai pa telefonu!</p>
+        <p style="margin: 10px 0; font-size: 1.05em;">Visi produkti pieejami, rezervē vai zvani pa telefonu!</p>
         <p style="margin: 15px 0;">
             <a href="tel:+371XXXXXXXX" style="color: white; font-size: 1.5em; font-weight: bold; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; display: inline-block;">
                 📞 +371 XXXXXXXX

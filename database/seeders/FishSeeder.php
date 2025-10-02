@@ -12,39 +12,39 @@ class FishSeeder extends Seeder
     {
         $fishes = [
             [
-                'name' => 'Salmon',
-                'price' => 24.99,
-                'description' => 'Fresh Atlantic salmon, perfect for grilling or baking.',
+                'name' => 'Lasis',
+                'price' => 13.99,
+                'description' => 'Svaigs Atlantijas lasis',
                 'image' => 'salmon.png'
             ],
             [
-                'name' => 'Goldfish',
-                'price' => 8.99,
-                'description' => 'Beautiful ornamental goldfish for your aquarium.',
+                'name' => 'Zelta zivs',
+                'price' => 50,
+                'description' => 'Skaista dekoratīva zelta zivs',
                 'image' => 'gold_fish.png'
             ],
             [
-                'name' => 'Tuna',
-                'price' => 32.50,
-                'description' => 'Premium bluefin tuna, great for sushi and sashimi.',
+                'name' => 'Sīļķe',
+                'price' => 6.50,
+                'description' => 'Augstākās kvalitātes sīļķes, ar slepeno recepti!',
                 'image' => 'salmon.png'
             ],
             [
-                'name' => 'Cod',
-                'price' => 18.75,
-                'description' => 'White flaky cod, ideal for fish and chips.',
+                'name' => 'Menca',
+                'price' => 10.75,
+                'description' => 'Balta, maiga menca, lieliski piemērota fish & chips pagatavošanai.',
                 'image' => 'salmon.png'
             ],
             [
-                'name' => 'Rainbow Fish',
-                'price' => 22.00,
-                'description' => 'Colorful tropical fish for aquariums.',
+                'name' => 'Skumbrija',
+                'price' => 12.00,
+                'description' => 'Atlantijas makrele',
                 'image' => 'gold_fish.png'
             ],
             [
-                'name' => 'Koi',
+                'name' => 'Zutis',
                 'price' => 45.00,
-                'description' => 'Japanese ornamental pond fish.',
+                'description' => 'Čūskveida zivs, delekatese',
                 'image' => 'gold_fish.png'
             ]
         ];
