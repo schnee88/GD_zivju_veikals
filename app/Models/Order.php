@@ -11,12 +11,13 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'fish_id',
-        'quantity',
         'phone',
-        'status',
         'ip_address',
-        'user_agent'
+        'user_agent',
+        'status',
+        'notes',
+        'admin_notes',
+        'total_amount',
     ];
 
     public function user()
@@ -24,8 +25,18 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function fish()
+    public function items()
     {
-        return $this->belongsTo(Fish::class);
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function isActive()
+    {
+        return in_array($this->status, ['pending', 'confirmed']);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->whereIn('status', ['pending', 'confirmed']);
     }
 }

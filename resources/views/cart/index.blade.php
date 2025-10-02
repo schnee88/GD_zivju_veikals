@@ -63,11 +63,9 @@
             <span style="color: #27ae60;">{{ number_format($total, 2) }} €</span>
         </div>
 
-        <form action="{{ route('reservations.checkout') }}" method="GET">
-            <button type="submit" class="checkout-btn">
-                📋 Veikt Rezervāciju
-            </button>
-        </form>
+        <a href="{{ route('orders.checkout') }}" class="checkout-btn" style="text-decoration: none; display: block;">
+            📋 Veikt Pasūtījumu
+        </a>
 
         <form action="{{ route('cart.clear') }}" method="POST" style="text-align: center;">
             @csrf

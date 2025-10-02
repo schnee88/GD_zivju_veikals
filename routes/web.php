@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FishController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,12 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 
     // Rezervācijas
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-    Route::get('/reservations/checkout', [ReservationController::class, 'checkout'])->name('reservations.checkout');
-    Route::post('/reservations/checkout', [ReservationController::class, 'storeFromCart'])->name('reservations.storeFromCart');
-    Route::get('/reservations/success', [ReservationController::class, 'success'])->name('reservations.success');
-    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
-    Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{id}/success', [OrderController::class, 'success'])->name('orders.success');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 });
 
 //ADMIN

@@ -11,35 +11,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'is_admin',
-    ];
+    // ... your existing properties ...
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'is_admin' => 'boolean'
-    ];
-
-    /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -62,8 +37,20 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
-    //rezervations
+    // Add this missing method
+    public function hasMaxActiveOrders(): bool
+    {
+        $maxOrders = config('orders.max_active_per_user', 3);
 
+        return $this->activeOrders()->count() >= $maxOrders;
+    }
+
+    public function activeOrders()
+    {
+        return $this->orders()->whereIn('status', ['pending', 'confirmed', 'processing']);
+    }
+
+    //rezervations
     public function hasMaxActiveReservations(): bool
     {
         $maxReservations = config('reservations.max_active_per_user', 3);
@@ -80,6 +67,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reservation::class);
     }
+
     //shop cart
     public function cartItems()
     {
@@ -92,6 +80,7 @@ class User extends Authenticatable
             return $item->quantity * $item->fish->price;
         });
     }
+
     public function getCartCount()
     {
         return $this->cartItems->count();
