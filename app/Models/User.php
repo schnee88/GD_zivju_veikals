@@ -11,8 +11,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // ... your existing properties ...
-
     /**
      * The attributes that should be cast.
      *
@@ -27,6 +25,7 @@ class User extends Authenticatable
         ];
     }
 
+    // Pasūtījumi
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -37,38 +36,12 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
-    // Add this missing method
-    public function hasMaxActiveOrders(): bool
+    public function hasMaxActiveOrders($max = 3)
     {
-        $maxOrders = config('orders.max_active_per_user', 3);
-
-        return $this->activeOrders()->count() >= $maxOrders;
+        return $this->orders()->active()->count() >= $max;
     }
 
-    public function activeOrders()
-    {
-        return $this->orders()->whereIn('status', ['pending', 'confirmed', 'processing']);
-    }
-
-    //rezervations
-    public function hasMaxActiveReservations(): bool
-    {
-        $maxReservations = config('reservations.max_active_per_user', 3);
-
-        return $this->activeReservations()->count() >= $maxReservations;
-    }
-
-    public function activeReservations()
-    {
-        return $this->reservations()->where('status', 'active');
-    }
-
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
-    //shop cart
+    // Grozs
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);

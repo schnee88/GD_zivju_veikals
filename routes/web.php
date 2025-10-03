@@ -70,7 +70,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/batches/bulk-update-fish-status', [BatchController::class, 'bulkUpdateFishStatus'])->name('admin.batches.bulk-update-fish-status');
 
     // Rezervācijas (admin)
-    Route::get('/reservations', [ReservationController::class, 'adminIndex'])->name('admin.reservations.index');
-    Route::get('/reservations/{id}', [ReservationController::class, 'adminShow'])->name('admin.reservations.show');
-    Route::patch('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])->name('admin.reservations.updateStatus');
+    Route::get('/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'adminShow'])->name('admin.orders.show');
+    Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
 });

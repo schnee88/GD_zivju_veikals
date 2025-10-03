@@ -1224,8 +1224,167 @@
                text-decoration: none;
           }
 
+          .reservation-detail {
+               max-width: 1000px;
+               margin: 0 auto;
+          }
+
+          .detail-grid {
+               display: grid;
+               grid-template-columns: 2fr 1fr;
+               gap: 20px;
+               margin-top: 20px;
+          }
+
+          .detail-card {
+               background: white;
+               padding: 25px;
+               border-radius: 8px;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+
+          .detail-card h2 {
+               color: #2c3e50;
+               margin: 0 0 20px 0;
+               padding-bottom: 10px;
+               border-bottom: 2px solid #3498db;
+          }
+
+          .info-row {
+               display: flex;
+               justify-content: space-between;
+               padding: 12px 0;
+               border-bottom: 1px solid #eee;
+          }
+
+          .info-row:last-child {
+               border-bottom: none;
+          }
+
+          .info-label {
+               font-weight: bold;
+               color: #555;
+          }
+
+          .info-value {
+               color: #333;
+               text-align: right;
+          }
+
+          .status-form {
+               margin-top: 20px;
+          }
+
+          .status-form select {
+               width: 100%;
+               padding: 10px;
+               border: 1px solid #ddd;
+               border-radius: 4px;
+               margin-bottom: 15px;
+               font-size: 1em;
+          }
+
+          .status-form textarea {
+               width: 100%;
+               padding: 10px;
+               border: 1px solid #ddd;
+               border-radius: 4px;
+               min-height: 100px;
+               margin-bottom: 15px;
+               font-family: Arial, sans-serif;
+          }
+
+          .status-form button {
+               width: 100%;
+               background: #3498db;
+               color: white;
+               padding: 12px;
+               border: none;
+               border-radius: 4px;
+               font-size: 1em;
+               font-weight: bold;
+               cursor: pointer;
+          }
+
+          .status-form button:hover {
+               background: #2980b9;
+          }
+
+          .notes-box {
+               background: #f8f9fa;
+               padding: 15px;
+               border-radius: 5px;
+               margin-top: 15px;
+               border-left: 4px solid #3498db;
+          }
+
+          .notes-box h3 {
+               margin: 0 0 10px 0;
+               color: #2c3e50;
+               font-size: 1em;
+          }
+
+          .notes-box p {
+               margin: 0;
+               color: #555;
+               line-height: 1.6;
+          }
+
+          .warning-box {
+               background: #fff3cd;
+               border-left: 4px solid #ffc107;
+               padding: 15px;
+               border-radius: 5px;
+               margin-bottom: 20px;
+          }
+
+          .warning-box p {
+               margin: 0;
+               color: #856404;
+          }
+
+          .contact-buttons {
+               display: flex;
+               gap: 10px;
+               margin-top: 15px;
+          }
+
+          .contact-btn {
+               flex: 1;
+               padding: 10px;
+               border: none;
+               border-radius: 4px;
+               font-weight: bold;
+               cursor: pointer;
+               text-decoration: none;
+               text-align: center;
+               display: block;
+          }
+
+          .phone-btn {
+               background: #27ae60;
+               color: white;
+          }
+
+          .phone-btn:hover {
+               background: #229954;
+          }
+
+          .email-btn {
+               background: #3498db;
+               color: white;
+          }
+
+          .email-btn:hover {
+               background: #2980b9;
+          }
+
           /* Responsive Design */
           @media (max-width: 768px) {
+               
+               .detail-grid {
+                    grid-template-columns: 1fr;
+               }
 
                .checkout-grid {
                     grid-template-columns: 1fr;
