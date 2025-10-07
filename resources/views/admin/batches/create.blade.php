@@ -1,4 +1,3 @@
-<!-- resources/views/admin/batches/create.blade.php -->
 @extends('layouts.app')
 
 @section('content')

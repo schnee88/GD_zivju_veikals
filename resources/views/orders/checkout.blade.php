@@ -26,7 +26,7 @@
                     <div class="cart-item">
                         <div class="cart-item-header">
                             <span class="item-name">{{ $item->fish->name }}</span>
-                            <span class="item-price">{{ number_format($item->getTotalPrice(), 2) }} €</span>
+                            <span class="item-price">{{ number_format ($item->getTotalPrice(), 2) }} €</span>
                         </div>
                         <div class="item-details">
                             <p><strong>Kūpinājums:</strong> {{ $item->batch->name ?? 'Kūpinājums #' . $item->batch->id }}</p>

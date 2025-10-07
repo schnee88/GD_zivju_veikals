@@ -55,11 +55,11 @@
 
     <div class="cart-summary">
         <div class="summary-row">
-            <span>Kopā preču:</span>
-            <span>{{ $cartItems->count() }}</span>
+            <span style="font-size: 1.1em;">Kopā preču:</span>
+            <span style="font-size: 1.1em; font-weight: bold;">{{ $cartItems->count() }}</span>
         </div>
         <div class="summary-row summary-total">
-            <span>KOPĀ:</span>
+            <span>KOPĀ (Aptuvenā summa):</span>
             <span style="color: #27ae60;">{{ number_format($total, 2) }} €</span>
         </div>
 

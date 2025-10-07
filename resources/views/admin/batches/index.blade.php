@@ -20,7 +20,6 @@
             @foreach($batches as $batch)
                 <div class="batch-card" style="border: 3px solid {{ $batch->status_color }}; border-radius: 12px; padding: 20px; margin-bottom: 30px; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                     
-                    <!-- Header, status -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0;">
                         <h2 style="margin: 0; color: #2c3e50; font-size: 1.5em;">{{ $batch->name }}</h2>
                         <span style="background: {{ $batch->status_color }}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.95em; font-weight: bold;">
@@ -28,7 +27,6 @@
                         </span>
                     </div>
 
-                    <!-- Date and descript -->
                     <div style="margin-bottom: 20px;">
                         <p style="margin: 8px 0; color: #555; font-size: 1em;">
                             <strong style="color: #2c3e50;">📅 Datums:</strong> {{ $batch->batch_date->format('d.m.Y H:i') }}
@@ -41,7 +39,6 @@
                         @endif
                     </div>
 
-                    <!-- Fish list section -->
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                         <h3 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 1.2em;">🐟 Zivis šajā žāvējumā:</h3>
 
@@ -79,10 +76,8 @@
                         @endif
                     </div>
 
-                    <!-- Actions -->
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; padding-top: 15px; border-top: 2px solid #f0f0f0;">
                         
-                        <!-- Status chg -->
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <span style="font-weight: bold; color: #2c3e50;">Mainīt statusu:</span>
                             <form action="{{ route('admin.batches.update-status', $batch) }}" method="POST" style="display: inline;">
@@ -97,7 +92,6 @@
                             </form>
                         </div>
 
-                        <!-- Edit and Delete btn -->
                         <div style="display: flex; gap: 10px;">
                             <a href="{{ route('admin.batches.edit', $batch) }}" 
                                style="padding: 10px 20px; background: #27ae60; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: background 0.3s;">

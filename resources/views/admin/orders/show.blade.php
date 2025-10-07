@@ -16,7 +16,6 @@
     @endif
     
     <div class="detail-grid">
-        <!-- Left Column -->
         <div>
             <div class="detail-card">
                 <h2>Pasūtījuma informācija</h2>
@@ -105,7 +104,6 @@
             @endif
         </div>
         
-        <!-- Right Column -->
         <div>
             <div class="detail-card">
                 <h2>Klienta informācija</h2>
