@@ -15,7 +15,13 @@ class Fish extends Model
         'name',
         'price',
         'description',
-        'image'
+        'image',
+        'is_orderable'
+
+    ];
+
+    protected $casts = [
+        'is_orderable' => 'boolean',
     ];
 
     public function availabilityDays()
@@ -31,7 +37,7 @@ class Fish extends Model
     public function batches()
     {
         return $this->belongsToMany(Batch::class, 'batch_fish')
-                ->withPivot('quantity', 'unit', 'available_quantity');
+            ->withPivot('quantity', 'unit', 'available_quantity');
     }
 
     public function getCurrentAvailableQuantityAttribute()

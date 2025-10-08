@@ -51,6 +51,26 @@
                 @enderror
             </div>
 
+            <div class="form-group">
+                <label for="is_orderable" class="form-label">Pasūtīšanas statuss</label>
+                <select name="is_orderable" class="form-control @error('is_orderable') is-invalid @enderror" 
+                        style="padding: 10px; border-radius: 6px; border: 1px solid #ddd;">
+                    <option value="0" {{ old('is_orderable', $fish->is_orderable) == 0 ? 'selected' : '' }}>
+                        ❌ Tikai katalogā (nevar pasūtīt)
+                    </option>
+                    <option value="1" {{ old('is_orderable', $fish->is_orderable) == 1 ? 'selected' : '' }}>
+                        ✅ Pasūtāms (var pievienot pasūtījumam)
+                    </option>
+                </select>
+                <small style="color: #666; margin-top: 8px; display: block;">
+                    <strong>Pasūtāms:</strong> Zivs redzama pasūtījumu sarakstā un pievienojama grozam<br>
+                    <strong>Tikai katalogā:</strong> Zivs redzama tikai informācijas nolūkos
+                </small>
+                @error('is_orderable')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
             <div class="button-group">
                 <button type="submit" class="btn btn-success">Saglabāt izmaiņas</button>
                 <a href="{{ route('admin.fish.index') }}" class="btn-secondary">Atpakaļ</a>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="fish-page">
-    <h1>Zivju Veikaliņa Pieejamā Produkcija</h1>
+    <h1>Zivju Veikaliņa katalogs</h1>
 
     @if($fishes->isEmpty())
     <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
@@ -41,7 +41,7 @@
                     {{ number_format($fish->price, 2) }} €
                 </p>
                 <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">
-                    <small>Cena par kg</small>
+                    <small>Vienam kg</small>
                 </p>
             </div>
 

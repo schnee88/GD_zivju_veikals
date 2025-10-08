@@ -23,7 +23,6 @@ class FishController extends Controller
         return view('admin.fish.index', compact('fishes'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -41,8 +40,12 @@ class FishController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:5120'
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:5120',
+            'is_orderable' => 'boolean' // ← pievienojam validāciju
         ]);
+
+        // Pārveidojam checkbox vērtību
+        $validated['is_orderable'] = $request->has('is_orderable');
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('fish_images', 'public');
@@ -82,16 +85,20 @@ class FishController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_orderable' => 'boolean' // ← pievienojam validāciju
         ]);
+
+        // Pārveidojam checkbox vērtību
+        $validated['is_orderable'] = $request->has('is_orderable');
 
         if ($request->hasFile('image')) {
             if ($fish->image) {
-                Storage::disk('public')->delete($fish->image);
+                Storage::disk('public')->delete('fish_images/' . $fish->image);
             }
 
             $path = $request->file('image')->store('fish_images', 'public');
-            $validated['image'] = $path;
+            $validated['image'] = basename($path);
         }
 
         $fish->update($validated);
@@ -108,11 +115,24 @@ class FishController extends Controller
 
         // Dzēst bildi
         if ($fish->image) {
-            Storage::disk('public')->delete($fish->image);
+            Storage::disk('public')->delete('fish_images/' . $fish->image);
         }
 
         $fish->delete();
 
         return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi dzēsta!');
+    }
+
+    // Jaunas metodes pasūtāmajām zivīm
+    public function orderable()
+    {
+        $fishes = Fish::orderable()->with('availabilityDays')->get();
+        return view('fishes.orderable', compact('fishes'));
+    }
+
+    public function notOrderable()
+    {
+        $fishes = Fish::notOrderable()->with('availabilityDays')->get();
+        return view('fishes.catalog', compact('fishes'));
     }
 }

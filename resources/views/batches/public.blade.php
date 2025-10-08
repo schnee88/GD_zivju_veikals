@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="availability-page">
-    <h1>Pieejamie Kūpinājumi</h1>
+    <h1>Pieejamā produkcija</h1>
 
     @if($batches->isEmpty())
     <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">

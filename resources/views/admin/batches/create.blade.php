@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="batch-create">
-     <h2>Izveidot Jaunu Žāvējumu</h2>
+     <h2>Izveidot Jaunu Procukciju</h2>
 
      <form action="{{ route('admin.batches.store') }}" method="POST" style="max-width: 600px;">
           @csrf
@@ -13,7 +13,7 @@
           </div>
 
           <div style="margin-bottom: 15px;">
-               <label for="batch_date" style="display: block; margin-bottom: 5px; font-weight: bold;">Žāvēšanas datums un laiks:</label>
+               <label for="batch_date" style="display: block; margin-bottom: 5px; font-weight: bold;">Izgatavošanas datums un laiks:</label>
                <input type="datetime-local" name="batch_date" id="batch_date" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
           </div>
 

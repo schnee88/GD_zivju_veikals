@@ -37,6 +37,23 @@
                     @error('image') <small class="error-message">{{ $message }}</small> @enderror
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label">Pasūtīšanas statuss:</label>
+                    <select name="is_orderable" class="form-input">
+                        <option value="0" {{ old('is_orderable') == '0' ? 'selected' : '' }}>
+                            ❌ Tikai katalogā (nevar pasūtīt)
+                        </option>
+                        <option value="1" {{ old('is_orderable') == '1' ? 'selected' : '' }}>
+                            ✅ Pasūtāms (var pievienot pasūtījumam)
+                        </option>
+                    </select>
+                    <small style="color: #666; margin-top: 8px; display: block;">
+                        <strong>Pasūtāms:</strong> Zivs redzama pasūtījumu sarakstā un pievienojama grozam<br>
+                        <strong>Tikai katalogā:</strong> Zivs redzama tikai informācijas nolūkos
+                    </small>
+                    @error('is_orderable') <small class="error-message">{{ $message }}</small> @enderror
+                </div>
+
                 <div class="button-group">
                     <button type="submit" class="checkout-btn">Saglabāt</button>
                     <a href="{{ url()->previous() }}" class="btn-secondary">Atpakaļ</a>
