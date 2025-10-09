@@ -2,55 +2,57 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Fish;
+use Illuminate\Database\Seeder;
 
 class FishSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         $fishes = [
             [
-                'name' => 'Lasis',
-                'price' => 13.99,
-                'description' => 'Svaigs Atlantijas lasis',
-                'image' => 'salmon.png'
-            ],
-            [
-                'name' => 'Zelta zivs',
-                'price' => 50,
-                'description' => 'Skaista dekoratīva zelta zivs',
-                'image' => 'gold_fish.png'
-            ],
-            [
-                'name' => 'Sīļķe',
-                'price' => 6.50,
-                'description' => 'Augstākās kvalitātes sīļķes, ar slepeno recepti!',
-                'image' => 'salmon.png'
-            ],
-            [
-                'name' => 'Menca',
-                'price' => 10.75,
-                'description' => 'Balta, maiga menca, lieliski piemērota fish & chips pagatavošanai.',
-                'image' => 'salmon.png'
-            ],
-            [
-                'name' => 'Skumbrija',
+                'name' => 'Sīļķu fileja marinādē bez ādas (1kg spainītis)',
                 'price' => 12.00,
-                'description' => 'Atlantijas makrele',
-                'image' => 'gold_fish.png'
+                'description' => 'Augstākās kvalitātes sīļķu fileja marinādē bez ādas. Ideāli piemērota salātiem un uzkodām.',
+                'image' => 'gold_fish.png',
+                'is_orderable' => true,
+                'stock_quantity' => 6,
+                'stock_unit' => 'pieces',
             ],
             [
-                'name' => 'Zutis',
-                'price' => 45.00,
-                'description' => 'Čūskveida zivs, delekatese',
-                'image' => 'gold_fish.png'
-            ]
+                'name' => 'Sīļķu fileja marinādē ar ādu (1kg spainītis)',
+                'price' => 10.50,
+                'description' => 'Tradicionāla sīļķu fileja marinādē ar ādu. Saglabājuši autentisko garšu un tekstūru.',
+                'image' => 'salmon.png',
+                'is_orderable' => true,
+                'stock_quantity' => 10,
+                'stock_unit' => 'pieces',
+            ],
+            [
+                'name' => 'Sīļķu fileja marinādē ar ādu eļļā (1kg spainītis)',
+                'price' => 11.80,
+                'description' => 'Ella firmas recepte - īpaši garšīga sīļķu fileja ar ādu un unikālu marinādi.',
+                'image' => 'salmon.png',
+                'is_orderable' => true,
+                'stock_quantity' => 9,
+                'stock_unit' => 'pieces',
+            ],
+            [
+                'name' => 'Kūpināts lasis',
+                'price' => 13.80,
+                'description' => 'Karsti kūpināts lasis',
+                'image' => 'salmon.png',
+                'is_orderable' => false,
+                'stock_quantity' => 1,
+                'stock_unit' => 'kg',
+            ],
         ];
 
-        foreach ($fishes as $fish) {
-            Fish::create($fish);
+        foreach ($fishes as $fishData) {
+            Fish::create($fishData);
         }
     }
 }

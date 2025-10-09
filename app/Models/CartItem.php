@@ -16,7 +16,6 @@ class CartItem extends Model
         'quantity',
     ];
 
-    // Attiecības
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -32,7 +31,6 @@ class CartItem extends Model
         return $this->belongsTo(Fish::class);
     }
 
-    // Helper metodes
     public function getTotalPrice()
     {
         return $this->quantity * $this->fish->price;
@@ -40,14 +38,11 @@ class CartItem extends Model
 
     public function getUnit()
     {
-        $batchFish = $this->batch->fishes()->where('fish_id', $this->fish_id)->first();
-        return $batchFish ? $batchFish->pivot->unit : 'kg';
+        return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
     }
 
-    // Iegūst pieejamo daudzumu
     public function getAvailableQuantity()
     {
-        $batchFish = $this->batch->fishes()->where('fish_id', $this->fish_id)->first();
-        return $batchFish ? $batchFish->pivot->available_quantity : 0;
+        return $this->fish->stock_quantity;
     }
 }

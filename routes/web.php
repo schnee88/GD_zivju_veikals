@@ -14,6 +14,8 @@ Route::get('/', function () {
 })->name('home');
 
 // Zivju saraksts
+Route::get('/catalog', [FishController::class, 'catalog'])->name('fish.catalog');
+Route::get('/shop', [FishController::class, 'orderable'])->name('fish.shop');
 Route::get('/fish', [FishController::class, 'index'])->name('fish.index');
 Route::get('/fish/{fish}', [FishController::class, 'show'])->name('fish.show');
 Route::get('/zavejumi', [BatchController::class, 'publicIndex'])->name('batches.public');

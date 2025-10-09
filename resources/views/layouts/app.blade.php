@@ -1714,12 +1714,14 @@
           }
      </style>
 </head>
+
 <body>
      <nav>
           <div class="container">
                <div>
                     <a href="{{ route('home') }}">Mājas</a>
-                    <a href="{{ route('fish.index') }}">Zivju katalogs</a>
+                    <a href="{{ route('fish.catalog') }}">Zivju katalogs</a>
+                    <a href="{{ route('fish.shop') }}">Veikals</a>
                     <a href="{{ route('batches.public') }}">Produkcija</a>
                </div>
                <div>

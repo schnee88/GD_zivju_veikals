@@ -7,7 +7,7 @@
     <p class="success-message">
         Paldies par jūsu pasūtījumu! Mēs esam saņēmuši jūsu pieteikumu un drīzumā sazināsimies ar jums norādītajā telefona numurā.
     </p>
-    
+
     <div class="info-box">
         <h3>Kas notiks tālāk?</h3>
         <ul>
@@ -17,20 +17,19 @@
             <li>Maksājums notiek tikai saņemot preci klātienē</li>
         </ul>
     </div>
-    
+
     <div class="order-summary">
         <div class="summary-header">
             <span class="order-number">Pasūtījums #{{ $order->id }}</span>
             <span class="order-status">Gaida apstiprinājumu</span>
         </div>
-        
+
         @foreach($order->items as $item)
         <div class="summary-item">
             <div>
                 <div class="item-name">{{ $item->fish->name }}</div>
-                <div class="item-details">
-                    Kūpinājums: {{ $item->batch->name ?? 'Batch #' . $item->batch->id }} | 
-                    Daudzums: {{ $item->quantity }} {{ $item->getUnit() }}
+                <div class="item-details">|
+                    Daudzums: {{ $item->quantity }} {{ $item->fish->stock_unit == 'kg' ? 'kg' : 'gab.' }}
                 </div>
             </div>
             <div style="font-weight: bold; color: #27ae60; font-size: 1.1em;">
@@ -38,7 +37,7 @@
             </div>
         </div>
         @endforeach
-        
+
         <div class="summary-item" style="background: #f8f9fa; margin-top: 10px; padding: 20px; font-size: 1.2em;">
             <strong>KOPĀ:</strong>
             <strong style="color: #27ae60;">
@@ -46,7 +45,7 @@
             </strong>
         </div>
     </div>
-    
+
     <div class="action-buttons">
         <a href="{{ route('orders.index') }}" class="btn btn-primary">
             Skatīt manus pasūtījumus

@@ -11,6 +11,12 @@ class FishController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function catalog()
+    {
+        $fishes = Fish::all();
+        return view('fishes.catalog', compact('fishes'));
+    }
     public function index()
     {
         $fishes = Fish::with('availabilityDays')->get();
@@ -41,18 +47,25 @@ class FishController extends Controller
             'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:5120',
-            'is_orderable' => 'boolean' // ← pievienojam validāciju
+            'is_orderable' => 'boolean',
+            'stock_quantity' => 'nullable|integer|min:0',
+            'stock_unit' => 'nullable|in:kg,pieces',
         ]);
 
-        // Pārveidojam checkbox vērtību
         $validated['is_orderable'] = $request->has('is_orderable');
+
+        // Ja nav pasūtāms, stock = 0
+        if (!$validated['is_orderable']) {
+            $validated['stock_quantity'] = 0;
+            $validated['stock_unit'] = 'pieces';
+        }
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('fish_images', 'public');
             $validated['image'] = basename($path);
         }
 
-        $fish = Fish::create($validated);
+        Fish::create($validated);
 
         return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi pievienota!');
     }
@@ -86,11 +99,17 @@ class FishController extends Controller
             'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_orderable' => 'boolean' // ← pievienojam validāciju
+            'is_orderable' => 'boolean',
+            'stock_quantity' => 'nullable|integer|min:0',
+            'stock_unit' => 'nullable|in:kg,pieces',
         ]);
 
-        // Pārveidojam checkbox vērtību
         $validated['is_orderable'] = $request->has('is_orderable');
+
+        if (!$validated['is_orderable']) {
+            $validated['stock_quantity'] = 0;
+            $validated['stock_unit'] = 'pieces';
+        }
 
         if ($request->hasFile('image')) {
             if ($fish->image) {

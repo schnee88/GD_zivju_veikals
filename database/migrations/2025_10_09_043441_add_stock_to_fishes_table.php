@@ -6,17 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::table('fishes', function (Blueprint $table) {
-            $table->boolean('is_orderable')->default(false)->after('image');
+            $table->integer('stock_quantity')->default(0)->after('is_orderable'); 
+            $table->enum('stock_unit', ['kg', 'pieces'])->default('pieces')->after('stock_quantity');
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('fishes', function (Blueprint $table) {
-            $table->dropColumn('is_orderable');
+            $table->dropColumn(['stock_quantity', 'stock_unit']);
         });
     }
 };

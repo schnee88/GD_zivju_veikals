@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 use App\Models\Batch;
+use App\Models\Fish;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,54 +24,34 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $validated = $request->validate([
-            'batch_id' => 'required|exists:batches,id',
+        $request->validate([
             'fish_id' => 'required|exists:fishes,id',
             'quantity' => 'required|numeric|min:0.1',
         ]);
 
-        // Pārbauda vai batch ir pieejams
-        $batch = Batch::findOrFail($validated['batch_id']);
-        $batchFish = $batch->fishes()->where('fish_id', $validated['fish_id'])->first();
+        $fish = Fish::findOrFail($request->fish_id);
 
-        if (!$batchFish) {
-            return redirect()->back()->with('error', 'Šī zivs nav pieejama šajā kūpinājumā.');
+        if (!$fish->hasStock($request->quantity)) {
+            return redirect()->back()->with('error', 'Nav pietiekami daudz šīs zivis noliktavā!');
         }
-
-        // Pārbauda vai gabali ir veseli skaitļi
-        if ($batchFish->pivot->unit == 'pieces' && floor($validated['quantity']) != $validated['quantity']) {
-            return redirect()->back()->with('error', 'Gabalu daudzumam jābūt veselam skaitlim.');
-        }
-
-        if ($batchFish->pivot->available_quantity < $validated['quantity']) {
-            return redirect()->back()->with('error', 'Nav pietiekami daudz pieejamības. Pieejams: ' . $batchFish->pivot->available_quantity . ' ' . $batchFish->pivot->unit);
-        }
-
-        $existingItem = CartItem::where('user_id', Auth::id())
-            ->where('batch_id', $validated['batch_id'])
-            ->where('fish_id', $validated['fish_id'])
+        $existingCartItem = CartItem::where('user_id', auth()->id())
+            ->where('fish_id', $request->fish_id)
             ->first();
 
-        if ($existingItem) {
-            // Atjaunina daudzumu
-            $newQuantity = $existingItem->quantity + $validated['quantity'];
+        if ($existingCartItem) {
+            $existingCartItem->quantity += $request->quantity;
+            $existingCartItem->save();
+        } else {
 
-            if ($newQuantity > $batchFish->pivot->available_quantity) {
-                return redirect()->back()->with('error', 'Nevar pievienot - pārsniegts pieejamais daudzums.');
-            }
-
-            $existingItem->update(['quantity' => $newQuantity]);
-            return redirect()->back()->with('success', 'Daudzums atjaunināts grozā!');
+            CartItem::create([
+                'user_id' => auth()->id(),
+                'fish_id' => $request->fish_id,
+                'batch_id' => null,
+                'quantity' => $request->quantity,
+            ]);
         }
 
-        CartItem::create([
-            'user_id' => Auth::id(),
-            'batch_id' => $validated['batch_id'],
-            'fish_id' => $validated['fish_id'],
-            'quantity' => $validated['quantity'],
-        ]);
-
-        return redirect()->back()->with('success', 'Zivs pievienota grozam!');
+        return redirect()->back()->with('success', 'Produkts pievienots grozam!');
     }
 
     public function update(Request $request, $id)
@@ -82,23 +63,23 @@ class CartController extends Controller
         $validated = $request->validate([
             'quantity' => 'required|numeric|min:0.1',
         ]);
-        
-        $batch = $cartItem->batch;
-        $batchFish = $batch->fishes()->where('fish_id', $cartItem->fish_id)->first();
 
-        if ($batchFish->pivot->unit == 'pieces' && floor($validated['quantity']) != $validated['quantity']) {
+        $fish = $cartItem->fish;
+
+        // Pārbauda vai gabali ir veseli skaitļi
+        if ($fish->stock_unit == 'pieces' && floor($validated['quantity']) != $validated['quantity']) {
             return redirect()->back()->with('error', 'Gabalu daudzumam jābūt veselam skaitlim.');
         }
 
-        if ($validated['quantity'] > $batchFish->pivot->available_quantity) {
-            return redirect()->back()->with('error', 'Pārsniegts pieejamais daudzums.');
+        // Pārbauda pieejamību
+        if (!$fish->hasStock($validated['quantity'])) {
+            return redirect()->back()->with('error', 'Pārsniegts pieejamais daudzums. Pieejams: ' . $fish->stock_quantity . ' ' . ($fish->stock_unit == 'kg' ? 'kg' : 'gab.'));
         }
 
         $cartItem->update(['quantity' => $validated['quantity']]);
 
         return redirect()->back()->with('success', 'Daudzums atjaunināts!');
     }
-
     public function remove($id)
     {
         $cartItem = CartItem::where('id', $id)

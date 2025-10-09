@@ -58,19 +58,17 @@ class OrderController extends Controller
         ]);
 
         $cartItems = Auth::user()->cartItems()
-            ->with(['batch', 'fish'])
+            ->with(['fish']) // ✅
             ->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Jūsu grozs ir tukšs!');
         }
 
-        // Pārbauda aktīvo pasūtījumu limitu
         if (Auth::user()->hasMaxActiveOrders(3)) {
             return redirect()->back()->with('error', 'Jums jau ir 3 aktīvie pasūtījumi. Lūdzu, gaidiet to apstrādi.');
         }
 
-        // Pārbauda IP limitu
         $ipAddress = $request->ip();
         $todayOrders = Order::where('ip_address', $ipAddress)
             ->whereDate('created_at', today())
@@ -83,14 +81,10 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            // Aprēķina kopējo summu
             $totalAmount = 0;
-            
-            // Pārbauda pieejamību visiem produktiem
-            foreach ($cartItems as $cartItem) {
-                $batchFish = $cartItem->batch->fishes()->where('fish_id', $cartItem->fish_id)->first();
 
-                if (!$batchFish || $batchFish->pivot->available_quantity < $cartItem->quantity) {
+            foreach ($cartItems as $cartItem) {
+                if (!$cartItem->fish->hasStock($cartItem->quantity)) {
                     DB::rollBack();
                     return redirect()->back()->with('error', 'Zivs "' . $cartItem->fish->name . '" vairs nav pietiekamā daudzumā. Lūdzu, atjauniniet grozu.');
                 }
@@ -98,7 +92,6 @@ class OrderController extends Controller
                 $totalAmount += $cartItem->quantity * $cartItem->fish->price;
             }
 
-            // Izveido pasūtījumu
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'phone' => $validated['phone'],
@@ -116,24 +109,22 @@ class OrderController extends Controller
                     'batch_id' => $cartItem->batch_id,
                     'fish_id' => $cartItem->fish_id,
                     'quantity' => $cartItem->quantity,
-                    'price' => $cartItem->fish->price, // Saglabā cenu brīdī kad pasūtīts
+                    'price' => $cartItem->fish->price,
                 ]);
             }
 
-            // Iztīra grozu
             Auth::user()->cartItems()->delete();
 
             DB::commit();
 
             return redirect()->route('orders.success', $order->id);
-
         } catch (\Exception $e) {
             DB::rollBack();
+            \Log::error('Order creation error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Radās kļūda veidojot pasūtījumu. Lūdzu, mēģiniet vēlreiz.');
         }
     }
 
-    // Success lapa
     public function success($id)
     {
         $order = Order::with(['items.batch', 'items.fish'])
@@ -194,18 +185,31 @@ class OrderController extends Controller
         // Ja status mainās uz "confirmed", samazina pieejamo daudzumu
         if ($oldStatus == 'pending' && $newStatus == 'confirmed') {
             foreach ($order->items as $item) {
-                $batchFish = $item->batch->fishes()->where('fish_id', $item->fish_id)->first();
+                $fish = $item->fish;
 
-                if ($batchFish) {
-                    $newQuantity = $batchFish->pivot->available_quantity - $item->quantity;
+                // Ja ir batch produkts (vecā sistēma)
+                if ($item->batch_id) {
+                    $batchFish = $item->batch->fishes()->where('fish_id', $item->fish_id)->first();
 
-                    if ($newQuantity < 0) {
-                        return redirect()->back()->with('error', 'Nav pietiekami daudz zivs "' . $item->fish->name . '"!');
+                    if ($batchFish) {
+                        $newQuantity = $batchFish->pivot->available_quantity - $item->quantity;
+
+                        if ($newQuantity < 0) {
+                            return redirect()->back()->with('error', 'Nav pietiekami daudz zivs "' . $item->fish->name . '"!');
+                        }
+
+                        $item->batch->fishes()->updateExistingPivot($item->fish_id, [
+                            'available_quantity' => $newQuantity
+                        ]);
+                    }
+                }
+                // Jaunā sistēma - samazina stock
+                else {
+                    if (!$fish->hasStock($item->quantity)) {
+                        return redirect()->back()->with('error', 'Nav pietiekami daudz zivs "' . $fish->name . '"!');
                     }
 
-                    $item->batch->fishes()->updateExistingPivot($item->fish_id, [
-                        'available_quantity' => $newQuantity
-                    ]);
+                    $fish->decrement('stock_quantity', $item->quantity);
                 }
             }
         }
@@ -213,14 +217,23 @@ class OrderController extends Controller
         // Ja status mainās no "confirmed" uz "cancelled", atgriež daudzumu
         if ($oldStatus == 'confirmed' && $newStatus == 'cancelled') {
             foreach ($order->items as $item) {
-                $batchFish = $item->batch->fishes()->where('fish_id', $item->fish_id)->first();
+                $fish = $item->fish;
 
-                if ($batchFish) {
-                    $newQuantity = $batchFish->pivot->available_quantity + $item->quantity;
+                // Ja ir batch produkts
+                if ($item->batch_id) {
+                    $batchFish = $item->batch->fishes()->where('fish_id', $item->fish_id)->first();
 
-                    $item->batch->fishes()->updateExistingPivot($item->fish_id, [
-                        'available_quantity' => $newQuantity
-                    ]);
+                    if ($batchFish) {
+                        $newQuantity = $batchFish->pivot->available_quantity + $item->quantity;
+
+                        $item->batch->fishes()->updateExistingPivot($item->fish_id, [
+                            'available_quantity' => $newQuantity
+                        ]);
+                    }
+                }
+                // Jaunā sistēma - atgriež stock
+                else {
+                    $fish->increment('stock_quantity', $item->quantity);
                 }
             }
         }

@@ -39,7 +39,6 @@ class OrderItem extends Model
 
     public function getUnit()
     {
-        $batchFish = $this->batch->fishes()->where('fish_id', $this->fish_id)->first();
-        return $batchFish ? $batchFish->pivot->unit : 'kg';
+        return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
     }
 }

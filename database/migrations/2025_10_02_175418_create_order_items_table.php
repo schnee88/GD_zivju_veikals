@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('batch_id')->constrained('batches')->onDelete('cascade');
             $table->foreignId('fish_id')->constrained('fishes')->onDelete('cascade');
             $table->decimal('quantity', 8, 2);
-            $table->decimal('price', 8, 2); // Cena brīdī kad pasūtīts
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }

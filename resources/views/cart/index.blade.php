@@ -17,9 +17,8 @@
         <div class="cart-item">
             <div class="item-info">
                 <h3>{{ $item->fish->name }}</h3>
-                <p><strong>Kūpinājums:</strong> {{ $item->batch->name ?? 'Batch #' . $item->batch->id }}</p>
-                <p><strong>Cena par {{ $item->getUnit() }}:</strong> {{ number_format($item->fish->price, 2) }} €</p>
-                <p style="color: #27ae60;"><strong>Pieejams:</strong> {{ $item->getAvailableQuantity() }} {{ $item->getUnit() }}</p>
+                <p><strong>Cena par {{ $item->fish->stock_unit == 'kg' ? 'kg' : 'gab.' }}:</strong> {{ number_format($item->fish->price, 2) }} €</p>
+                <p style="color: #27ae60;"><strong>Pieejams:</strong> {{ $item->fish->stock_quantity }} {{ $item->fish->stock_unit }}</p>
             </div>
 
             <div class="quantity-input">
@@ -30,16 +29,16 @@
                         type="number"
                         name="quantity"
                         value="{{ $item->quantity }}"
-                        min="{{ $item->getUnit() == 'kg' ? '0.1' : '1' }}"
-                        max="{{ $item->getAvailableQuantity() }}"
-                        step="{{ $item->getUnit() == 'kg' ? '0.1' : '1' }}"
+                        min="{{ $item->fish->stock_unit == 'kg' ? '0.1' : '1' }}"
+                        max="{{ $item->fish->stock_quantity }}"
+                        step="{{ $item->fish->stock_unit == 'kg' ? '0.1' : '1' }}"
                         required>
                     <button type="submit">✓</button>
                 </form>
             </div>
 
             <div class="price">
-                {{ number_format($item->getTotalPrice(), 2) }} €
+                {{ number_format($item->quantity * $item->fish->price, 2) }} €
             </div>
 
             <form action="{{ route('cart.remove', $item->id) }}" method="POST">

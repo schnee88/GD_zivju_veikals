@@ -16,13 +16,13 @@
 
                 <div class="form-group">
                     <label class="form-label">Nosaukums:</label>
-                    <input type="text" name="name" class="form-input" value="{{ old('name') }}">
+                    <input type="text" name="name" class="form-input" value="{{ old('name') }}" required>
                     @error('name') <small class="error-message">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Cena (€):</label>
-                    <input type="number" step="0.01" name="price" class="form-input" value="{{ old('price') }}">
+                    <input type="number" step="0.01" name="price" class="form-input" value="{{ old('price') }}" required>
                     @error('price') <small class="error-message">{{ $message }}</small> @enderror
                 </div>
 
@@ -39,7 +39,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Pasūtīšanas statuss:</label>
-                    <select name="is_orderable" class="form-input">
+                    <select name="is_orderable" id="is_orderable" class="form-input">
                         <option value="0" {{ old('is_orderable') == '0' ? 'selected' : '' }}>
                             ❌ Tikai katalogā (nevar pasūtīt)
                         </option>
@@ -54,11 +54,38 @@
                     @error('is_orderable') <small class="error-message">{{ $message }}</small> @enderror
                 </div>
 
+                <!-- Stock Fields (rādās tikai ja pasūtāms) -->
+                <div id="stockFields" style="display: {{ old('is_orderable') == '1' ? 'block' : 'none' }};">
+                    <div class="form-group">
+                        <label class="form-label">Pieejamais daudzums:</label>
+                        <input type="number" name="stock_quantity" class="form-input" value="{{ old('stock_quantity', 0) }}" min="0" step="0.1">
+                        @error('stock_quantity') <small class="error-message">{{ $message }}</small> @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mērvienība:</label>
+                        <select name="stock_unit" class="form-input">
+                            <option value="pieces" {{ old('stock_unit') == 'pieces' ? 'selected' : '' }}>Gabali (gab.)</option>
+                            <option value="kg" {{ old('stock_unit') == 'kg' ? 'selected' : '' }}>Kilogrami (kg)</option>
+                        </select>
+                        @error('stock_unit') <small class="error-message">{{ $message }}</small> @enderror
+                    </div>
+                </div>
+
                 <div class="button-group">
                     <button type="submit" class="checkout-btn">Saglabāt</button>
-                    <a href="{{ url()->previous() }}" class="btn-secondary">Atpakaļ</a>
+                    <a href="{{ route('admin.fish.index') }}" class="btn-secondary">Atpakaļ</a>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        const orderableSelect = document.getElementById('is_orderable');
+        const stockFields = document.getElementById('stockFields');
+        
+        orderableSelect.addEventListener('change', function() {
+            stockFields.style.display = this.value == '1' ? 'block' : 'none';
+        });
+    </script>
 @endsection

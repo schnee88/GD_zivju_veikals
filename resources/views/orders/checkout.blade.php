@@ -29,7 +29,6 @@
                             <span class="item-price">{{ number_format ($item->getTotalPrice(), 2) }} €</span>
                         </div>
                         <div class="item-details">
-                            <p><strong>Kūpinājums:</strong> {{ $item->batch->name ?? 'Kūpinājums #' . $item->batch->id }}</p>
                             <p><strong>Daudzums:</strong> {{ $item->quantity }} {{ $item->getUnit() }}</p>
                             <p><strong>Cena par {{ $item->getUnit() }}:</strong> {{ number_format($item->fish->price, 2) }} €</p>
                         </div>

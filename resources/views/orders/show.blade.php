@@ -49,7 +49,7 @@
             <thead>
                 <tr>
                     <th>Zivs</th>
-                    <th>Kūpinājums</th>
+                    <th>Mērvienība</th>
                     <th class="text-center">Daudzums</th>
                     <th class="text-right">Cena</th>
                     <th class="text-right">Summa</th>
@@ -59,10 +59,10 @@
                 @foreach($order->items as $item)
                 <tr>
                     <td><strong>{{ $item->fish->name }}</strong></td>
-                    <td>{{ $item->batch->name ?? 'Batch #' . $item->batch->id }}</td>
-                    <td class="text-center">{{ $item->quantity }} {{ $item->getUnit() }}</td>
+                    <td>{{ $item->fish->stock_unit == 'kg' ? 'kg' : 'gab.' }}</td>
+                    <td class="text-center">{{ $item->quantity }} {{ $item->fish->stock_unit == 'kg' ? 'kg' : 'gab.' }}</td>
                     <td class="text-right">{{ number_format($item->price, 2) }} €</td>
-                    <td class="text-right"><strong class="price-highlight">{{ number_format($item->getTotalPrice(), 2) }} €</strong></td>
+                    <td class="text-right"><strong class="price-highlight">{{ number_format($item->quantity * $item->price, 2) }} €</strong></td>
                 </tr>
                 @endforeach
                 <tr class="bg-light">

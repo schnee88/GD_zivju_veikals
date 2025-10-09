@@ -31,11 +31,10 @@
                     <div class="item-info">
                         <div class="item-name">{{ $item->fish->name }}</div>
                         <div class="item-details">
-                            {{ $item->batch->name ?? 'Batch #' . $item->batch->id }} | 
-                            {{ $item->quantity }} {{ $item->getUnit() }} × {{ number_format($item->price, 2) }} €
+                            {{ $item->quantity }} {{ $item->fish->stock_unit == 'kg' ? 'kg' : 'gab.' }} × {{ number_format($item->price, 2) }} €
                         </div>
                     </div>
-                    <div class="item-price">{{ number_format($item->getTotalPrice(), 2) }} €</div>
+                    <div class="item-price">{{ number_format($item->quantity * $item->price, 2) }} €</div>
                 </div>
                 @endforeach
             </div>
