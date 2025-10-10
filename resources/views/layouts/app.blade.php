@@ -1783,8 +1783,8 @@
                     </div>
                     <div class="footer-section">
                          <h3>Ātrās saites</h3>
-                         <p><a href="{{ route('fish.index') }}">Zivis</a></p>
-                         <p><a href="{{ route('batches.public') }}">Produckija</a></p>
+                         <p><a href="{{ route('home') }}">Mājas</a></p>
+                         <p><a href="{{ route('fish.shop') }}">Veikals</a></p>
                          <p><a href="{{ route('cart.index') }}">Grozs</a></p>
                          <p><a href="{{ route('orders.index') }}">Mani pasūtījumi</a></p>
                     </div>

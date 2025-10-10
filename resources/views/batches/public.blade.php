@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="availability-page">
-    <h1>Pieejamā produkcija</h1>
+    <h1></h1>
 
     @if($batches->isEmpty())
     <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
@@ -113,7 +113,6 @@
     </div>
     @endif
 
-    <!-- Contact info box -->
     <div style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
         <h3 style="margin: 0 0 15px 0; font-size: 1.4em;">ℹ️ Informācija</h3>
         <p style="margin: 10px 0; font-size: 1.05em;">Rezervējiet zivis tiešsaistē un mēs sazināsimies ar jums!</p>

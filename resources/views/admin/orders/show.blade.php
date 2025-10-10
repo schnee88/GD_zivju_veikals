@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="info-row">
-                    <span class="info-label">Produktu skaits:</span>
+                    <span class="info-label">Produktu veidi:</span>
                     <span class="info-value">{{ $order->items->count() }}</span>
                 </div>
 
@@ -128,15 +128,6 @@
                 <div class="info-row">
                     <span class="info-label">IP adrese:</span>
                     <span class="info-value" style="font-size: 0.9em; color: #666;">{{ $order->ip_address }}</span>
-                </div>
-
-                <div class="contact-buttons">
-                    <a href="tel:{{ $order->phone }}" class="contact-btn phone-btn">
-                        📞 Zvanīt
-                    </a>
-                    <a href="mailto:{{ $order->user->email }}" class="contact-btn email-btn">
-                        ✉️ E-pasts
-                    </a>
                 </div>
             </div>
 
