@@ -8,5 +8,9 @@ Run these commands:
 4. php artisan migrate
 4. php artisan db:seed
 
+Lai redzētu admin paneli ir jaizmanto iesētais admin konts
+epasts: admin@example.com
+parole: password
+
 
 ja vajag notīrī db un uzreiz ieset datus ( php artisan migrate:fresh --seed )

@@ -1335,6 +1335,155 @@
                font-size: 0.9em;
           }
 
+          /* Reports Styles */
+          .reports-container {
+               max-width: 1600px;
+               margin: 0 auto;
+          }
+
+          .reports-header {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               margin-bottom: 20px;
+          }
+
+          .header-actions {
+               display: flex;
+               gap: 10px;
+          }
+
+          .filters-card {
+               background: white;
+               padding: 20px;
+               border-radius: 8px;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+               margin-bottom: 20px;
+          }
+
+          .filters-grid {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+               gap: 15px;
+               margin-bottom: 15px;
+          }
+
+          .filter-group {
+               display: flex;
+               flex-direction: column;
+          }
+
+          .filter-group label {
+               font-weight: bold;
+               margin-bottom: 5px;
+               color: #2c3e50;
+          }
+
+          .filter-group input,
+          .filter-group select {
+               padding: 8px;
+               border: 1px solid #ddd;
+               border-radius: 4px;
+          }
+
+          .stats-grid {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+               gap: 20px;
+               margin-bottom: 30px;
+          }
+
+          .stat-card {
+               background: white;
+               padding: 20px;
+               border-radius: 8px;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+               text-align: center;
+          }
+
+          .stat-number {
+               font-size: 2em;
+               font-weight: bold;
+               color: #3498db;
+               margin-bottom: 5px;
+          }
+
+          .stat-label {
+               color: #666;
+               font-size: 0.9em;
+          }
+
+          .reports-table {
+               background: white;
+               border-radius: 8px;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+               overflow-x: auto;
+          }
+
+          .reports-table table {
+               width: 100%;
+               border-collapse: collapse;
+               min-width: 1200px;
+          }
+
+          .reports-table th {
+               background: #2c3e50;
+               color: white;
+               padding: 12px;
+               text-align: left;
+               font-weight: bold;
+               position: sticky;
+               top: 0;
+               z-index: 10;
+          }
+
+          .reports-table td {
+               padding: 10px 12px;
+               border-bottom: 1px solid #eee;
+          }
+
+          .reports-table tr:hover {
+               background: #f8f9fa;
+          }
+
+          .total-row {
+               background: #f8f9fa;
+               font-weight: bold;
+               font-size: 1.1em;
+          }
+
+          .total-row td {
+               padding: 15px 12px;
+               border-top: 3px solid #3498db;
+          }
+
+          .product-stats {
+               background: white;
+               padding: 20px;
+               border-radius: 8px;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+               margin-top: 30px;
+          }
+
+          .product-stats h3 {
+               margin: 0 0 15px 0;
+               color: #2c3e50;
+          }
+
+          .product-stats-list {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+               gap: 10px;
+          }
+
+          .product-stat-item {
+               display: flex;
+               justify-content: space-between;
+               padding: 10px;
+               background: #f8f9fa;
+               border-radius: 4px;
+          }
+
           /* Footer Styles */
           footer {
                background: #2c3e50;
@@ -1545,6 +1694,25 @@
                margin: 5px 0;
           }
 
+          /* Print Styles */
+          @media print {
+
+               nav,
+               .filters-card,
+               button,
+               a {
+                    display: none !important;
+               }
+
+               .reports-container {
+                    max-width: 100%;
+               }
+
+               .reports-table table {
+                    font-size: 0.85em;
+               }
+          }
+
           /* Responsive Design */
           @media (max-width: 768px) {
                .detail-grid {
@@ -1711,6 +1879,30 @@
                     gap: 30px;
                     text-align: center;
                }
+
+               /* Reports Responsive */
+               .reports-header {
+                    flex-direction: column;
+                    gap: 15px;
+                    align-items: flex-start;
+               }
+
+               .header-actions {
+                    width: 100%;
+                    justify-content: flex-start;
+               }
+
+               .filters-grid {
+                    grid-template-columns: 1fr;
+               }
+
+               .stats-grid {
+                    grid-template-columns: 1fr;
+               }
+
+               .product-stats-list {
+                    grid-template-columns: 1fr;
+               }
           }
      </style>
 </head>
@@ -1722,7 +1914,7 @@
                     <a href="{{ route('home') }}">Mājas</a>
                     <a href="{{ route('fish.catalog') }}">Zivju katalogs</a>
                     <a href="{{ route('fish.shop') }}">Veikals</a>
-                    <a href="{{ route('batches.public') }}">Produkcija</a>
+                    <a href="{{ route('batches.public') }}">Produkcijas gatvošana</a>
                </div>
                <div>
                     @auth

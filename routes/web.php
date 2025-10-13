@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FishController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 // Galvenā mājas lapa
@@ -50,6 +50,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+
+    Route::get('/reports/orders', [ReportController::class, 'orders'])->name('admin.reports.orders');
+    Route::get('/reports/orders/export', [ReportController::class, 'exportOrders'])->name('admin.reports.orders.export');
 
     // Zivis
     Route::get('/fish', [FishController::class, 'adminIndex'])->name('admin.fish.index');

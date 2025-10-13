@@ -23,6 +23,12 @@
             <div class="card-title">Pasūtījumi</div>
             <div class="card-description">Skatīt un apstiprināt pasūtījumus</div>
         </a>
+
+        <a href="{{ route('admin.reports.orders') }}" class="dashboard-card">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Pārskats</div>
+            <div class="card-description">Pasūtījumu pārskats un statistika</div>
+        </a>
     </div>
 </div>
 @endsection
