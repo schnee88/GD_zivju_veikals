@@ -2,8 +2,14 @@
 
 @section('content')
 <div class="admin-container">
-    <h1>Pasūtījumu pārvaldība</h1>
-    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1>📊 Pasūtījumu pārskats</h1>
+        <div style="display: flex; gap: 10px;">
+            <a href="{{ route('admin.reports.orders') }}" style="background: #95a5a6; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none;">
+                ← Atpakaļ uz pārskatu
+            </a>
+        </div>
+    </div>
     <div class="stats">
         <div class="stat-card">
             <div class="stat-number">{{ $orders->where('status', 'pending')->count() }}</div>

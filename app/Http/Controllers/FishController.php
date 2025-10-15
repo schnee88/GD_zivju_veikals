@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class FishController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function catalog()
     {
         $fishes = Fish::all();
@@ -29,17 +25,11 @@ class FishController extends Controller
         return view('admin.fish.index', compact('fishes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.fish.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -70,26 +60,17 @@ class FishController extends Controller
         return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi pievienota!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Fish $fish)
     {
         return view('fishes.show', compact('fish'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $fish = Fish::findOrFail($id);
         return view('admin.fish.edit', compact('fish'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $fish = Fish::findOrFail($id);
@@ -99,12 +80,12 @@ class FishController extends Controller
             'price' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_orderable' => 'boolean',
-            'stock_quantity' => 'nullable|integer|min:0',
+            'is_orderable' => 'nullable|boolean',
+            'stock_quantity' => 'nullable|numeric|min:0',
             'stock_unit' => 'nullable|in:kg,pieces',
         ]);
 
-        $validated['is_orderable'] = $request->has('is_orderable');
+        $validated['is_orderable'] = $request->has('is_orderable') && $request->is_orderable == '1' ? 1 : 0;
 
         if (!$validated['is_orderable']) {
             $validated['stock_quantity'] = 0;
@@ -125,9 +106,6 @@ class FishController extends Controller
         return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi atjaunināta!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $fish = Fish::findOrFail($id);
@@ -142,7 +120,6 @@ class FishController extends Controller
         return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi dzēsta!');
     }
 
-    // Jaunas metodes pasūtāmajām zivīm
     public function orderable()
     {
         $fishes = Fish::orderable()->with('availabilityDays')->get();

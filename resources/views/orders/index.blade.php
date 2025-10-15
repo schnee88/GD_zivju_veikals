@@ -1,17 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="orders-container">
-    <h1>Mani pasūtījumi</h1>
-    
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Mani pasūtījumi</h1>
+    </div>
+
     @if($orders->isEmpty())
-        <div class="empty-state">
-            <p style="font-size: 1.2em; color: #999; margin-bottom: 20px;">Jums vēl nav neviena pasūtījuma</p>
-            <a href="{{ route('batches.public') }}" style="background: #3498db; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none;">
-                Apskatīt kūpinājumus
-            </a>
-        </div>
+    <div class="empty-state">
+        <p>Jums vēl nav neviena pasūtījuma</p>
+        <a href="{{ route('batches.public') }}" class="btn btn-primary">
+            Apskatīt kūpinājumus
+        </a>
+    </div>
     @else
+    <div class="orders-list">
         @foreach($orders as $order)
         <div class="order-card">
             <div class="order-header">
@@ -24,7 +27,7 @@
                     @endif
                 </span>
             </div>
-            
+
             <div class="order-items">
                 @foreach($order->items as $item)
                 <div class="order-item">
@@ -38,25 +41,30 @@
                 </div>
                 @endforeach
             </div>
-            
+
             <div class="order-footer">
-                <div>
+                <div class="order-meta">
                     <div class="order-total">KOPĀ: {{ number_format($order->total_amount, 2) }} €</div>
                     <div class="order-date">{{ $order->created_at->format('d.m.Y H:i') }}</div>
                 </div>
                 <div class="order-actions">
-                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-view">Skatīt</a>
+                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm">
+                        👁️ Skatīt
+                    </a>
                     @if($order->status == 'pending')
-                    <form action="{{ route('orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Vai tiešām vēlaties atcelt šo pasūtījumu?')">
+                    <form action="{{ route('orders.cancel', $order->id) }}" method="POST" class="cancel-form" onsubmit="return confirm('Vai tiešām vēlaties atcelt šo pasūtījumu?')">
                         @csrf
                         @method('PATCH')
-                        <button type="submit" class="btn btn-cancel">Atcelt</button>
+                        <button type="submit" class="btn btn-error btn-sm">
+                            ❌ Atcelt
+                        </button>
                     </form>
                     @endif
                 </div>
             </div>
         </div>
         @endforeach
+    </div>
     @endif
 </div>
 @endsection
