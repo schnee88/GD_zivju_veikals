@@ -6,7 +6,7 @@
         <h1>📊 Pasūtījumu pārskats</h1>
         <div class="header-actions">
             <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">
-                ← Atpakaļ uz pasūtījumiem
+                ← Uz pasūtījumiem
             </a>
             <button onclick="window.print()" class="btn btn-primary">
                 🖨️ Drukāt

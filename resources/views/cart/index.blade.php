@@ -3,7 +3,7 @@
 @section('content')
 <div class="admin-container">
     <div class="admin-header">
-        <h1>🛒 Mans Grozs</h1>
+        <h1>🛒Grozs</h1>
     </div>
 
     @if($cartItems->isEmpty())

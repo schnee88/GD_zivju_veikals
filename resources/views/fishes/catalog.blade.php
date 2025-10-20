@@ -55,7 +55,6 @@
           @endforeach
      </div>
      @endif
-f
      <!-- Contact box -->
      <div class="contact-box">
           <h3>🛒 Kā iegādāties?</h3>

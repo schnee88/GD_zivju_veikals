@@ -2251,6 +2251,8 @@
 
 
           @media (max-width: 768px) {
+
+               
                body {
                     font-size: 13px;
                }
@@ -2713,7 +2715,7 @@
                     <a href="{{ route('home') }}">🏠 Mājas</a>
                     <a href="{{ route('fish.catalog') }}">🐟 Zivju katalogs</a>
                     <a href="{{ route('fish.shop') }}">🛍️ Veikals</a>
-                    <a href="{{ route('batches.public') }}">⚗️ Produkcijas gatvošana</a>
+                    <a href="{{ route('batches.public') }}">⚗️ Ieplānotā Produkcijas gatvošana</a>
                </div>
                <div>
                     @auth

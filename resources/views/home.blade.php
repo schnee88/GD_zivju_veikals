@@ -5,7 +5,7 @@
     <h1>🐟 Laipni lūgti Ģimenes Zivju Veikaliņā! 🐟</h1>
     <p>Svaigas un garšīgas zivis tieši no jūras līdz jūsu galdam</p>
     <p>Augstākā kvalitāte • Svaigums garantēts • Ātri pasūtījumi</p>
-    <a href="{{ route('fish.index') }}">Apskatīt vispārigo produkciju →</a>
+    <a href="{{ route('fish.catalog') }}">Apskatīt vispārigo produkciju →</a>
     <br>
     <a href="{{ route('batches.public') }}">Apskaīt pieejamo produkciju, kūpinājumus →</a>
     <br>
