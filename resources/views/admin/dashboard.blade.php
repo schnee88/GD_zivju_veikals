@@ -11,11 +11,11 @@
             <div class="card-title">Zivis</div>
             <div class="card-description">Pārvaldīt zivju katalogu</div>
         </a>
-
+        
         <a href="{{ route('admin.batches.index') }}" class="dashboard-card">
             <div class="card-icon">📦</div>
-            <div class="card-title">Kūpinājumi</div>
-            <div class="card-description">Pārvaldīt kūpinājumus</div>
+            <div class="card-title">Ieplānot realizāciju</div>
+            <div class="card-description">Pārvaldīt ieplānoto produkcijas izstrādi</div>
         </a>
 
         <a href="{{ route('admin.orders.index') }}" class="dashboard-card">

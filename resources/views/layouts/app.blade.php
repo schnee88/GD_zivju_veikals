@@ -7,117 +7,7 @@
      <title>Zivju Veikals</title>
      <style>
           /* === MAINĪGIE & PAMATA STILI === */
-
-          .orders-list {
-               display: flex;
-               flex-direction: column;
-               gap: 20px;
-          }
-
-          .order-card {
-               background: var(--white);
-               border-radius: var(--radius-xl);
-               box-shadow: var(--shadow-sm);
-               border: 1px solid var(--gray-200);
-               overflow: hidden;
-               transition: var(--transition);
-          }
-
-          .order-card:hover {
-               transform: translateY(-2px);
-               box-shadow: var(--shadow-md);
-          }
-
-          .order-header {
-               display: flex;
-               justify-content: space-between;
-               align-items: center;
-               padding: 20px;
-               background: var(--gray-50);
-               border-bottom: 1px solid var(--gray-200);
-          }
-
-          .order-number {
-               font-weight: 600;
-               color: var(--dark);
-               font-size: 1.1rem;
-          }
-
-          .order-items {
-               padding: 0;
-          }
-
-          .order-item {
-               display: flex;
-               justify-content: space-between;
-               align-items: center;
-               padding: 16px 20px;
-               border-bottom: 1px solid var(--gray-100);
-          }
-
-          .order-item:last-child {
-               border-bottom: none;
-          }
-
-          .item-info {
-               flex: 1;
-          }
-
-          .item-name {
-               font-weight: 600;
-               color: var(--dark);
-               margin-bottom: 4px;
-          }
-
-          .item-details {
-               color: var(--gray-600);
-               font-size: 0.9rem;
-          }
-
-          .item-price {
-               font-weight: 600;
-               color: var(--success);
-               font-size: 1rem;
-          }
-
-          .order-footer {
-               display: flex;
-               justify-content: space-between;
-               align-items: center;
-               padding: 20px;
-               background: var(--gray-50);
-               border-top: 1px solid var(--gray-200);
-          }
-
-          .order-meta {
-               display: flex;
-               flex-direction: column;
-               gap: 4px;
-          }
-
-          .order-total {
-               font-weight: 700;
-               color: var(--dark);
-               font-size: 1.1rem;
-          }
-
-          .order-date {
-               color: var(--gray-500);
-               font-size: 0.9rem;
-          }
-
-          .order-actions {
-               display: flex;
-               gap: 10px;
-               align-items: center;
-          }
-
-          .cancel-form {
-               margin: 0;
-          }
-
           :root {
-               /* Krāsu palete */
                --primary: #2563eb;
                --primary-dark: #1d4ed8;
                --primary-light: #dbeafe;
@@ -128,7 +18,6 @@
                --error: #ef4444;
                --error-dark: #dc2626;
 
-               /* Neitrālās krāsas */
                --dark: #1e293b;
                --gray-800: #1f2937;
                --gray-700: #374151;
@@ -141,24 +30,20 @@
                --gray-50: #f9fafb;
                --white: #ffffff;
 
-               /* Ēnas */
                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-               /* Radiusi */
                --radius-sm: 6px;
                --radius-md: 8px;
                --radius-lg: 12px;
                --radius-xl: 16px;
 
-               /* Animācijas */
                --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                --transition-fast: all 0.15s ease;
           }
 
-          /* === PAMATA STILI === */
           * {
                margin: 0;
                padding: 0;
@@ -192,7 +77,327 @@
                font-size: 2rem;
           }
 
-          /* === NAVIGĀCIJA - UZLABOTA === */
+          /* === HOME PAGE STYLES === */
+          /* Modern Hero Section */
+          .modern-hero {
+               background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+               color: white;
+               padding: 100px 40px;
+               border-radius: 24px;
+               margin: 40px 0;
+               position: relative;
+               overflow: hidden;
+               box-shadow: 0 20px 60px rgba(30, 58, 138, 0.3);
+          }
+
+          .modern-hero::before {
+               content: '';
+               position: absolute;
+               top: -50%;
+               right: -10%;
+               width: 500px;
+               height: 500px;
+               background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+               border-radius: 50%;
+               animation: float 15s ease-in-out infinite;
+          }
+
+          .modern-hero::after {
+               content: '';
+               position: absolute;
+               bottom: -30%;
+               left: -5%;
+               width: 400px;
+               height: 400px;
+               background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+               border-radius: 50%;
+               animation: float 20s ease-in-out infinite reverse;
+          }
+
+          @keyframes float {
+
+               0%,
+               100% {
+                    transform: translate(0, 0) scale(1);
+               }
+
+               50% {
+                    transform: translate(30px, 30px) scale(1.1);
+               }
+          }
+
+          .hero-content {
+               position: relative;
+               z-index: 1;
+               max-width: 800px;
+               margin: 0 auto;
+               text-align: center;
+          }
+
+          .hero-badge {
+               display: inline-block;
+               background: rgba(255, 255, 255, 0.2);
+               padding: 8px 20px;
+               border-radius: 50px;
+               font-size: 0.9rem;
+               font-weight: 600;
+               margin-bottom: 20px;
+               backdrop-filter: blur(10px);
+               border: 1px solid rgba(255, 255, 255, 0.3);
+          }
+
+          .hero-title {
+               font-size: 3.5rem;
+               font-weight: 800;
+               margin: 0 0 20px 0;
+               line-height: 1.2;
+               letter-spacing: -1px;
+          }
+
+          .hero-subtitle {
+               font-size: 1.3rem;
+               margin: 0 0 15px 0;
+               opacity: 0.95;
+               font-weight: 500;
+          }
+
+          .hero-features {
+               display: flex;
+               justify-content: center;
+               gap: 30px;
+               margin: 30px 0;
+               flex-wrap: wrap;
+          }
+
+          .hero-feature {
+               display: flex;
+               align-items: center;
+               gap: 10px;
+               font-size: 1rem;
+               font-weight: 500;
+          }
+
+          .hero-feature-icon {
+               font-size: 1.5rem;
+          }
+
+          .hero-actions {
+               display: flex;
+               justify-content: center;
+               gap: 15px;
+               margin-top: 40px;
+               flex-wrap: wrap;
+          }
+
+          .btn-hero-primary {
+               background: white;
+               color: #1e3a8a;
+               padding: 16px 32px;
+               border-radius: 12px;
+               text-decoration: none;
+               font-weight: 700;
+               font-size: 1.05rem;
+               transition: all 0.3s ease;
+               box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;
+          }
+
+          .btn-hero-primary:hover {
+               transform: translateY(-3px);
+               box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+               background: #f8fafc;
+          }
+
+          .btn-hero-secondary {
+               background: rgba(255, 255, 255, 0.15);
+               color: white;
+               padding: 16px 32px;
+               border-radius: 12px;
+               text-decoration: none;
+               font-weight: 700;
+               font-size: 1.05rem;
+               transition: all 0.3s ease;
+               backdrop-filter: blur(10px);
+               border: 2px solid rgba(255, 255, 255, 0.3);
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;
+          }
+
+          .btn-hero-secondary:hover {
+               background: rgba(255, 255, 255, 0.25);
+               transform: translateY(-3px);
+               border-color: rgba(255, 255, 255, 0.5);
+          }
+
+          /* Features Section */
+          .features-section {
+               margin: 60px 0;
+          }
+
+          .section-header {
+               text-align: center;
+               margin-bottom: 50px;
+          }
+
+          .section-title {
+               font-size: 2.5rem;
+               font-weight: 800;
+               color: var(--dark);
+               margin: 0 0 15px 0;
+          }
+
+          .section-subtitle {
+               font-size: 1.1rem;
+               color: var(--gray-600);
+               max-width: 600px;
+               margin: 0 auto;
+          }
+
+          .features-grid {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+               gap: 30px;
+               margin-top: 40px;
+          }
+
+          .feature-card {
+               background: var(--white);
+               padding: 35px 30px;
+               border-radius: 20px;
+               box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+               transition: var(--transition);
+               border: 1px solid var(--gray-200);
+               text-align: center;
+          }
+
+          .feature-card:hover {
+               transform: translateY(-8px);
+               box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+               border-color: var(--primary);
+          }
+
+          .feature-icon {
+               font-size: 3rem;
+               margin-bottom: 20px;
+               display: block;
+          }
+
+          .feature-title {
+               font-size: 1.3rem;
+               font-weight: 700;
+               color: var(--dark);
+               margin: 0 0 12px 0;
+          }
+
+          .feature-description {
+               color: var(--gray-600);
+               line-height: 1.6;
+               margin: 0;
+          }
+
+          /* How to Order Section */
+          .how-to-order {
+               background: linear-gradient(135deg, var(--gray-100) 0%, #e0f2fe 100%);
+               padding: 60px 40px;
+               border-radius: 24px;
+               margin: 60px 0;
+               border: 1px solid #bfdbfe;
+          }
+
+          .order-steps {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+               gap: 40px;
+               margin-top: 40px;
+          }
+
+          .order-step {
+               text-align: center;
+               position: relative;
+          }
+
+          .step-number {
+               display: inline-flex;
+               align-items: center;
+               justify-content: center;
+               width: 60px;
+               height: 60px;
+               background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+               color: white;
+               border-radius: 50%;
+               font-size: 1.5rem;
+               font-weight: 800;
+               margin-bottom: 20px;
+               box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+          }
+
+          .step-title {
+               font-size: 1.2rem;
+               font-weight: 700;
+               color: var(--dark);
+               margin: 0 0 10px 0;
+          }
+
+          .step-description {
+               color: var(--gray-600);
+               line-height: 1.6;
+               margin: 0;
+          }
+
+          /* Contact CTA */
+          .contact-cta {
+               background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+               color: white;
+               padding: 50px 40px;
+               border-radius: 24px;
+               text-align: center;
+               margin: 60px 0;
+               box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+          }
+
+          .contact-cta h3 {
+               font-size: 2rem;
+               font-weight: 800;
+               margin: 0 0 15px 0;
+          }
+
+          .contact-cta p {
+               font-size: 1.1rem;
+               margin: 10px 0;
+               opacity: 0.95;
+          }
+
+          .phone-number {
+               display: inline-block;
+               background: rgba(255, 255, 255, 0.2);
+               color: white;
+               padding: 15px 35px;
+               border-radius: 50px;
+               font-size: 1.5rem;
+               font-weight: 800;
+               text-decoration: none;
+               margin: 20px 0;
+               backdrop-filter: blur(10px);
+               border: 2px solid rgba(255, 255, 255, 0.3);
+               transition: var(--transition);
+          }
+
+          .phone-number:hover {
+               background: rgba(255, 255, 255, 0.3);
+               transform: scale(1.05);
+               border-color: rgba(255, 255, 255, 0.5);
+          }
+
+          .working-hours {
+               font-size: 1rem;
+               opacity: 0.9;
+               margin-top: 15px;
+          }
+
+          /* === NAVIGATION STYLES === */
           nav {
                background: linear-gradient(135deg, var(--dark) 0%, var(--gray-800) 100%);
                color: var(--white);
@@ -294,7 +499,7 @@
                }
           }
 
-          /* === ALERTS - MODERNIZĒTI === */
+          /* === ALERTS === */
           .alert {
                padding: 16px 20px;
                margin: 20px 0;
@@ -427,7 +632,6 @@
                box-shadow: var(--shadow-md);
           }
 
-          /* Delete poga */
           .delete-btn,
           .remove-btn,
           .btn-cancel {
@@ -443,7 +647,6 @@
                box-shadow: var(--shadow-md);
           }
 
-          /* Edit poga */
           .edit-btn {
                background: var(--success);
                color: var(--white);
@@ -455,7 +658,6 @@
                box-shadow: var(--shadow-md);
           }
 
-          /* Sekundārā poga */
           .btn-secondary,
           .back-btn,
           .clear-cart-btn {
@@ -471,7 +673,6 @@
                box-shadow: var(--shadow-md);
           }
 
-          /* Mazākas pogas */
           .btn-sm {
                padding: 8px 16px;
                font-size: 0.85rem;
@@ -512,7 +713,6 @@
                color: var(--gray-600);
           }
 
-          /* === FISH GRID BASE STYLES === */
           .fish-grid {
                display: grid;
                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -652,7 +852,6 @@
                border-color: var(--primary);
           }
 
-          /* === SHOP SPECIFIC STYLES === */
           .shop-grid {
                grid-template-columns: repeat(3, 1fr) !important;
                gap: 20px !important;
@@ -782,7 +981,6 @@
                margin: 0;
           }
 
-          /* Shop form styles */
           .add-to-cart-form {
                margin-top: auto;
           }
@@ -872,7 +1070,6 @@
                box-shadow: var(--shadow-sm);
           }
 
-          /* === CATALOG SPECIFIC STYLES === */
           .catalog-grid {
                grid-template-columns: repeat(3, 1fr) !important;
                gap: 20px !important;
@@ -2082,39 +2279,6 @@
                margin: 0;
           }
 
-          /* === RESPONSIVE DESIGN === */
-          @media (max-width: 1024px) {
-
-               .shop-grid,
-               .catalog-grid,
-               .compact-grid {
-                    grid-template-columns: repeat(2, 1fr) !important;
-                    gap: 18px !important;
-               }
-
-               .filters-grid {
-                    grid-template-columns: repeat(2, 1fr);
-               }
-
-               .admin-table {
-                    font-size: 0.85rem;
-               }
-
-               .admin-table th,
-               .admin-table td {
-                    padding: 10px 8px;
-               }
-
-               .fish-description {
-                    max-width: 150px;
-                    min-width: 120px;
-               }
-
-               .compact-form .form-grid {
-                    grid-template-columns: 1fr;
-               }
-          }
-
           .cart-items {
                display: flex;
                flex-direction: column;
@@ -2249,10 +2413,40 @@
                width: 100%;
           }
 
+          /* === RESPONSIVE DESIGN === */
+          @media (max-width: 1024px) {
+
+               .shop-grid,
+               .catalog-grid,
+               .compact-grid {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                    gap: 18px !important;
+               }
+
+               .filters-grid {
+                    grid-template-columns: repeat(2, 1fr);
+               }
+
+               .admin-table {
+                    font-size: 0.85rem;
+               }
+
+               .admin-table th,
+               .admin-table td {
+                    padding: 10px 8px;
+               }
+
+               .fish-description {
+                    max-width: 150px;
+                    min-width: 120px;
+               }
+
+               .compact-form .form-grid {
+                    grid-template-columns: 1fr;
+               }
+          }
 
           @media (max-width: 768px) {
-
-               
                body {
                     font-size: 13px;
                }
@@ -2332,6 +2526,58 @@
                     max-height: 120px;
                }
 
+               /* Home page responsive */
+               .modern-hero {
+                    padding: 60px 20px;
+               }
+
+               .hero-title {
+                    font-size: 2.2rem;
+               }
+
+               .hero-subtitle {
+                    font-size: 1.1rem;
+               }
+
+               .hero-features {
+                    flex-direction: column;
+                    gap: 15px;
+               }
+
+               .hero-actions {
+                    flex-direction: column;
+               }
+
+               .btn-hero-primary,
+               .btn-hero-secondary {
+                    width: 100%;
+                    justify-content: center;
+               }
+
+               .section-title {
+                    font-size: 2rem;
+               }
+
+               .features-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+               }
+
+               .order-steps {
+                    grid-template-columns: 1fr;
+                    gap: 30px;
+               }
+
+               .how-to-order,
+               .contact-cta {
+                    padding: 40px 20px;
+               }
+
+               .phone-number {
+                    font-size: 1.2rem;
+                    padding: 12px 25px;
+               }
+
                /* Admin responsive */
                .admin-header {
                     flex-direction: column;
@@ -2360,6 +2606,35 @@
                .button-group .btn {
                     font-size: 0.75rem;
                     padding: 6px 8px;
+               }
+
+               /* Success view responsive */
+               .admin-container {
+                    padding: 20px 16px;
+               }
+
+               .success-container {
+                    padding: 30px 20px;
+               }
+
+               .success-title {
+                    font-size: 1.5rem !important;
+               }
+
+               .action-buttons {
+                    flex-direction: column;
+                    align-items: stretch;
+               }
+
+               .action-buttons .btn {
+                    width: 100%;
+                    text-align: center;
+               }
+
+               .summary-header {
+                    flex-direction: column;
+                    gap: 12px;
+                    align-items: flex-start;
                }
 
                /* Compact form responsive */
@@ -2525,7 +2800,6 @@
           }
 
           @media (max-width: 480px) {
-
                .cart-item {
                     padding: 16px;
                }
@@ -2550,6 +2824,14 @@
                }
 
                .home-hero h1 {
+                    font-size: 1.75rem;
+               }
+
+               .modern-hero {
+                    padding: 40px 16px;
+               }
+
+               .hero-title {
                     font-size: 1.75rem;
                }
 
@@ -2588,6 +2870,33 @@
 
                .quantity-input {
                     width: 100%;
+               }
+
+               /* Success view mobile */
+               .success-container {
+                    padding: 20px 16px;
+               }
+
+               .success-icon {
+                    font-size: 3rem !important;
+               }
+
+               .success-title {
+                    font-size: 1.3rem !important;
+               }
+
+               .info-box {
+                    padding: 16px !important;
+               }
+
+               .summary-item {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 8px;
+               }
+
+               .summary-item div:last-child {
+                    align-self: flex-end;
                }
 
                /* Admin mobile */
@@ -2715,7 +3024,7 @@
                     <a href="{{ route('home') }}">🏠 Mājas</a>
                     <a href="{{ route('fish.catalog') }}">🐟 Zivju katalogs</a>
                     <a href="{{ route('fish.shop') }}">🛍️ Veikals</a>
-                    <a href="{{ route('batches.public') }}">⚗️ Ieplānotā Produkcijas gatvošana</a>
+                    <a href="{{ route('batches.public') }}">⚗️ Ieplānotā Produkcijas Izgatavošana</a>
                </div>
                <div>
                     @auth
@@ -2766,7 +3075,7 @@
                <div class="footer-content">
                     <div class="footer-section">
                          <h3>Zivju Veikals</h3>
-                         <p>Visas garšīgākās zivis un kūpinājumi vienuviet!</p>
+                         <p>Viss garšīgākās zivis un kūpinājumi vienuviet!</p>
                     </div>
                     <div class="footer-section">
                          <h3>📞 Kontakti</h3>
