@@ -15,6 +15,11 @@ class Batch extends Model
         'batch_date' => 'datetime'
     ];
 
+    public function getFormattedBatchDateAttribute()
+    {
+        return $this->batch_date->format('d/m/Y H:i');
+    }
+
     public function fishes()
     {
         return $this->belongsToMany(Fish::class, 'batch_fish')

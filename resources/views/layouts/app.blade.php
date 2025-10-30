@@ -63,6 +63,19 @@
                font-size: 14px;
           }
 
+          .filter-card {
+               border: 1px solid #e0e0e0;
+          }
+
+          .filter-tag {
+               background: #2196f3;
+               color: white;
+               padding: 4px 8px;
+               border-radius: 12px;
+               font-size: 12px;
+               margin-left: 10px;
+          }
+
           .container {
                max-width: 1200px;
                margin: 0 auto;
@@ -235,6 +248,21 @@
           /* Features Section */
           .features-section {
                margin: 60px 0;
+          }
+
+          .filter-card {
+               border: 1px solid #e0e0e0;
+          }
+
+          .filter-tag {
+               background: #2196f3;
+               color: white;
+               padding: 4px 8px;
+               border-radius: 12px;
+               font-size: 12px;
+               margin-left: 10px;
+               display: inline-block;
+               margin-bottom: 5px;
           }
 
           .section-header {
@@ -3028,27 +3056,27 @@
                </div>
                <div>
                     @auth
-                    @if(auth()->user()->is_admin)
-                    <a href="{{ route('admin.dashboard') }}">⚙️ Admin Panelis</a>
-                    @endif
-                    <a href="{{ route('cart.index') }}">
-                         🛒 Grozs
-                         @if(auth()->user()->getCartCount() > 0)
-                         <span class="cart-badge">
-                              {{ auth()->user()->getCartCount() }}
-                         </span>
+                         @if(auth()->user()->is_admin)
+                              <a href="{{ route('admin.dashboard') }}">⚙️ Admin Panelis</a>
                          @endif
-                    </a>
-                    <a href="{{ route('orders.index') }}">📦 Mani pasūtījumi</a>
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                         @csrf
-                         <button type="submit">
-                              🚪 Iziet
-                         </button>
-                    </form>
+                         <a href="{{ route('cart.index') }}">
+                              🛒 Grozs
+                              @if(auth()->user()->getCartCount() > 0)
+                                   <span class="cart-badge">
+                                        {{ auth()->user()->getCartCount() }}
+                                   </span>
+                              @endif
+                         </a>
+                         <a href="{{ route('orders.index') }}">📦 Mani pasūtījumi</a>
+                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                              @csrf
+                              <button type="submit">
+                                   🚪 Iziet
+                              </button>
+                         </form>
                     @else
-                    <a href="{{ route('login') }}">🔐 Pieteikties</a>
-                    <a href="{{ route('register') }}">📝 Reģistrēties</a>
+                         <a href="{{ route('login') }}">🔐 Pieteikties</a>
+                         <a href="{{ route('register') }}">📝 Reģistrēties</a>
                     @endauth
                </div>
           </div>
@@ -3056,15 +3084,15 @@
 
      <div class="container">
           @if(session('success'))
-          <div class="alert alert-success">
-               ✅ {{ session('success') }}
-          </div>
+               <div class="alert alert-success">
+                    ✅ {{ session('success') }}
+               </div>
           @endif
 
           @if(session('error'))
-          <div class="alert alert-error">
-               ❌ {{ session('error') }}
-          </div>
+               <div class="alert alert-error">
+                    ❌ {{ session('error') }}
+               </div>
           @endif
 
           @yield('content')

@@ -9,24 +9,43 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
-
-// vel nav iecomitos, testesana nepieciesama. Vienigas izmainas ReportController, admin/reports/orders.blade.php un web prieks routes
-
 {
     public function orders(Request $request)
     {
         $query = OrderItem::with(['order.user', 'fish', 'batch']);
 
         if ($request->filled('date_from')) {
-            $query->whereHas('order', function ($q) use ($request) {
-                $q->whereDate('created_at', '>=', $request->date_from);
-            });
+            try {
+                $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_from)->startOfDay();
+                $query->whereHas('order', function ($q) use ($startDate) {
+                    $q->where('created_at', '>=', $startDate);
+                });
+            } catch (\Exception $e) {
+                try {
+                    $startDate = \Carbon\Carbon::createFromFormat('Y-m-d', $request->date_from)->startOfDay();
+                    $query->whereHas('order', function ($q) use ($startDate) {
+                        $q->where('created_at', '>=', $startDate);
+                    });
+                } catch (\Exception $e) {
+                }
+            }
         }
 
         if ($request->filled('date_to')) {
-            $query->whereHas('order', function ($q) use ($request) {
-                $q->whereDate('created_at', '<=', $request->date_to);
-            });
+            try {
+                $endDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_to)->endOfDay();
+                $query->whereHas('order', function ($q) use ($endDate) {
+                    $q->where('created_at', '<=', $endDate);
+                });
+            } catch (\Exception $e) {
+                try {
+                    $endDate = \Carbon\Carbon::createFromFormat('Y-m-d', $request->date_to)->endOfDay();
+                    $query->whereHas('order', function ($q) use ($endDate) {
+                        $q->where('created_at', '<=', $endDate);
+                    });
+                } catch (\Exception $e) {
+                }
+            }
         }
 
         if ($request->filled('status') && $request->status != 'all') {
@@ -76,7 +95,6 @@ class ReportController extends Controller
             return $item->quantity * $item->price;
         });
 
-        // Statistika pēc produktiem
         $productStats = $orderItems->groupBy('fish_id')->map(function ($items) {
             $fish = $items->first()->fish;
             return [
@@ -88,15 +106,9 @@ class ReportController extends Controller
             ];
         })->sortByDesc('total_amount');
 
-        // Iegūst visas zivis dropdown izvēlnei
         $allFishes = \App\Models\Fish::orderBy('name')->get();
 
         return view('admin.reports.orders', compact('orderItems', 'totalAmount', 'productStats', 'allFishes'));
     }
 
-    // Eksportēt uz Excel (vēlāk)
-    public function exportOrders(Request $request)
-    {
-        // TODO: Implementēt Excel eksportu
-    }
 }

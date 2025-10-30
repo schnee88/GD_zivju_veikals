@@ -23,10 +23,12 @@ class BatchController extends Controller
                     $query->where('available_quantity', '>', 0)
                          ->where('status', 'available');
                })
-               ->with(['fishes' => function ($query) {
-                    $query->where('available_quantity', '>', 0)
-                         ->where('status', 'available');
-               }])
+               ->with([
+                    'fishes' => function ($query) {
+                         $query->where('available_quantity', '>', 0)
+                              ->where('status', 'available');
+                    }
+               ])
                ->orderBy('batch_date', 'desc')
                ->get();
 
@@ -49,7 +51,7 @@ class BatchController extends Controller
      {
           $request->validate([
                'name' => 'required|string|max:255',
-               'batch_date' => 'required|date',
+               'batch_date' => 'required|date_format:d/m/Y H:i',
                'description' => 'nullable|string',
                'fishes' => 'required|array|min:1',
                'fishes.*.fish_id' => 'required|exists:fishes,id',
@@ -57,9 +59,11 @@ class BatchController extends Controller
                'fishes.*.unit' => 'required|in:kg,pieces'
           ]);
 
+          $batchDate = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->batch_date);
+
           $batch = Batch::create([
                'name' => $request->name,
-               'batch_date' => $request->batch_date,
+               'batch_date' => $batchDate,
                'description' => $request->description,
                'status' => 'preparing'
           ]);
@@ -93,11 +97,10 @@ class BatchController extends Controller
 
      public function update(Request $request, Batch $batch)
      {
-          // Validācija
           $validated = $request->validate([
                'name' => 'required|string|max:255',
                'description' => 'nullable|string',
-               'batch_date' => 'required|date',
+               'batch_date' => 'required|date_format:d/m/Y H:i',
                'fishes' => 'nullable|array',
                'fishes.*.fish_id' => 'required|exists:fishes,id',
                'fishes.*.quantity' => 'required|numeric|min:0',
@@ -106,25 +109,21 @@ class BatchController extends Controller
           ]);
 
           try {
-               // Sākt datu bāzes transakciju
                DB::beginTransaction();
 
-               // Atjaunināt batch pamatdatus
+               $batchDate = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $validated['batch_date']);
+
                $batch->update([
                     'name' => $validated['name'],
                     'description' => $validated['description'],
-                    'batch_date' => $validated['batch_date']
+                    'batch_date' => $batchDate
                ]);
 
-               // Ja ir norādītas zivis, atjaunināt batch_fish tabulu
                if (isset($validated['fishes'])) {
-                    // Dzēst esošās saites
                     $batch->fishes()->detach();
 
-                    // Pievienot jaunās zivis
                     foreach ($validated['fishes'] as $fishData) {
                          if (!empty($fishData['fish_id']) && !empty($fishData['quantity'])) {
-                              // Pārbaudīt, vai pieejamais daudzums nav lielāks par kopējo
                               $availableQuantity = min($fishData['available_quantity'], $fishData['quantity']);
 
                               $batch->fishes()->attach($fishData['fish_id'], [

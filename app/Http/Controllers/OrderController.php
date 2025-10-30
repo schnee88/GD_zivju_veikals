@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // Lietotāja pasūtījumu saraksts
     public function index()
     {
         $orders = Auth::user()->orders()
@@ -21,7 +20,6 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    // Viena pasūtījuma apskate
     public function show($id)
     {
         $order = Order::with(['items.batch', 'items.fish', 'user'])->findOrFail($id);
@@ -33,7 +31,6 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    // Checkout lapa
     public function checkout()
     {
         $cartItems = Auth::user()->cartItems()
@@ -47,7 +44,6 @@ class OrderController extends Controller
         return view('orders.checkout', compact('cartItems'));
     }
 
-    // Izveidot pasūtījumu no groza
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -102,7 +98,6 @@ class OrderController extends Controller
                 'total_amount' => $totalAmount,
             ]);
 
-            // Pievieno produktus pasūtījumam
             foreach ($cartItems as $cartItem) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -135,7 +130,6 @@ class OrderController extends Controller
         return view('orders.success', compact('order'));
     }
 
-    // Lietotājs atceļ savu pasūtījumu
     public function cancel(Order $order)
     {
         if ($order->user_id !== Auth::id()) {
@@ -152,24 +146,41 @@ class OrderController extends Controller
             ->with('success', 'Pasūtījums veiksmīgi atcelts!');
     }
 
-    // Admin: visu pasūtījumu saraksts
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $orders = Order::with(['user', 'items.batch', 'items.fish'])
-            ->latest()
-            ->paginate(20);
+        $query = Order::with(['user', 'items.batch', 'items.fish']);
+
+        if ($request->has('start_date') && $request->start_date) {
+            try {
+                $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->start_date)->startOfDay();
+                $query->where('created_at', '>=', $startDate);
+            } catch (\Exception $e) {
+            }
+        }
+
+        if ($request->has('end_date') && $request->end_date) {
+            try {
+                $endDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->end_date)->endOfDay();
+                $query->where('created_at', '<=', $endDate);
+            } catch (\Exception $e) {
+            }
+        }
+
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->latest()->paginate(20);
 
         return view('admin.orders.index', compact('orders'));
     }
 
-    // Admin: pasūtījuma apskate
     public function adminShow($id)
     {
         $order = Order::with(['user', 'items.batch', 'items.fish'])->findOrFail($id);
         return view('admin.orders.show', compact('order'));
     }
 
-    // Admin: atjaunināt statusu
     public function updateStatus(Request $request, $id)
     {
         $order = Order::with('items')->findOrFail($id);
@@ -182,12 +193,10 @@ class OrderController extends Controller
         $oldStatus = $order->status;
         $newStatus = $validated['status'];
 
-        // Ja status mainās uz "confirmed", samazina pieejamo daudzumu
         if ($oldStatus == 'pending' && $newStatus == 'confirmed') {
             foreach ($order->items as $item) {
                 $fish = $item->fish;
 
-                // Ja ir batch produkts (vecā sistēma)
                 if ($item->batch_id) {
                     $batchFish = $item->batch->fishes()->where('fish_id', $item->fish_id)->first();
 
@@ -202,9 +211,7 @@ class OrderController extends Controller
                             'available_quantity' => $newQuantity
                         ]);
                     }
-                }
-                // Jaunā sistēma - samazina stock
-                else {
+                } else {
                     if (!$fish->hasStock($item->quantity)) {
                         return redirect()->back()->with('error', 'Nav pietiekami daudz zivs "' . $fish->name . '"!');
                     }
@@ -214,12 +221,10 @@ class OrderController extends Controller
             }
         }
 
-        // Ja status mainās no "confirmed" uz "cancelled", atgriež daudzumu
         if ($oldStatus == 'confirmed' && $newStatus == 'cancelled') {
             foreach ($order->items as $item) {
                 $fish = $item->fish;
 
-                // Ja ir batch produkts
                 if ($item->batch_id) {
                     $batchFish = $item->batch->fishes()->where('fish_id', $item->fish_id)->first();
 
@@ -230,9 +235,7 @@ class OrderController extends Controller
                             'available_quantity' => $newQuantity
                         ]);
                     }
-                }
-                // Jaunā sistēma - atgriež stock
-                else {
+                } else {
                     $fish->increment('stock_quantity', $item->quantity);
                 }
             }
