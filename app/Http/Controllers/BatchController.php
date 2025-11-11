@@ -16,7 +16,7 @@ class BatchController extends Controller
         return view('admin.batches.index', compact('batches'));
     }
 
-    // PUBLISKAIS SKATS - tikai informatīvs
+    // PUBLISKAIS SKATS
     public function publicIndex()
     {
         $batches = Batch::whereIn('status', ['available', 'preparing'])
