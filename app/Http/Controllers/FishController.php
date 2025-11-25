@@ -35,7 +35,7 @@ class FishController extends Controller
 
     public function adminIndex()
     {
-        $fishes = Fish::with('availabilityDays')->get();
+        $fishes = Fish::all();
         return view('admin.fish.index', compact('fishes'));
     }
 

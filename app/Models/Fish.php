@@ -27,12 +27,7 @@ class Fish extends Model
     ];
 
     // RELATIONSHIPS
-
-    public function availabilityDays()
-    {
-        return $this->hasMany(AvailabilityDay::class);
-    }
-
+    
     public function orders()
     {
         return $this->hasMany(Order::class);
