@@ -3,7 +3,7 @@
 @section('content')
     <div class="reports-container">
         <div class="reports-header">
-            <h1>📊 Pasūtījumu pārskats</h1>
+            <h1>📊 Plašais pasūtījumu pārskats</h1>
             <div class="header-actions">
                 <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">
                     ← Uz pasūtījumiem

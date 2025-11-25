@@ -3,7 +3,7 @@
 @section('content')
     <div class="admin-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1>📊 Pasūtījumu pārskats</h1>
+            <h1>📊 Pasūtījumi</h1>
             <div>
                 <a href="{{ route('admin.reports.orders') }}" class="btn btn-secondary">
                     ← Uz pārskatu
