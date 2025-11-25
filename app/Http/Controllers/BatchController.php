@@ -5,21 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Batch;
 use App\Models\Fish;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class BatchController extends Controller
 {
-    // ADMIN PANELIS
+    /**
+     * Admin panelis
+     */
     public function index()
     {
-        $batches = Batch::with('fishes')->orderBy('batch_date', 'desc')->get();
+        $batches = Batch::with('fishes')
+            ->orderBy('batch_date', 'desc')
+            ->get();
+
         return view('admin.batches.index', compact('batches'));
     }
 
-    // PUBLISKAIS SKATS
+    /**
+     * Publiskais skats
+     */
     public function publicIndex()
     {
-        $batches = Batch::whereIn('status', ['available', 'preparing'])
+        $batches = Batch::activeForPublic()
             ->with('fishes')
             ->orderBy('batch_date', 'desc')
             ->get();
@@ -29,13 +35,13 @@ class BatchController extends Controller
 
     public function create()
     {
-        $fishes = Fish::all();
+        $fishes = Fish::orderBy('name')->get();
         return view('admin.batches.create', compact('fishes'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'batch_date' => 'required|date_format:d/m/Y H:i',
             'description' => 'nullable|string',
@@ -45,39 +51,33 @@ class BatchController extends Controller
             'fishes.*.unit' => 'required|in:kg,pieces'
         ]);
 
-        $batchDate = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->batch_date);
+        // Izveidot partiju caur modeli
+        $batch = Batch::createWithFishes(
+            $validated['name'],
+            $validated['batch_date'],
+            $validated['fishes'],
+            $validated['description'] ?? null
+        );
 
-        $batch = Batch::create([
-            'name' => $request->name,
-            'batch_date' => $batchDate,
-            'description' => $request->description,
-            'status' => 'preparing'
-        ]);
-
-        foreach ($request->fishes as $fishData) {
-            if (!empty($fishData['fish_id']) && !empty($fishData['quantity'])) {
-                $batch->fishes()->attach($fishData['fish_id'], [
-                    'quantity' => $fishData['quantity'],
-                    'unit' => $fishData['unit'],
-                    'available_quantity' => $fishData['quantity']
-                ]);
-            }
-        }
-
-        return redirect()->route('admin.batches.index')->with('success', 'Partija veiksmīgi izveidota!');
+        return redirect()
+            ->route('admin.batches.index')
+            ->with('success', 'Partija veiksmīgi izveidota!');
     }
 
     public function updateStatus(Batch $batch, Request $request)
     {
-        $request->validate(['status' => 'required|in:available,sold_out,preparing']);
+        $validated = $request->validate([
+            'status' => 'required|in:available,sold_out,preparing'
+        ]);
 
-        $batch->update(['status' => $request->status]);
+        $batch->updateStatus($validated['status']);
+
         return back()->with('success', 'Partijas statuss atjaunināts!');
     }
 
     public function edit(Batch $batch)
     {
-        $fishes = Fish::all();
+        $fishes = Fish::orderBy('name')->get();
         return view('admin.batches.edit', compact('batch', 'fishes'));
     }
 
@@ -95,48 +95,30 @@ class BatchController extends Controller
         ]);
 
         try {
-            DB::beginTransaction();
+            $batch->updateWithFishes(
+                $validated['name'],
+                $validated['batch_date'],
+                $validated['fishes'] ?? [],
+                $validated['description'] ?? null
+            );
 
-            $batchDate = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $validated['batch_date']);
-
-            $batch->update([
-                'name' => $validated['name'],
-                'description' => $validated['description'],
-                'batch_date' => $batchDate
-            ]);
-
-            if (isset($validated['fishes'])) {
-                $batch->fishes()->detach();
-
-                foreach ($validated['fishes'] as $fishData) {
-                    if (!empty($fishData['fish_id']) && !empty($fishData['quantity'])) {
-                        $availableQuantity = min($fishData['available_quantity'], $fishData['quantity']);
-
-                        $batch->fishes()->attach($fishData['fish_id'], [
-                            'quantity' => $fishData['quantity'],
-                            'available_quantity' => $availableQuantity,
-                            'unit' => $fishData['unit']
-                        ]);
-                    }
-                }
-            }
-
-            DB::commit();
-
-            return redirect()->route('admin.batches.index')
+            return redirect()
+                ->route('admin.batches.index')
                 ->with('success', 'Partija veiksmīgi atjaunināta!');
-        } catch (\Exception $e) {
-            DB::rollBack();
 
-            return back()->with('error', 'Kļūda atjauninot partiju: ' . $e->getMessage())
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Kļūda atjauninot partiju: ' . $e->getMessage())
                 ->withInput();
         }
     }
 
     public function destroy(Batch $batch)
     {
-        $batch->fishes()->detach();
-        $batch->delete();
-        return redirect()->route('admin.batches.index')->with('success', 'Partija veiksmīgi izdzēsta!');
+        $batch->deleteWithRelations();
+
+        return redirect()
+            ->route('admin.batches.index')
+            ->with('success', 'Partija veiksmīgi izdzēsta!');
     }
 }
