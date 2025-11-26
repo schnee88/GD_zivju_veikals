@@ -41,4 +41,67 @@ class OrderItem extends Model
     {
         return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
     }
+
+    public function scopeFilterForReport($query, $filters)
+    {
+        if (!empty($filters['date_from'])) {
+            $startDate = \Carbon\Carbon::parse($filters['date_from'])->startOfDay();
+            $query->whereHas('order', function ($q) use ($startDate) {
+                $q->where('created_at', '>=', $startDate);
+            });
+        }
+
+        if (!empty($filters['date_to'])) {
+            $endDate = \Carbon\Carbon::parse($filters['date_to'])->endOfDay();
+            $query->whereHas('order', function ($q) use ($endDate) {
+                $q->where('created_at', '<=', $endDate);
+            });
+        }
+
+        if (!empty($filters['status']) && $filters['status'] != 'all') {
+            $query->whereHas('order', function ($q) use ($filters) {
+                $q->where('status', $filters['status']);
+            });
+        }
+
+        if (!empty($filters['customer_name'])) {
+            $query->whereHas('order.user', function ($q) use ($filters) {
+                $q->where('name', 'LIKE', '%' . $filters['customer_name'] . '%');
+            });
+        }
+
+        if (!empty($filters['phone'])) {
+            $query->whereHas('order', function ($q) use ($filters) {
+                $q->where('phone', 'LIKE', '%' . $filters['phone'] . '%');
+            });
+        }
+
+        if (!empty($filters['order_id'])) {
+            $query->where('order_id', $filters['order_id']);
+        }
+
+        if (!empty($filters['fish_id']) && $filters['fish_id'] != 'all') {
+            $query->where('fish_id', $filters['fish_id']);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Aprēķina produktu statistiku
+     * Šī metode sadala datus pa zivīm un skaita summas
+     */
+    public static function getProductStats($orderItems)
+    {
+        return $orderItems->groupBy('fish_id')->map(function ($items) {
+            $fish = $items->first()->fish;
+            return [
+                'name' => $fish->name,
+                'total_quantity' => $items->sum('quantity'),
+                'total_amount' => $items->sum(function ($item) {
+                    return $item->quantity * $item->price;
+                }),
+            ];
+        })->sortByDesc('total_amount');
+    }
 }

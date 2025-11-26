@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FishController extends Controller
 {
-    // PUBLIC VIEWS
+    // PUBLISKAIS SKATS
 
     public function catalog()
     {
@@ -18,7 +18,7 @@ class FishController extends Controller
     }
 
     /**
-     * Show shop page (orderable fish in stock)
+     * Parādīt veikala lapu (nopērkamēs zivis veikalā)
      */
     public function orderable()
     {
@@ -31,7 +31,7 @@ class FishController extends Controller
         return view('fishes.show', compact('fish'));
     }
 
-    // ADMIN MANAGEMENT
+    // ADMIN PĀRVALDE
 
     public function adminIndex()
     {
@@ -48,7 +48,6 @@ class FishController extends Controller
     {
         $validated = $request->validated();
 
-        // Handle image upload
         if ($request->hasFile('image')) {
             $validated['image'] = $this->uploadImage($request->file('image'));
         }
@@ -75,7 +74,7 @@ class FishController extends Controller
             if ($fish->image) {
                 $this->deleteImage($fish->image);
             }
-            
+
             $validated['image'] = $this->uploadImage($request->file('image'));
         }
 
@@ -100,8 +99,6 @@ class FishController extends Controller
             ->route('admin.fish.index')
             ->with('success', 'Zivs veiksmīgi dzēsta!');
     }
-
-    // PRIVATE HELPERS
 
     private function uploadImage($file): string
     {

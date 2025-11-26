@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // USER VIEWS
+    // USER SKATS
 
     public function index()
     {
@@ -25,7 +25,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Show single order details
+     * Parādīt vienu pasūtījuma detaļas
      */
     public function show($id)
     {
@@ -73,7 +73,6 @@ class OrderController extends Controller
                 ->with('error', 'Jums jau ir 3 aktīvie pasūtījumi. Lūdzu, gaidiet to apstrādi.');
         }
 
-        // Check IP rate limit
         if ($this->hasExceededIpLimit($request->ip())) {
             return redirect()
                 ->back()
@@ -125,7 +124,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Order creation error: ' . $e->getMessage());
-            
+
             return redirect()
                 ->back()
                 ->with('error', 'Radās kļūda veidojot pasūtījumu. Lūdzu, mēģiniet vēlreiz.');
@@ -163,7 +162,7 @@ class OrderController extends Controller
 
     // ADMIN VIEWS
     /**
-     * Show all orders (admin)
+     *  Parādīt visus pasūtījumus (admin)
      */
     public function adminIndex(Request $request)
     {
@@ -193,7 +192,7 @@ class OrderController extends Controller
     {
         $order = Order::with(['user', 'items.batch', 'items.fish'])
             ->findOrFail($id);
-            
+
         return view('admin.orders.show', compact('order'));
     }
 
@@ -209,7 +208,7 @@ class OrderController extends Controller
         $oldStatus = $order->status;
         $newStatus = $validated['status'];
 
-        // Handle status change
+        // Pārvaldīt statusa pārmaiņu
         if ($oldStatus === Order::STATUS_PENDING && $newStatus === Order::STATUS_CONFIRMED) {
             if (!$order->confirm()) {
                 return redirect()
@@ -222,7 +221,7 @@ class OrderController extends Controller
             $order->update(['status' => $newStatus]);
         }
 
-        // Update admin notes
+        // Atjauninat admina pierakstus
         if ($request->filled('admin_notes')) {
             $order->update(['admin_notes' => $validated['admin_notes']]);
         }
@@ -232,10 +231,8 @@ class OrderController extends Controller
             ->with('success', 'Pasūtījuma statuss atjaunināts!');
     }
 
-    // PRIVATE HELPERS
-
     /**
-     * Check if IP has exceeded daily order limit
+     * Pārbauda vai ip pieprasijumi ir parsniegusi pasutijuma limitu
      */
     private function hasExceededIpLimit(string $ipAddress): bool
     {
