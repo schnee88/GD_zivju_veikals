@@ -11,20 +11,18 @@ class OrderItem extends Model
 
     protected $fillable = [
         'order_id',
-        'batch_id',
         'fish_id',
         'quantity',
         'price',
     ];
 
+    // ============================================
+    // RELATIONSHIPS
+    // ============================================
+
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
-
-    public function batch()
-    {
-        return $this->belongsTo(Batch::class);
     }
 
     public function fish()
@@ -32,16 +30,33 @@ class OrderItem extends Model
         return $this->belongsTo(Fish::class);
     }
 
-    public function getTotalPrice()
+    // ============================================
+    // HELPER METODES
+    // ============================================
+
+    /**
+     * Aprēķināt kopējo cenu
+     */
+    public function getTotalPrice(): float
     {
         return $this->quantity * $this->price;
     }
 
-    public function getUnit()
+    /**
+     * Iegūt mērvienību
+     */
+    public function getUnit(): string
     {
         return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
     }
 
+    // ============================================
+    // QUERY SCOPES
+    // ============================================
+
+    /**
+     * Filtrēt pārskatu skatam
+     */
     public function scopeFilterForReport($query, $filters)
     {
         if (!empty($filters['date_from'])) {
@@ -88,8 +103,7 @@ class OrderItem extends Model
     }
 
     /**
-     * Aprēķina produktu statistiku
-     * Šī metode sadala datus pa zivīm un skaita summas
+     * Aprēķināt produktu statistiku pārskatam
      */
     public static function getProductStats($orderItems)
     {

@@ -21,7 +21,7 @@ class ReportController extends Controller
             'fish_id' => $request->fish_id,
         ];
 
-        $query = OrderItem::with(['order.user', 'fish', 'batch'])
+        $query = OrderItem::with(['order.user', 'fish'])
             ->filterForReport($filters);
 
         // KĀRTOŠANA
@@ -49,7 +49,7 @@ class ReportController extends Controller
         });
 
         $productStats = OrderItem::getProductStats($orderItems);
-        
+
         $allFishes = Fish::orderBy('name')->get();
 
         return view('admin.reports.orders', compact(

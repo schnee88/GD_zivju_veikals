@@ -20,7 +20,7 @@ class Order extends Model
         'total_amount',
     ];
 
-    // Order statuses as constants
+    // Order statusi ka konstantes
     const STATUS_PENDING = 'pending';
     const STATUS_CONFIRMED = 'confirmed';
     const STATUS_COMPLETED = 'completed';
@@ -69,7 +69,7 @@ class Order extends Model
 
     public function getStatusLabelAttribute()
     {
-        return match($this->status) {
+        return match ($this->status) {
             self::STATUS_PENDING => 'Gaida apstiprinājumu',
             self::STATUS_CONFIRMED => 'Apstiprināts',
             self::STATUS_COMPLETED => 'Pabeigts',
@@ -78,7 +78,7 @@ class Order extends Model
         };
     }
 
-    // STATUS CHECKS
+    // STATUSA PARBAUDE
 
     public function isActive(): bool
     {
@@ -110,7 +110,9 @@ class Order extends Model
         return $this->isPending();
     }
 
+    // ============================================
     // BUSINESS LOGIC
+    // ============================================
 
     public function calculateTotal(): float
     {
@@ -119,39 +121,42 @@ class Order extends Model
         });
     }
 
+    /**
+     * Apstiprināt pasūtījumu
+     * Pārbauda pieejamību un samazina Fish::stock_quantity
+     */
     public function confirm(): bool
     {
         if (!$this->isPending()) {
             return false;
         }
 
+        // Pārbauda vai visas zivis ir pieejamas
         foreach ($this->items as $item) {
             if (!$item->fish->hasStock($item->quantity)) {
                 return false;
             }
         }
 
+        // Samazina krājumus
         foreach ($this->items as $item) {
-            if ($item->batch_id) {
-                $this->decreaseBatchStock($item);
-            } else {
-                $item->fish->decreaseStock($item->quantity);
-            }
+            $item->fish->decreaseStock($item->quantity);
         }
 
         $this->update(['status' => self::STATUS_CONFIRMED]);
         return true;
     }
 
+    /**
+     * Atcelt pasūtījumu
+     * Ja bija apstiprināts, atgriež krājumus
+     */
     public function cancel(): bool
     {
+        // Ja pasūtījums bija apstiprināts, atgriežam krājumus
         if ($this->isConfirmed()) {
             foreach ($this->items as $item) {
-                if ($item->batch_id) {
-                    $this->increaseBatchStock($item);
-                } else {
-                    $item->fish->increaseStock($item->quantity);
-                }
+                $item->fish->increaseStock($item->quantity);
             }
         }
 
@@ -159,6 +164,9 @@ class Order extends Model
         return true;
     }
 
+    /**
+     * Pabeigt pasūtījumu
+     */
     public function complete(): bool
     {
         if (!$this->isConfirmed()) {
@@ -167,37 +175,5 @@ class Order extends Model
 
         $this->update(['status' => self::STATUS_COMPLETED]);
         return true;
-    }
-
-    // PRIVATE HELPERS
-
-    private function decreaseBatchStock(OrderItem $item): void
-    {
-        $batchFish = $item->batch->fishes()
-            ->where('fish_id', $item->fish_id)
-            ->first();
-
-        if ($batchFish) {
-            $newQuantity = $batchFish->pivot->available_quantity - $item->quantity;
-            
-            $item->batch->fishes()->updateExistingPivot($item->fish_id, [
-                'available_quantity' => max(0, $newQuantity)
-            ]);
-        }
-    }
-
-    private function increaseBatchStock(OrderItem $item): void
-    {
-        $batchFish = $item->batch->fishes()
-            ->where('fish_id', $item->fish_id)
-            ->first();
-
-        if ($batchFish) {
-            $newQuantity = $batchFish->pivot->available_quantity + $item->quantity;
-            
-            $item->batch->fishes()->updateExistingPivot($item->fish_id, [
-                'available_quantity' => $newQuantity
-            ]);
-        }
     }
 }

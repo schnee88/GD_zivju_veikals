@@ -11,19 +11,15 @@ class CartItem extends Model
 
     protected $fillable = [
         'user_id',
-        'batch_id',
         'fish_id',
         'quantity',
     ];
 
+    // RELATIONSHIPS
+
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function batch()
-    {
-        return $this->belongsTo(Batch::class);
     }
 
     public function fish()
@@ -31,17 +27,19 @@ class CartItem extends Model
         return $this->belongsTo(Fish::class);
     }
 
-    public function getTotalPrice()
+    // HELPER METODES
+
+    public function getTotalPrice(): float
     {
         return $this->quantity * $this->fish->price;
     }
 
-    public function getUnit()
+    public function getUnit(): string
     {
         return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
     }
 
-    public function getAvailableQuantity()
+    public function getAvailableQuantity(): int
     {
         return $this->fish->stock_quantity;
     }

@@ -11,13 +11,18 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    // ============================================
     // USER SKATS
+    // ============================================
 
+    /**
+     * Parādīt lietotāja pasūtījumus
+     */
     public function index()
     {
         $orders = Auth::user()
             ->orders()
-            ->with(['items.batch', 'items.fish'])
+            ->with(['items.fish'])
             ->latest()
             ->get();
 
@@ -25,14 +30,14 @@ class OrderController extends Controller
     }
 
     /**
-     * Parādīt vienu pasūtījuma detaļas
+     * Parādīt vienu pasūtījumu
      */
     public function show($id)
     {
-        $order = Order::with(['items.batch', 'items.fish', 'user'])
+        $order = Order::with(['items.fish', 'user'])
             ->findOrFail($id);
 
-        // Check authorization
+        // Pārbaudām autorizāciju
         if ($order->user_id !== Auth::id() && !Auth::user()->is_admin) {
             abort(403);
         }
@@ -40,11 +45,14 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
+    /**
+     * Checkout skats
+     */
     public function checkout()
     {
         $cartItems = Auth::user()
             ->cartItems()
-            ->with(['batch', 'fish'])
+            ->with(['fish'])
             ->get();
 
         if ($cartItems->isEmpty()) {
@@ -56,6 +64,9 @@ class OrderController extends Controller
         return view('orders.checkout', compact('cartItems'));
     }
 
+    /**
+     * Izveidot pasūtījumu
+     */
     public function store(StoreOrderRequest $request)
     {
         $user = Auth::user();
@@ -67,12 +78,14 @@ class OrderController extends Controller
                 ->with('error', 'Jūsu grozs ir tukšs!');
         }
 
+        // Pārbauda vai nav pārāk daudz aktīvo pasūtījumu
         if ($user->hasMaxActiveOrders(3)) {
             return redirect()
                 ->back()
                 ->with('error', 'Jums jau ir 3 aktīvie pasūtījumi. Lūdzu, gaidiet to apstrādi.');
         }
 
+        // Pārbauda IP limitu
         if ($this->hasExceededIpLimit($request->ip())) {
             return redirect()
                 ->back()
@@ -82,6 +95,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
+            // Pārbauda pieejamību
             foreach ($cartItems as $cartItem) {
                 if (!$cartItem->fish->hasStock($cartItem->quantity)) {
                     DB::rollBack();
@@ -91,10 +105,12 @@ class OrderController extends Controller
                 }
             }
 
+            // Aprēķina kopējo summu
             $totalAmount = $cartItems->sum(function ($item) {
                 return $item->quantity * $item->fish->price;
             });
 
+            // Izveido pasūtījumu
             $order = Order::create([
                 'user_id' => $user->id,
                 'phone' => $request->phone,
@@ -105,16 +121,17 @@ class OrderController extends Controller
                 'total_amount' => $totalAmount,
             ]);
 
+            // Izveido pasūtījuma pozīcijas
             foreach ($cartItems as $cartItem) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'batch_id' => $cartItem->batch_id,
                     'fish_id' => $cartItem->fish_id,
                     'quantity' => $cartItem->quantity,
                     'price' => $cartItem->fish->price,
                 ]);
             }
 
+            // Iztīra grozu
             $user->cartItems()->delete();
 
             DB::commit();
@@ -131,9 +148,12 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * Success lapa pēc pasūtījuma
+     */
     public function success($id)
     {
-        $order = Order::with(['items.batch', 'items.fish'])
+        $order = Order::with(['items.fish'])
             ->where('id', $id)
             ->where('user_id', Auth::id())
             ->firstOrFail();
@@ -141,6 +161,9 @@ class OrderController extends Controller
         return view('orders.success', compact('order'));
     }
 
+    /**
+     * Atcelt pasūtījumu
+     */
     public function cancel(Order $order)
     {
         if ($order->user_id !== Auth::id()) {
@@ -160,15 +183,18 @@ class OrderController extends Controller
             ->with('success', 'Pasūtījums veiksmīgi atcelts!');
     }
 
-    // ADMIN VIEWS
+    // ============================================
+    // ADMIN SKATS
+    // ============================================
+
     /**
-     *  Parādīt visus pasūtījumus (admin)
+     * Parādīt visus pasūtījumus (admin)
      */
     public function adminIndex(Request $request)
     {
-        $query = Order::with(['user', 'items.batch', 'items.fish']);
+        $query = Order::with(['user', 'items.fish']);
 
-        // Apply filters
+        // Filtri
         if ($request->filled('start_date')) {
             $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->start_date)->startOfDay();
             $query->where('created_at', '>=', $startDate);
@@ -188,14 +214,20 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
+    /**
+     * Parādīt pasūtījumu (admin)
+     */
     public function adminShow($id)
     {
-        $order = Order::with(['user', 'items.batch', 'items.fish'])
+        $order = Order::with(['user', 'items.fish'])
             ->findOrFail($id);
 
         return view('admin.orders.show', compact('order'));
     }
 
+    /**
+     * Atjaunināt pasūtījuma statusu
+     */
     public function updateStatus(Request $request, $id)
     {
         $order = Order::with('items')->findOrFail($id);
@@ -208,7 +240,7 @@ class OrderController extends Controller
         $oldStatus = $order->status;
         $newStatus = $validated['status'];
 
-        // Pārvaldīt statusa pārmaiņu
+        // Pārvaldīt statusa maiņu
         if ($oldStatus === Order::STATUS_PENDING && $newStatus === Order::STATUS_CONFIRMED) {
             if (!$order->confirm()) {
                 return redirect()
@@ -221,7 +253,7 @@ class OrderController extends Controller
             $order->update(['status' => $newStatus]);
         }
 
-        // Atjauninat admina pierakstus
+        // Atjaunināt admin piezīmes
         if ($request->filled('admin_notes')) {
             $order->update(['admin_notes' => $validated['admin_notes']]);
         }
@@ -231,8 +263,12 @@ class OrderController extends Controller
             ->with('success', 'Pasūtījuma statuss atjaunināts!');
     }
 
+    // ============================================
+    // PRIVATE HELPERS
+    // ============================================
+
     /**
-     * Pārbauda vai ip pieprasijumi ir parsniegusi pasutijuma limitu
+     * Pārbauda vai IP ir pārsniegusi limitu
      */
     private function hasExceededIpLimit(string $ipAddress): bool
     {
