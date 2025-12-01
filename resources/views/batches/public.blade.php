@@ -1,106 +1,119 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="production-plan-page">
-        <h1>Plānotās ražošanas partijas</h1>
+    <div class="production-plan-page container">
+        <div class="admin-header">
+            <h1>Plānotās ražošanas partijas</h1>
+        </div>
 
         @if($batches->isEmpty())
-            <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
-                <p style="font-size: 1.1em; color: #666;">Šobrīd nav plānotu ražošanas partiju.</p>
+            <div class="empty-state">
+                <p>Šobrīd nav plānotu ražošanas partiju.</p>
             </div>
         @else
             <div class="batches-list">
                 @foreach($batches as $batch)
-                    <div class="batch-card"
-                        style="border: 3px solid #3498db; border-radius: 12px; padding: 20px; margin-bottom: 30px; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0;">
-                            <h2 style="margin: 0; color: #2c3e50; font-size: 1.5em;">{{ $batch->name }}</h2>
-                            <span
-                                style="background: {{ $batch->status_color }}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.95em; font-weight: bold;">
+                    <div class="batch-card">
+                        <div class="batch-header">
+                            <h2>{{ $batch->name }}</h2>
+                            <span class="status-badge" style="background: {{ $batch->status_color }}; color: white;">
                                 {{ $batch->status_text }}
                             </span>
                         </div>
 
-                        <div style="margin-bottom: 20px;">
-                            <p style="margin: 8px 0; color: #555; font-size: 1em;">
-                                <strong style="color: #2c3e50;">📅 Izgatavošanas datums:</strong>
+                        <div class="batch-info">
+                            <p class="batch-date">
+                                <strong>📅 Izgatavošanas datums:</strong>
                                 {{ $batch->batch_date->format('d.m.Y H:i') }}
                             </p>
 
                             @if($batch->description)
-                                <div
-                                    style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-left: 4px solid #3498db; border-radius: 4px;">
-                                    <p style="margin: 0; color: #555; line-height: 1.6;">{{ $batch->description }}</p>
+                                <div class="batch-description">
+                                    <p>{{ $batch->description }}</p>
                                 </div>
                             @endif
                         </div>
 
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <h3 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 1.2em;">🐟 Plānotās zivis:</h3>
+                        <div class="fish-section">
+                            <h3>🐟 Plānotās zivis:</h3>
 
-                            <div style="overflow-x: auto;">
-                                <table
-                                    style="width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; min-width: 500px;">
+                            <!-- Desktop version (table for larger screens) -->
+                            <div class="fish-table-container desktop-only">
+                                <table class="fish-table">
                                     <thead>
-                                        <tr style="background: #2c3e50; color: white;">
-                                            <th style="padding: 12px; text-align: left;">Zivs</th>
-                                            <th style="padding: 12px; text-align: center;">Plānotais daudzums</th>
-                                            <th style="padding: 12px; text-align: center;">Mērvienība</th>
-                                            <th style="padding: 12px; text-align: center;">Paredzamā cena</th>
+                                        <tr>
+                                            <th>Zivs</th>
+                                            <th>Plānotais daudzums</th>
+                                            <th>Mērvienība</th>
+                                            <th>Paredzamā cena</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($batch->fishes as $fish)
-                                            <tr style="border-bottom: 1px solid #e9ecef;">
-                                                <td style="padding: 12px;">
-                                                    <strong style="color: #2c3e50; font-size: 1.05em;">{{ $fish->name }}</strong>
+                                            <tr>
+                                                <td class="fish-name">
+                                                    <strong>{{ $fish->name }}</strong>
                                                     @if($fish->description)
-                                                        <br><small style="color: #666; line-height: 1.4;">{{ $fish->description }}</small>
+                                                        <br><small>{{ $fish->description }}</small>
                                                     @endif
                                                 </td>
-                                                <td
-                                                    style="padding: 12px; text-align: center; font-weight: bold; color: #3498db; font-size: 1.1em;">
-                                                    {{ $fish->pivot->quantity }}
-                                                </td>
-                                                <td style="padding: 12px; text-align: center; color: #555;">
-                                                    {{ $fish->pivot->unit == 'kg' ? 'kg' : 'gab.' }}
-                                                </td>
-                                                <td
-                                                    style="padding: 12px; text-align: center; font-weight: bold; color: #2c3e50; font-size: 1.1em;">
-                                                    {{ number_format($fish->price, 2) }} €
-                                                </td>
+                                                <td class="fish-quantity">{{ $fish->pivot->quantity }}</td>
+                                                <td class="fish-unit">{{ $fish->pivot->unit == 'kg' ? 'kg' : 'gab.' }}</td>
+                                                <td class="fish-price">{{ number_format($fish->price, 2) }} €</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- Mobile version (cards for smaller screens) -->
+                            <div class="fish-cards-container mobile-only">
+                                @foreach($batch->fishes as $fish)
+                                    <div class="fish-card-mobile">
+                                        <div class="fish-card-header">
+                                            <h4>{{ $fish->name }}</h4>
+                                        </div>
+                                        <div class="fish-card-body">
+                                            @if($fish->description)
+                                                <p class="fish-description">{{ $fish->description }}</p>
+                                            @endif
+                                            <div class="fish-details">
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Daudzums:</span>
+                                                    <span class="detail-value">{{ $fish->pivot->quantity }}</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Mērvienība:</span>
+                                                    <span class="detail-value">{{ $fish->pivot->unit == 'kg' ? 'kg' : 'gab.' }}</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Cena:</span>
+                                                    <span class="detail-value price">{{ number_format($fish->price, 2) }} €</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
 
-                        <div
-                            style="background: #e3f2fd; border: 1px solid #90caf9; border-radius: 6px; padding: 15px; margin-top: 15px;">
-                            <p style="margin: 0; color: #1565c0; font-size: 0.95em;">
-                                <strong>ℹ️ Informācija:</strong>
-                                Šī ir plānotā ražošanas partija. Lai iegādātos produktus, apmeklējiet mūsu veikalu.
-                            </p>
+                        <div class="batch-notice">
+                            <p><strong>ℹ️ Informācija:</strong> Šī ir plānotā ražošanas partija. Lai iegādātos produktus,
+                                apmeklējiet mūsu veikalu.</p>
                         </div>
-
                     </div>
                 @endforeach
             </div>
         @endif
 
-        <div
-            style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
-            <h3 style="margin: 0 0 15px 0; font-size: 1.4em;">🐟 Apskatiet mūsu sortimentu</h3>
-            <p style="margin: 10px 0; font-size: 1.05em;">Plānotās partijas sniedz priekšstatu par mūsu ražošanu</p>
-            <p style="margin: 10px 0; font-size: 1.05em;">Produktus var iegādāties mūsu veikalā pēc to sagatavošanas</p>
-            <a href="{{ route('fish.shop') }}" 
-               style="display: inline-block; margin-top: 15px; padding: 12px 30px; background: white; color: #667eea; text-decoration: none; border-radius: 8px; font-weight: bold; transition: transform 0.2s;">
+        <div class="cta-section">
+            <h3>🐟 Apskatiet mūsu sortimentu</h3>
+            <p>Plānotās partijas sniedz priekšstatu par mūsu ražošanu</p>
+            <p>Produktus var iegādāties mūsu veikalā pēc to sagatavošanas</p>
+            <a href="{{ route('fish.shop') }}" class="btn btn-primary cta-button">
                 🛒 Apmeklēt veikalu
             </a>
-            <p style="margin: 15px 0 0 0; font-size: 0.95em; opacity: 0.9;">⏰ Darba laiks: Pirmdiena-Piektdiena 9:00-18:00</p>
+            <p class="working-hours">⏰ Darba laiks: Pirmdiena-Piektdiena 9:00-18:00</p>
         </div>
     </div>
 @endsection

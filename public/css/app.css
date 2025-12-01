@@ -1923,6 +1923,290 @@ button:not(.delete-btn):not([type="submit"]):not(.remove-btn):not(
     font-size: 0.95rem;
 }
 
+/* === PRODUCTION PLAN SPECIFIC STYLES === */
+.production-plan-page {
+    padding: 20px 0;
+}
+
+/* Batch card */
+.batch-card {
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.batch-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Batch header */
+.batch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--gray-200);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.batch-header h2 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Batch info */
+.batch-info {
+    margin-bottom: 25px;
+}
+
+.batch-date {
+    margin: 0 0 15px 0;
+    color: var(--gray-700);
+    font-size: 1rem;
+}
+
+.batch-description {
+    margin: 15px 0;
+    padding: 15px;
+    background: var(--gray-50);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius-sm);
+}
+
+.batch-description p {
+    margin: 0;
+    color: var(--gray-700);
+    line-height: 1.6;
+}
+
+/* Fish section */
+.fish-section {
+    background: var(--gray-50);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+.fish-section h3 {
+    margin: 0 0 20px 0;
+    color: var(--dark);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* Desktop table */
+.fish-table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.fish-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    min-width: 600px;
+}
+
+.fish-table th {
+    background: var(--primary);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.fish-table th:nth-child(2),
+.fish-table th:nth-child(3),
+.fish-table th:nth-child(4) {
+    text-align: center;
+}
+
+.fish-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: top;
+}
+
+.fish-table tr:last-child td {
+    border-bottom: none;
+}
+
+.fish-table tr:hover {
+    background: var(--gray-50);
+}
+
+.fish-name {
+    color: var(--dark);
+}
+
+.fish-name strong {
+    font-size: 1.05rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.fish-name small {
+    color: var(--gray-600);
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+.fish-quantity {
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.fish-unit {
+    text-align: center;
+    color: var(--gray-700);
+}
+
+.fish-price {
+    text-align: center;
+    font-weight: bold;
+    color: var(--success);
+    font-size: 1.1rem;
+}
+
+/* Mobile cards */
+.fish-cards-container {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.fish-card-mobile {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 15px;
+    border: 1px solid var(--gray-300);
+    box-shadow: var(--shadow-sm);
+}
+
+.fish-card-header h4 {
+    margin: 0 0 10px 0;
+    color: var(--dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.fish-description {
+    margin: 0 0 12px 0;
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.fish-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    color: var(--gray-600);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.detail-value {
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.detail-value.price {
+    color: var(--success);
+}
+
+/* Notice */
+.batch-notice {
+    background: var(--primary-light);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.batch-notice p {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 0.95rem;
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(
+        135deg,
+        var(--primary) 0%,
+        var(--primary-dark) 100%
+    );
+    border-radius: var(--radius-lg);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.cta-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.cta-section p {
+    margin: 10px 0;
+    font-size: 1.05rem;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 14px 35px;
+    background: white;
+    color: var(--primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.cta-button:hover {
+    background: var(--gray-100);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Utility classes */
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
 /* === OTHER COMPONENTS === */
 .reservation-container,
 .order-detail,
@@ -2500,6 +2784,11 @@ footer {
     .compact-form .form-grid {
         grid-template-columns: 1fr;
     }
+
+    /* Production plan specific */
+    .fish-table {
+        min-width: 500px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -2580,6 +2869,71 @@ footer {
 
     .catalog-card .fish-image {
         max-height: 120px;
+    }
+
+    /* Production plan mobile styles */
+    .production-plan-page {
+        padding: 15px 0;
+    }
+
+    .batch-card {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .batch-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .batch-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .status-badge {
+        align-self: flex-start;
+    }
+
+    .fish-section {
+        padding: 15px;
+    }
+
+    .fish-section h3 {
+        font-size: 1.2rem;
+    }
+
+    /* Hide desktop table on mobile */
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* Show mobile cards on mobile */
+    .mobile-only {
+        display: flex !important;
+    }
+
+    .fish-details {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .cta-section {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+
+    .cta-section h3 {
+        font-size: 1.3rem;
+    }
+
+    .cta-section p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        width: 100%;
+        padding: 12px 20px;
     }
 
     /* Home page responsive */
@@ -2873,6 +3227,46 @@ footer {
         flex-direction: column;
         gap: 8px;
         text-align: center;
+    }
+
+    /* Production plan mobile */
+    .batch-card {
+        padding: 12px;
+    }
+
+    .batch-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .fish-section {
+        padding: 12px;
+    }
+
+    .fish-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .fish-card-mobile {
+        padding: 12px;
+    }
+
+    .fish-details {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .detail-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .detail-label {
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        font-size: 1rem;
     }
 
     .home-hero {
