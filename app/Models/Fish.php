@@ -36,7 +36,7 @@ class Fish extends Model
     public function batches()
     {
         return $this->belongsToMany(Batch::class, 'batch_fish')
-            ->withPivot('quantity', 'unit', 'available_quantity');
+            ->withPivot('quantity', 'unit');
     }
 
     // SCOPES (for queries)

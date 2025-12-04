@@ -90,7 +90,6 @@ class BatchController extends Controller
             'fishes' => 'nullable|array',
             'fishes.*.fish_id' => 'required|exists:fishes,id',
             'fishes.*.quantity' => 'required|numeric|min:0',
-            'fishes.*.available_quantity' => 'required|numeric|min:0',
             'fishes.*.unit' => 'required|in:kg,pieces'
         ]);
 
