@@ -46,7 +46,6 @@
 
                 <!-- Content -->
                 <div class="p-6 space-y-4">
-                    <!-- Title -->
                     <div class="flex items-start gap-2">
                         <span class="text-2xl flex-shrink-0">🐟</span>
                         <h3 class="text-xl font-bold text-gray-900 leading-tight">
@@ -54,14 +53,12 @@
                         </h3>
                     </div>
 
-                    <!-- Description -->
                     @if($fish->description)
                         <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
                             {{ Str::limit($fish->description, 120) }}
                         </p>
                     @endif
 
-                    <!-- Price -->
                     <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 text-center">
                         <p class="text-3xl font-bold text-green-600 mb-1">
                             {{ number_format($fish->price, 2) }} €
@@ -71,7 +68,6 @@
                         </p>
                     </div>
 
-                    <!-- View More Button -->
                     <a href="{{ route('fish.show', $fish->id) }}" 
                        class="block w-full px-4 py-3 bg-blue-600 text-white text-center rounded-xl font-semibold hover:bg-blue-700 transition-colors">
                         Skatīt vairāk

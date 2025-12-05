@@ -112,8 +112,7 @@
                                     </p>
                                 </div>
                             </div>
-
-                            <!-- Actions -->
+                            
                             <div class="flex flex-wrap gap-3">
                                 <a href="{{ route('orders.show', $order->id) }}" 
                                    class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm flex items-center gap-2">

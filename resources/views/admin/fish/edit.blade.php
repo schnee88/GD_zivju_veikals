@@ -1,139 +1,260 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="admin-container compact-form">
-    <div class="admin-header">
-        <h1>Rediģēt: {{ $fish->name }}</h1>
-        <a href="{{ route('admin.fish.index') }}" class="btn btn-secondary btn-sm">
-            ← Atpakaļ
+
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-2 flex items-center gap-3">
+                <span class="text-4xl">✏️</span>
+                <span>Rediģēt: {{ $fish->name }}</span>
+            </h1>
+            <p class="text-gray-600">Atjauniniet produkta informāciju</p>
+        </div>
+        <a href="{{ route('admin.fish.index') }}" 
+           class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span>Atpakaļ</span>
         </a>
     </div>
 
-    <div class="form-container">
-        <form action="{{ route('admin.fish.update', $fish->id) }}" method="POST" enctype="multipart/form-data" class="fish-form">
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <form action="{{ route('admin.fish.update', $fish->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
-            <div class="form-grid">
-                <!-- Basic Info -->
-                <div class="form-group">
-                    <label for="name" class="form-label">Nosaukums *</label>
-                    <input type="text" name="name" class="form-input @error('name') error @enderror" 
-                           value="{{ old('name', $fish->name) }}" required>
-                    @error('name')
-                    <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
+            <div class="p-6 md:p-8 space-y-6">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <span>📝</span>
+                        <span>Pamata informācija</span>
+                    </h2>
 
-                <div class="form-group">
-                    <label for="price" class="form-label">Cena (€) *</label>
-                    <input type="number" step="0.01" name="price" class="form-input @error('price') error @enderror" 
-                           value="{{ old('price', $fish->price) }}" required>
-                    @error('price')
-                    <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Order Settings -->
-                <div class="form-group">
-                    <label for="is_orderable" class="form-label">Statuss *</label>
-                    <select name="is_orderable" id="is_orderable" class="form-input @error('is_orderable') error @enderror">
-                        <option value="0" {{ old('is_orderable', $fish->is_orderable) == 0 ? 'selected' : '' }}>
-                            ❌ Tikai katalogā
-                        </option>
-                        <option value="1" {{ old('is_orderable', $fish->is_orderable) == 1 ? 'selected' : '' }}>
-                            ✅ Pasūtāms
-                        </option>
-                    </select>
-                    @error('is_orderable')
-                    <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Stock Fields -->
-                <div id="stockFields" class="form-group {{ old('is_orderable', $fish->is_orderable) == 1 ? 'visible' : 'hidden' }}">
-                    <div class="stock-row">
-                        <div class="stock-input">
-                            <label for="stock_quantity" class="form-label">Daudzums *</label>
-                            <input type="number" name="stock_quantity" id="stock_quantity" class="form-input @error('stock_quantity') error @enderror" 
-                                   value="{{ old('stock_quantity', $fish->stock_quantity ?? 0) }}" min="0" step="0.1">
-                        </div>
-                        <div class="stock-unit">
-                            <label for="stock_unit" class="form-label">Mērvienība *</label>
-                            <select name="stock_unit" id="stock_unit" class="form-input @error('stock_unit') error @enderror">
-                                <option value="pieces" {{ old('stock_unit', $fish->stock_unit ?? 'pieces') == 'pieces' ? 'selected' : '' }}>gab.</option>
-                                <option value="kg" {{ old('stock_unit', $fish->stock_unit ?? 'kg') == 'kg' ? 'selected' : '' }}>kg</option>
-                            </select>
-                        </div>
-                    </div>
-                    @error('stock_quantity') <div class="error-message">{{ $message }}</div> @enderror
-                    @error('stock_unit') <div class="error-message">{{ $message }}</div> @enderror
-                </div>
-
-                <!-- Description -->
-                <div class="form-group full-width">
-                    <label for="description" class="form-label">Apraksts</label>
-                    <textarea name="description" class="form-input form-textarea @error('description') error @enderror" 
-                              rows="3" placeholder="Īss produkta apraksts...">{{ old('description', $fish->description) }}</textarea>
-                    @error('description')
-                    <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Image -->
-                <div class="form-group full-width">
-                    <label class="form-label">Attēls</label>
-                    <div class="image-section">
-                        @if($fish->image)
-                        <div class="current-image">
-                            <img src="{{ asset('storage/fish_images/' . $fish->image) }}" alt="{{ $fish->name }}" 
-                                 class="fish-image-preview">
-                            <small>Pašreizējais attēls</small>
-                        </div>
-                        @else
-                        <div class="no-image">
-                            <span>📷 Nav attēla</span>
-                        </div>
-                        @endif
-                        
-                        <div class="image-upload">
-                            <input type="file" name="image" class="form-input @error('image') error @enderror" 
-                                   accept="image/*">
-                            <small class="form-help">JPG, PNG, GIF (max 5MB)</small>
-                            @error('image')
-                            <div class="error-message">{{ $message }}</div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-bold text-gray-700 mb-2">
+                                Nosaukums <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="name" 
+                                id="name" 
+                                value="{{ old('name', $fish->name) }}"
+                                required
+                                class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none @error('name') border-red-500 @enderror">
+                            @error('name')
+                                <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                    <span>⚠️</span>
+                                    <span>{{ $message }}</span>
+                                </p>
                             @enderror
                         </div>
+
+                        <!-- Price -->
+                        <div>
+                            <label for="price" class="block text-sm font-bold text-gray-700 mb-2">
+                                Cena (€ par kg) <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                step="0.01" 
+                                name="price" 
+                                id="price" 
+                                value="{{ old('price', $fish->price) }}"
+                                required
+                                class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none @error('price') border-red-500 @enderror">
+                            @error('price')
+                                <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                    <span>⚠️</span>
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mt-6">
+                        <label for="description" class="block text-sm font-bold text-gray-700 mb-2">
+                            Apraksts
+                        </label>
+                        <textarea 
+                            name="description" 
+                            id="description" 
+                            rows="4"
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none resize-none @error('description') border-red-500 @enderror">{{ old('description', $fish->description) }}</textarea>
+                        @error('description')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                <span>⚠️</span>
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Order Settings Section -->
+                <div class="pt-6 border-t border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <span>⚙️</span>
+                        <span>Pasūtījumu iestatījumi</span>
+                    </h2>
+
+                    <div class="mb-6">
+                        <label for="is_orderable" class="block text-sm font-bold text-gray-700 mb-2">
+                            Statuss <span class="text-red-500">*</span>
+                        </label>
+                        <select 
+                            name="is_orderable" 
+                            id="is_orderable"
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none @error('is_orderable') border-red-500 @enderror">
+                            <option value="0" {{ old('is_orderable', $fish->is_orderable) == 0 ? 'selected' : '' }}>
+                                ❌ Tikai katalogā (nav pasūtāms)
+                            </option>
+                            <option value="1" {{ old('is_orderable', $fish->is_orderable) == 1 ? 'selected' : '' }}>
+                                ✅ Pasūtāms (redzams veikalā)
+                            </option>
+                        </select>
+                        @error('is_orderable')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                <span>⚠️</span>
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Stock Fields (conditionally shown) -->
+                    <div id="stockFields" class="{{ old('is_orderable', $fish->is_orderable) == 1 ? '' : 'hidden' }}">
+                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                            <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <span>📦</span>
+                                <span>Noliktavas informācija</span>
+                            </h3>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <!-- Stock Quantity -->
+                                <div>
+                                    <label for="stock_quantity" class="block text-sm font-bold text-gray-700 mb-2">
+                                        Daudzums <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        name="stock_quantity" 
+                                        id="stock_quantity" 
+                                        value="{{ old('stock_quantity', $fish->stock_quantity ?? 0) }}"
+                                        min="0" 
+                                        step="0.1"
+                                        class="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none @error('stock_quantity') border-red-500 @enderror">
+                                    @error('stock_quantity')
+                                        <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                            <span>⚠️</span>
+                                            <span>{{ $message }}</span>
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <!-- Stock Unit -->
+                                <div>
+                                    <label for="stock_unit" class="block text-sm font-bold text-gray-700 mb-2">
+                                        Mērvienība <span class="text-red-500">*</span>
+                                    </label>
+                                    <select 
+                                        name="stock_unit" 
+                                        id="stock_unit"
+                                        class="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none @error('stock_unit') border-red-500 @enderror">
+                                        <option value="pieces" {{ old('stock_unit', $fish->stock_unit ?? 'pieces') == 'pieces' ? 'selected' : '' }}>gab. (gabali)</option>
+                                        <option value="kg" {{ old('stock_unit', $fish->stock_unit ?? 'kg') == 'kg' ? 'selected' : '' }}>kg (kilogrami)</option>
+                                    </select>
+                                    @error('stock_unit')
+                                        <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                            <span>⚠️</span>
+                                            <span>{{ $message }}</span>
+                                        </p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <span>📷</span>
+                        <span>Produkta attēls</span>
+                    </h2>
+
+                    <!-- Current Image -->
+                    @if($fish->image)
+                        <div class="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Pašreizējais attēls:</p>
+                            <img src="{{ asset('storage/fish_images/' . $fish->image) }}" 
+                                 alt="{{ $fish->name }}"
+                                 class="w-48 h-36 object-cover rounded-lg border-2 border-gray-300">
+                        </div>
+                    @else
+                        <div class="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200 text-center">
+                            <span class="text-6xl block mb-2">📷</span>
+                            <p class="text-sm text-gray-500">Nav attēla</p>
+                        </div>
+                    @endif
+
+                    <div>
+                        <label for="image" class="block text-sm font-bold text-gray-700 mb-2">
+                            Augšupielādēt jaunu attēlu
+                        </label>
+                        <input 
+                            type="file" 
+                            name="image" 
+                            id="image" 
+                            accept="image/*"
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('image') border-red-500 @enderror">
+                        <p class="mt-2 text-sm text-gray-600">
+                            Atstājiet tukšu, lai saglabātu pašreizējo attēlu. Formāti: JPG, PNG, GIF (max 5MB)
+                        </p>
+                        @error('image')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-2">
+                                <span>⚠️</span>
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
                     </div>
                 </div>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-sm">
-                    💾 Saglabāt
+            <!-- Form Actions -->
+            <div class="px-6 md:px-8 py-6 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
+                <button 
+                    type="submit"
+                    class="flex-1 px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl font-bold hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                    <span>💾</span>
+                    <span>Saglabāt izmaiņas</span>
                 </button>
-                <a href="{{ route('admin.fish.index') }}" class="btn btn-secondary btn-sm">
-                    ❌ Atcelt
+                <a href="{{ route('admin.fish.index') }}" 
+                   class="flex-1 sm:flex-initial px-6 py-3 bg-gray-200 text-gray-700 text-center rounded-xl font-bold hover:bg-gray-300 transition-colors">
+                    Atcelt
                 </a>
             </div>
         </form>
     </div>
 </div>
 
+@push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const orderableSelect = document.getElementById('is_orderable');
-    const stockFields = document.getElementById('stockFields');
-    
-    orderableSelect.addEventListener('change', function() {
-        if (this.value == '1') {
-            stockFields.classList.remove('hidden');
-            stockFields.classList.add('visible');
-        } else {
-            stockFields.classList.remove('visible');
-            stockFields.classList.add('hidden');
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderableSelect = document.getElementById('is_orderable');
+        const stockFields = document.getElementById('stockFields');
+        
+        orderableSelect.addEventListener('change', function() {
+            if (this.value == '1') {
+                stockFields.classList.remove('hidden');
+            } else {
+                stockFields.classList.add('hidden');
+            }
+        });
     });
-});
 </script>
+@endpush
+
 @endsection

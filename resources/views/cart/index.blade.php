@@ -106,7 +106,6 @@
                                             </button>
                                         </form>
 
-                                        <!-- Remove Button -->
                                         <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="ml-auto">
                                             @csrf
                                             @method('DELETE')
@@ -147,15 +146,12 @@
                             </h2>
                         </div>
 
-                        <!-- Summary Content -->
                         <div class="p-6 space-y-4">
-                            <!-- Items Count -->
                             <div class="flex justify-between items-center pb-4 border-b border-gray-200">
                                 <span class="text-gray-600 font-medium">Preču skaits:</span>
                                 <span class="font-bold text-gray-900 text-lg">{{ $cartItems->count() }}</span>
                             </div>
 
-                            <!-- Total Amount -->
                             <div class="p-4 bg-green-50 rounded-xl border-2 border-green-200">
                                 <div class="flex justify-between items-baseline mb-1">
                                     <span class="text-gray-700 font-semibold">KOPĀ:</span>
@@ -171,7 +167,6 @@
                                 </p>
                             </div>
 
-                            <!-- Checkout Button -->
                             <a href="{{ route('orders.checkout') }}" 
                                class="block w-full px-6 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white text-center rounded-xl font-bold text-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                                 📋 Veikt pasūtījumu
@@ -185,7 +180,6 @@
                                 </p>
                             </div>
 
-                            <!-- Clear Cart -->
                             <form action="{{ route('cart.clear') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -198,7 +192,6 @@
                         </div>
                     </div>
 
-                    <!-- Continue Shopping Link -->
                     <div class="mt-6 text-center">
                         <a href="{{ route('fish.shop') }}" 
                            class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors">

@@ -21,7 +21,6 @@
         <form method="POST" action="{{ route('register') }}" class="space-y-6">
             @csrf
 
-            <!-- Name Field -->
             <div>
                 <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
                     Vārds un uzvārds
@@ -43,7 +42,6 @@
                 @enderror
             </div>
 
-            <!-- Email Field -->
             <div>
                 <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
                     E-pasta adrese
@@ -64,7 +62,6 @@
                 @enderror
             </div>
 
-            <!-- Password Field -->
             <div>
                 <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
                     Parole
@@ -87,7 +84,6 @@
                 </p>
             </div>
 
-            <!-- Password Confirmation Field -->
             <div>
                 <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
                     Apstipriniet paroli
@@ -114,7 +110,6 @@
                 </label>
             </div>
 
-            <!-- Submit Button -->
             <button 
                 type="submit"
                 class="w-full px-6 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl font-bold text-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
@@ -123,7 +118,6 @@
         </form>
     </div>
 
-    <!-- Login Link -->
     <div class="mt-6 text-center">
         <p class="text-gray-600">
             Jau ir konts? 

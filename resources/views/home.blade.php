@@ -71,16 +71,14 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Feature Card 1 -->
         <div class="group p-8 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300">
             <div class="text-5xl mb-4">🐟</div>
             <h3 class="text-xl font-bold text-gray-900 mb-3">Svaigs produkts</h3>
             <p class="text-gray-600 leading-relaxed">
-                Zivis tiek piegādātas katru dienu no uzticamiem piegādātājiem
+                Zivis tiek piegādātas no uzticamiem piegādātājiem
             </p>
         </div>
 
-        <!-- Feature Card 2 -->
         <div class="group p-8 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300">
             <div class="text-5xl mb-4">⭐</div>
             <h3 class="text-xl font-bold text-gray-900 mb-3">Augsta kvalitāte</h3>
@@ -89,16 +87,14 @@
             </p>
         </div>
 
-        <!-- Feature Card 3 -->
         <div class="group p-8 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300">
             <div class="text-5xl mb-4">🚚</div>
             <h3 class="text-xl font-bold text-gray-900 mb-3">Ātra apkalpošana</h3>
             <p class="text-gray-600 leading-relaxed">
-                Pasūtījums tiek apstrādāts ātri un profesionāli
+                Pasūtījums tiek apstrādāts ātri
             </p>
         </div>
 
-        <!-- Feature Card 4 -->
         <div class="group p-8 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300">
             <div class="text-5xl mb-4">💰</div>
             <h3 class="text-xl font-bold text-gray-900 mb-3">Labas cenas</h3>
@@ -107,7 +103,6 @@
             </p>
         </div>
 
-        <!-- Feature Card 5 -->
         <div class="group p-8 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300">
             <div class="text-5xl mb-4">👨‍👩‍👧‍👦</div>
             <h3 class="text-xl font-bold text-gray-900 mb-3">Ģimenes bizness</h3>
@@ -116,7 +111,6 @@
             </p>
         </div>
 
-        <!-- Feature Card 6 -->
         <div class="group p-8 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300">
             <div class="text-5xl mb-4">📞</div>
             <h3 class="text-xl font-bold text-gray-900 mb-3">Vienmēr sazvanāmi</h3>
@@ -139,7 +133,6 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-        <!-- Step 1 -->
         <div class="text-center">
             <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-full text-2xl font-bold shadow-lg">
                 1
@@ -151,7 +144,6 @@
             </p>
         </div>
 
-        <!-- Step 2 -->
         <div class="text-center">
             <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-full text-2xl font-bold shadow-lg">
                 2
@@ -162,7 +154,6 @@
             </p>
         </div>
 
-        <!-- Step 3 -->
         <div class="text-center">
             <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-full text-2xl font-bold shadow-lg">
                 3
@@ -173,7 +164,6 @@
             </p>
         </div>
 
-        <!-- Step 4 -->
         <div class="text-center">
             <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-full text-2xl font-bold shadow-lg">
                 4

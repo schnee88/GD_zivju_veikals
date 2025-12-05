@@ -20,8 +20,6 @@
     <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
         <form method="POST" action="{{ route('login') }}" class="space-y-6">
             @csrf
-
-            <!-- Email Field -->
             <div>
                 <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
                     E-pasta adrese
@@ -43,7 +41,6 @@
                 @enderror
             </div>
 
-            <!-- Password Field -->
             <div>
                 <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
                     Parole
@@ -75,7 +72,6 @@
                 </label>
             </div>
 
-            <!-- Submit Button -->
             <button 
                 type="submit"
                 class="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
@@ -84,7 +80,6 @@
         </form>
     </div>
 
-    <!-- Register Link -->
     <div class="mt-6 text-center">
         <p class="text-gray-600">
             Nav konta? 
@@ -94,7 +89,6 @@
         </p>
     </div>
 
-    <!-- Benefits Section -->
     <div class="mt-12 p-6 bg-blue-50 rounded-2xl border border-blue-200">
         <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
             <span>✨</span>

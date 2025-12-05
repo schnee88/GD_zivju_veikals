@@ -96,7 +96,6 @@
                     <form action="{{ route('orders.store') }}" method="POST" id="checkoutForm" class="p-6 space-y-6">
                         @csrf
 
-                        <!-- Phone Field -->
                         <div>
                             <label for="phone" class="block text-sm font-bold text-gray-700 mb-2">
                                 Tālrunis <span class="text-red-500">*</span>
@@ -120,7 +119,6 @@
                             </p>
                         </div>
 
-                        <!-- Notes Field -->
                         <div>
                             <label for="notes" class="block text-sm font-bold text-gray-700 mb-2">
                                 Piezīmes (neobligāti)
@@ -153,7 +151,6 @@
                             </div>
                         </div>
 
-                        <!-- Submit Button -->
                         <button 
                             type="submit"
                             class="w-full px-6 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl font-bold text-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
@@ -161,7 +158,6 @@
                             <span>Apstiprināt pasūtījumu</span>
                         </button>
 
-                        <!-- Back to Cart -->
                         <a href="{{ route('cart.index') }}" 
                            class="block w-full px-6 py-3 bg-gray-100 text-gray-700 text-center rounded-xl font-semibold hover:bg-gray-200 transition-colors">
                             ← Atpakaļ uz grozu
@@ -170,7 +166,6 @@
                 </div>
             </div>
 
-            <!-- Right Column - Summary Sidebar -->
             <div class="lg:col-span-1">
                 <div class="sticky top-24">
                     <div class="bg-white rounded-2xl border-2 border-gray-200 overflow-hidden shadow-lg">

@@ -75,7 +75,6 @@
                         @endif
                     </div>
 
-                    <!-- Fish Products Section -->
                     <div class="px-6 md:px-8 py-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span class="text-2xl">🐟</span>

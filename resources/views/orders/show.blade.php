@@ -164,7 +164,7 @@
                 </div>
             @endif
 
-            <!-- Admin Notes (if user is admin) -->
+            <!-- Admin Notes -->
             @if($order->admin_notes && Auth::user()->is_admin)
                 <div class="p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
                     <h3 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
