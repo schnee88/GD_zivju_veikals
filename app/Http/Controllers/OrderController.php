@@ -70,13 +70,6 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $user = Auth::user();
-        $cartItems = $user->cartItems()->with('fish')->get();
-
-        if ($cartItems->isEmpty()) {
-            return redirect()
-                ->route('cart.index')
-                ->with('error', 'Jūsu grozs ir tukšs!');
-        }
 
         // Pārbauda vai nav pārāk daudz aktīvo pasūtījumu
         if ($user->hasMaxActiveOrders(3)) {
@@ -86,7 +79,7 @@ class OrderController extends Controller
         }
 
         // Pārbauda IP limitu
-        if ($this->hasExceededIpLimit($request->ip())) {
+        if (Order::hasExceededIpLimit($request->ip())) {
             return redirect()
                 ->back()
                 ->with('error', 'No šīs IP adreses šodien ir veikti pārāk daudz pasūtījumi.');
@@ -95,44 +88,13 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            // Pārbauda pieejamību
-            foreach ($cartItems as $cartItem) {
-                if (!$cartItem->fish->hasStock($cartItem->quantity)) {
-                    DB::rollBack();
-                    return redirect()
-                        ->back()
-                        ->with('error', "Zivs \"{$cartItem->fish->name}\" vairs nav pietiekamā daudzumā.");
-                }
-            }
-
-            // Aprēķina kopējo summu
-            $totalAmount = $cartItems->sum(function ($item) {
-                return $item->quantity * $item->fish->price;
-            });
-
-            // Izveido pasūtījumu
-            $order = Order::create([
-                'user_id' => $user->id,
-                'phone' => $request->phone,
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'status' => Order::STATUS_PENDING,
-                'notes' => $request->notes,
-                'total_amount' => $totalAmount,
-            ]);
-
-            // Izveido pasūtījuma pozīcijas
-            foreach ($cartItems as $cartItem) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'fish_id' => $cartItem->fish_id,
-                    'quantity' => $cartItem->quantity,
-                    'price' => $cartItem->fish->price,
-                ]);
-            }
-
-            // Iztīra grozu
-            $user->cartItems()->delete();
+            $order = Order::createFromCart(
+                $user,
+                $request->phone,
+                $request->ip(),
+                $request->userAgent(),
+                $request->notes
+            );
 
             DB::commit();
 
@@ -144,7 +106,7 @@ class OrderController extends Controller
 
             return redirect()
                 ->back()
-                ->with('error', 'Radās kļūda veidojot pasūtījumu. Lūdzu, mēģiniet vēlreiz.');
+                ->with('error', $e->getMessage());
         }
     }
 
@@ -261,21 +223,5 @@ class OrderController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Pasūtījuma statuss atjaunināts!');
-    }
-
-    // ============================================
-    // PRIVATE HELPERS
-    // ============================================
-
-    /**
-     * Pārbauda vai IP ir pārsniegusi limitu
-     */
-    private function hasExceededIpLimit(string $ipAddress): bool
-    {
-        $todayOrders = Order::where('ip_address', $ipAddress)
-            ->whereDate('created_at', today())
-            ->count();
-
-        return $todayOrders >= 5;
     }
 }

@@ -110,10 +110,6 @@ class Order extends Model
         return $this->isPending();
     }
 
-    // ============================================
-    // BUSINESS LOGIC
-    // ============================================
-
     public function calculateTotal(): float
     {
         return $this->items->sum(function ($item) {
@@ -164,9 +160,6 @@ class Order extends Model
         return true;
     }
 
-    /**
-     * Pabeigt pasūtījumu
-     */
     public function complete(): bool
     {
         if (!$this->isConfirmed()) {
@@ -175,5 +168,60 @@ class Order extends Model
 
         $this->update(['status' => self::STATUS_COMPLETED]);
         return true;
+    }
+
+    public static function createFromCart(
+        User $user,
+        string $phone,
+        string $ipAddress,
+        ?string $userAgent = null,
+        ?string $notes = null
+    ): self {
+        $cartItems = $user->cartItems()->with('fish')->get();
+
+        if ($cartItems->isEmpty()) {
+            throw new \Exception('Grozs ir tukšs');
+        }
+
+        // Pārbauda pieejamību
+        foreach ($cartItems as $cartItem) {
+            if (!$cartItem->fish->hasStock($cartItem->quantity)) {
+                throw new \Exception("Zivs \"{$cartItem->fish->name}\" vairs nav pietiekamā daudzumā.");
+            }
+        }
+
+        // Aprēķina kopējo summu
+        $totalAmount = $cartItems->sum(fn($item) => $item->quantity * $item->fish->price);
+
+        $order = static::create([
+            'user_id' => $user->id,
+            'phone' => $phone,
+            'ip_address' => $ipAddress,
+            'user_agent' => $userAgent,
+            'status' => self::STATUS_PENDING,
+            'notes' => $notes,
+            'total_amount' => $totalAmount,
+        ]);
+
+        // Izveido pasūtījuma pozīcijas
+        foreach ($cartItems as $cartItem) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'fish_id' => $cartItem->fish_id,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->fish->price,
+            ]);
+        }
+
+        $user->cartItems()->delete();
+
+        return $order;
+    }
+
+    public static function hasExceededIpLimit(string $ipAddress, int $limit = 5): bool
+    {
+        return static::where('ip_address', $ipAddress)
+            ->whereDate('created_at', today())
+            ->count() >= $limit;
     }
 }

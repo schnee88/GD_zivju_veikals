@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class FishController extends Controller
 {
-    // PUBLISKAIS SKATS
-
     public function catalog()
     {
         $fishes = Fish::all();

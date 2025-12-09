@@ -20,9 +20,6 @@ class BatchController extends Controller
         return view('admin.batches.index', compact('batches'));
     }
 
-    /**
-     * Publiskais skats
-     */
     public function publicIndex()
     {
         $batches = Batch::activeForPublic()

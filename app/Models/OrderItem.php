@@ -16,10 +16,6 @@ class OrderItem extends Model
         'price',
     ];
 
-    // ============================================
-    // RELATIONSHIPS
-    // ============================================
-
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -29,10 +25,6 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Fish::class);
     }
-
-    // ============================================
-    // HELPER METODES
-    // ============================================
 
     /**
      * Aprēķināt kopējo cenu

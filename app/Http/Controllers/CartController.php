@@ -33,21 +33,15 @@ class CartController extends Controller
             return redirect()->back()->with('error', 'Nav pietiekami daudz šīs zivis noliktavā!');
         }
 
-        $existingCartItem = CartItem::where('user_id', auth()->id())
-            ->where('fish_id', $request->fish_id)
-            ->first();
-
-        if ($existingCartItem) {
-            $existingCartItem->quantity += $request->quantity;
-            $existingCartItem->save();
-        } else {
-            CartItem::create([
+        $cartItem = CartItem::firstOrCreate(
+            [
                 'user_id' => auth()->id(),
                 'fish_id' => $request->fish_id,
-                'batch_id' => null,
-                'quantity' => $request->quantity,
-            ]);
-        }
+            ],
+            ['quantity' => 0]
+        );
+
+        $cartItem->increment('quantity', $request->quantity);
 
         return redirect()->back()->with('success', 'Produkts pievienots grozam!');
     }

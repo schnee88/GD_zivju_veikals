@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->cartItems->count();
     }
+
+    public function hasEmptyCart(): bool
+    {
+        return $this->cartItems()->count() === 0;
+    }
 }
