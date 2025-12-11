@@ -15,9 +15,6 @@ class OrderController extends Controller
     // USER SKATS
     // ============================================
 
-    /**
-     * Parādīt lietotāja pasūtījumus
-     */
     public function index()
     {
         $orders = Auth::user()
@@ -29,9 +26,6 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    /**
-     * Parādīt vienu pasūtījumu
-     */
     public function show($id)
     {
         $order = Order::with(['items.fish', 'user'])
@@ -45,9 +39,6 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    /**
-     * Checkout skats
-     */
     public function checkout()
     {
         $cartItems = Auth::user()
@@ -64,9 +55,6 @@ class OrderController extends Controller
         return view('orders.checkout', compact('cartItems'));
     }
 
-    /**
-     * Izveidot pasūtījumu
-     */
     public function store(StoreOrderRequest $request)
     {
         $user = Auth::user();
@@ -110,9 +98,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Success lapa pēc pasūtījuma
-     */
     public function success($id)
     {
         $order = Order::with(['items.fish'])
@@ -154,31 +139,16 @@ class OrderController extends Controller
      */
     public function adminIndex(Request $request)
     {
-        $query = Order::with(['user', 'items.fish']);
-
-        // Filtri
-        if ($request->filled('start_date')) {
-            $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->start_date)->startOfDay();
-            $query->where('created_at', '>=', $startDate);
-        }
-
-        if ($request->filled('end_date')) {
-            $endDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->end_date)->endOfDay();
-            $query->where('created_at', '<=', $endDate);
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $orders = $query->latest()->paginate(20);
+        $orders = Order::query()
+            ->withRelations()
+            ->filterByDateRange($request->start_date, $request->end_date)
+            ->filterByStatus($request->status)
+            ->latest()
+            ->paginate(20);
 
         return view('admin.orders.index', compact('orders'));
     }
 
-    /**
-     * Parādīt pasūtījumu (admin)
-     */
     public function adminShow($id)
     {
         $order = Order::with(['user', 'items.fish'])
@@ -187,9 +157,6 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
-    /**
-     * Atjaunināt pasūtījuma statusu
-     */
     public function updateStatus(Request $request, $id)
     {
         $order = Order::with('items')->findOrFail($id);

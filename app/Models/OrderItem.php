@@ -26,17 +26,11 @@ class OrderItem extends Model
         return $this->belongsTo(Fish::class);
     }
 
-    /**
-     * Aprēķināt kopējo cenu
-     */
     public function getTotalPrice(): float
     {
         return $this->quantity * $this->price;
     }
-
-    /**
-     * Iegūt mērvienību
-     */
+    
     public function getUnit(): string
     {
         return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';

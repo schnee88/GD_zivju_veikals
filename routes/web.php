@@ -39,15 +39,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // LIETOTĀJA ZONA (autentificētiem)
 // ============================================
 Route::middleware('auth')->group(function () {
-    
-    // GROZS (veikalam)
+
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::patch('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 
-    // PASŪTĪJUMI
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
@@ -69,7 +67,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // Atskaites
     Route::get('/reports/orders', [ReportController::class, 'orders'])->name('admin.reports.orders');
 
-    // ZIVIS
     Route::get('/fish', [FishController::class, 'adminIndex'])->name('admin.fish.index');
     Route::get('/fish/create', [FishController::class, 'create'])->name('admin.fish.create');
     Route::post('/fish', [FishController::class, 'store'])->name('admin.fish.store');
@@ -77,7 +74,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/fish/{id}', [FishController::class, 'update'])->name('admin.fish.update');
     Route::delete('/fish/{id}', [FishController::class, 'destroy'])->name('admin.fish.destroy');
 
-    // PARTIJAS (Batches)
     Route::get('/batches', [BatchController::class, 'index'])->name('admin.batches.index');
     Route::get('/batches/create', [BatchController::class, 'create'])->name('admin.batches.create');
     Route::post('/batches', [BatchController::class, 'store'])->name('admin.batches.store');

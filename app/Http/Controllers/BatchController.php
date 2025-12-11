@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class BatchController extends Controller
 {
-    /**
-     * Admin panelis
-     */
+    //Admin panelis
     public function index()
     {
         $batches = Batch::with('fishes')

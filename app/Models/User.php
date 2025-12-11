@@ -32,7 +32,6 @@ class User extends Authenticatable
         ];
     }
 
-    // Pasūtījumi
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -47,8 +46,6 @@ class User extends Authenticatable
     {
         return $this->orders()->active()->count() >= $max;
     }
-
-    // Grozs
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);

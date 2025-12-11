@@ -60,6 +60,35 @@ class Order extends Model
         return $query->where('user_id', $userId);
     }
 
+    public function scopeFilterByDateRange($query, $startDate = null, $endDate = null)
+{
+    if ($startDate) {
+        $start = \Carbon\Carbon::createFromFormat('d/m/Y', $startDate)->startOfDay();
+        $query->where('created_at', '>=', $start);
+    }
+
+    if ($endDate) {
+        $end = \Carbon\Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
+        $query->where('created_at', '<=', $end);
+    }
+
+    return $query;
+}
+
+public function scopeFilterByStatus($query, $status = null)
+{
+    if ($status) {
+        $query->where('status', $status);
+    }
+
+    return $query;
+}
+
+public function scopeWithRelations($query)
+{
+    return $query->with(['user', 'items.fish']);
+}
+
     // ACCESSORS
 
     public function getFormattedTotalAttribute()
