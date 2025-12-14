@@ -38,9 +38,9 @@ class StoreFishRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        // Convert checkbox to boolean
+        // Convert select value to boolean
         $this->merge([
-            'is_orderable' => $this->has('is_orderable') ? true : false,
+            'is_orderable' => (bool) $this->input('is_orderable'),
         ]);
 
         // If not orderable, set stock to 0
