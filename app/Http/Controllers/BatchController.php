@@ -103,7 +103,7 @@ class BatchController extends Controller
         } catch (\Exception $e) {
             return back()
                 ->with('error', 'Kļūda atjauninot partiju: ' . $e->getMessage())
-                ->withInput();
+                ->withInput(); // saglabā ievadītos datus
         }
     }
 

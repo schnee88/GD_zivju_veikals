@@ -67,7 +67,7 @@ class FishController extends Controller
     {
         $fish = Fish::findOrFail($id);
         $validated = $request->validated();
-
+        //dzēš veco attēlu, pirms augšuplādē jauno att
         if ($request->hasFile('image')) {
             if ($fish->image) {
                 $this->deleteImage($fish->image);
@@ -101,6 +101,7 @@ class FishController extends Controller
     private function uploadImage($file): string
     {
         $path = $file->store('fish_images', 'public');
+        //saglabā tikai faila nosaukumu
         return basename($path);
     }
 

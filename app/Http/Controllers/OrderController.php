@@ -117,6 +117,8 @@ class OrderController extends Controller
             abort(403);
         }
 
+        // Command-Query Separation principu - viena metode vai jautā, vai dara, bet ne abus.
+
         if (!$order->canBeCancelled()) {
             return redirect()
                 ->back()

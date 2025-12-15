@@ -47,7 +47,9 @@ class CartController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
+    {   
+        //id atrod pareizo groza ierakstu
+        //user_id pārbauda, vai šis ieraksts pieder tieši šim lietotājam
         $cartItem = CartItem::where('id', $id)
             ->where('user_id', Auth::id())
             ->firstOrFail();
