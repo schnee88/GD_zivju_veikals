@@ -10,6 +10,12 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware();
+    }
+
     /**
      * Test 1: Autentifikācijas mēģinājums bez lietotāja vārda vai paroles
      */

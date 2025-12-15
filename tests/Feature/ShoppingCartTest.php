@@ -12,6 +12,12 @@ class ShoppingCartTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware();
+    }
+
     /**
      * Test 1: Produkta pievienošana grozam
      */

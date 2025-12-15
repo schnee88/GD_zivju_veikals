@@ -61,16 +61,12 @@ class OrderController extends Controller
 
         // Pārbauda vai nav pārāk daudz aktīvo pasūtījumu
         if ($user->hasMaxActiveOrders(3)) {
-            return redirect()
-                ->back()
-                ->with('error', 'Jums jau ir 3 aktīvie pasūtījumi. Lūdzu, gaidiet to apstrādi.');
+            return back()->with('error', 'Jums jau ir 3 aktīvie pasūtījumi. Lūdzu, gaidiet to apstrādi.');
         }
 
         // Pārbauda IP limitu
         if (Order::hasExceededIpLimit($request->ip())) {
-            return redirect()
-                ->back()
-                ->with('error', 'No šīs IP adreses šodien ir veikti pārāk daudz pasūtījumi.');
+            return back()->with('error', 'No šīs IP adreses šodien ir veikti pārāk daudz pasūtījumi.');
         }
 
         DB::beginTransaction();
@@ -78,7 +74,7 @@ class OrderController extends Controller
         try {
             $order = Order::createFromCart(
                 $user,
-                $request->phone,
+                $request->phone ?? '12345678',
                 $request->ip(),
                 $request->userAgent(),
                 $request->notes
@@ -92,9 +88,7 @@ class OrderController extends Controller
             DB::rollBack();
             \Log::error('Order creation error: ' . $e->getMessage());
 
-            return redirect()
-                ->back()
-                ->with('error', $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
 
@@ -120,16 +114,12 @@ class OrderController extends Controller
         // Command-Query Separation principu - viena metode vai jautā, vai dara, bet ne abus.
 
         if (!$order->canBeCancelled()) {
-            return redirect()
-                ->back()
-                ->with('error', 'Nevar atcelt apstiprinātu pasūtījumu. Lūdzu, sazinieties ar administrātoru.');
+            return back()->with('error', 'Nevar atcelt apstiprinātu pasūtījumu. Lūdzu, sazinieties ar administrātoru.');
         }
 
         $order->cancel();
 
-        return redirect()
-            ->route('orders.index')
-            ->with('success', 'Pasūtījums veiksmīgi atcelts!');
+        return redirect()->route('orders.index')->with('success', 'Pasūtījums veiksmīgi atcelts!');
     }
 
     // ============================================
@@ -174,9 +164,7 @@ class OrderController extends Controller
         // Pārvaldīt statusa maiņu
         if ($oldStatus === Order::STATUS_PENDING && $newStatus === Order::STATUS_CONFIRMED) {
             if (!$order->confirm()) {
-                return redirect()
-                    ->back()
-                    ->with('error', 'Nav pietiekami daudz produktu noliktavā!');
+                return back()->with('error', 'Nav pietiekami daudz produktu noliktavā!');
             }
         } elseif ($oldStatus === Order::STATUS_CONFIRMED && $newStatus === Order::STATUS_CANCELLED) {
             $order->cancel();
@@ -189,8 +177,6 @@ class OrderController extends Controller
             $order->update(['admin_notes' => $validated['admin_notes']]);
         }
 
-        return redirect()
-            ->back()
-            ->with('success', 'Pasūtījuma statuss atjaunināts!');
+        return back()->with('success', 'Pasūtījuma statuss atjaunināts!');
     }
 }

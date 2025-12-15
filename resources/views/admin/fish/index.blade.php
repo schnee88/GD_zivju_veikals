@@ -7,7 +7,6 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <h1 class="text-3xl font-extrabold text-gray-900 mb-2 flex items-center gap-3">
-                <span class="text-4xl">🐟</span>
                 <span>Zivju pārvaldība</span>
             </h1>
             <p class="text-gray-600">

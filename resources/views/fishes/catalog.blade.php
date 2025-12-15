@@ -5,7 +5,7 @@
 <!-- Page Header -->
 <div class="text-center mb-8">
     <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
-        🐟 Produktu katalogs
+        Produktu katalogs
     </h1>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto">
         Šeit var apskatīt mūsu sortimentu. Lai iegādātos, lūdzu, apmeklējiet mūsu veikalu vai zvaniet.
@@ -47,7 +47,6 @@
                 <!-- Content -->
                 <div class="p-6 space-y-4">
                     <div class="flex items-start gap-2">
-                        <span class="text-2xl flex-shrink-0">🐟</span>
                         <h3 class="text-xl font-bold text-gray-900 leading-tight">
                             {{ $fish->name }}
                         </h3>

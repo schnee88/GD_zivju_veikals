@@ -13,6 +13,12 @@ class OrderProcessingTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware();
+    }
+
     /**
      * Test 1: Pasūtījuma izveide no groza
      * PIEZĪME: Pielāgots bez phone lauka
@@ -92,9 +98,9 @@ class OrderProcessingTest extends TestCase
      */
     public function test_admin_can_update_order_status()
     {
-        $admin = User::factory()->create(); // Nav role
+        $admin = User::factory()->admin()->create();
         $user = User::factory()->create();
-        
+
         $order = Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'pending'

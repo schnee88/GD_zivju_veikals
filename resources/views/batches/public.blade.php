@@ -6,7 +6,6 @@
     <!-- Page Header -->
     <div class="text-center mb-10">
         <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 flex items-center justify-center gap-3">
-            <span class="text-4xl">⚗️</span>
             <span>Plānotās ražošanas partijas</span>
         </h1>
         <p class="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -55,7 +54,6 @@
                                     {{ $batch->name }}
                                 </h2>
                                 <p class="flex items-center gap-2 text-gray-600">
-                                    <span class="text-lg">📅</span>
                                     <span class="font-semibold">Izgatavošanas datums:</span>
                                     <span>{{ $batch->batch_date->format('d.m.Y H:i') }}</span>
                                 </p>
@@ -77,7 +75,6 @@
 
                     <div class="px-6 md:px-8 py-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🐟</span>
                             <span>Plānotās zivis:</span>
                         </h3>
 

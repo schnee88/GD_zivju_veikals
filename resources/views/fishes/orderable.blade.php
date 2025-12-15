@@ -5,7 +5,7 @@
 <!-- Page Header -->
 <div class="text-center mb-8">
     <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
-        🛒 Zivju veikals
+        Zivju veikals
     </h1>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto">
         Pasūti zivis tieši tagad!
@@ -15,7 +15,6 @@
 @if($fishes->isEmpty())
     <!-- Empty State -->
     <div class="max-w-md mx-auto text-center py-16">
-        <div class="text-6xl mb-6">🐟</div>
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Nav pieejamu produktu</h2>
         <p class="text-gray-600 mb-8">
             Šobrīd nav pieejamu produktu pasūtīšanai

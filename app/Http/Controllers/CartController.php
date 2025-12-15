@@ -22,32 +22,32 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'fish_id' => 'required|exists:fishes,id',
             'quantity' => 'required|numeric|min:0.1',
         ]);
 
-        $fish = Fish::findOrFail($request->fish_id);
+        $fish = Fish::findOrFail($validated['fish_id']);
 
-        if (!$fish->hasStock($request->quantity)) {
-            return redirect()->back()->with('error', 'Nav pietiekami daudz šīs zivis noliktavā!');
+        if (!$fish->hasStock($validated['quantity'])) {
+            return back()->withErrors(['quantity' => 'Nav pietiekami daudz šīs zivis noliktavā!']);
         }
 
         $cartItem = CartItem::firstOrCreate(
             [
                 'user_id' => auth()->id(),
-                'fish_id' => $request->fish_id,
+                'fish_id' => $validated['fish_id'],
             ],
             ['quantity' => 0]
         );
 
-        $cartItem->increment('quantity', $request->quantity);
+        $cartItem->increment('quantity', $validated['quantity']);
 
         return redirect()->back()->with('success', 'Produkts pievienots grozam!');
     }
 
     public function update(Request $request, $id)
-    {   
+    {
         //id atrod pareizo groza ierakstu
         //user_id pārbauda, vai šis ieraksts pieder tieši šim lietotājam
         $cartItem = CartItem::where('id', $id)
@@ -62,12 +62,12 @@ class CartController extends Controller
 
         // Pārbauda vai gabali ir veseli skaitļi
         if ($fish->stock_unit == 'pieces' && floor($validated['quantity']) != $validated['quantity']) {
-            return redirect()->back()->with('error', 'Gabalu daudzumam jābūt veselam skaitlim.');
+            return back()->withErrors(['quantity' => 'Gabalu daudzumam jābūt veselam skaitlim.']);
         }
 
         // Pārbauda pieejamību
         if (!$fish->hasStock($validated['quantity'])) {
-            return redirect()->back()->with('error', 'Pārsniegts pieejamais daudzums. Pieejams: ' . $fish->stock_quantity . ' ' . ($fish->stock_unit == 'kg' ? 'kg' : 'gab.'));
+            return back()->withErrors(['quantity' => 'Pārsniegts pieejamais daudzums. Pieejams: ' . $fish->stock_quantity . ' ' . ($fish->stock_unit == 'kg' ? 'kg' : 'gab.')]);
         }
 
         $cartItem->update(['quantity' => $validated['quantity']]);

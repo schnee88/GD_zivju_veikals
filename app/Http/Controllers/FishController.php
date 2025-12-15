@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 class FishController extends Controller
 {
+    public function index()
+    {
+        $fishes = Fish::all();
+        return view('fishes.catalog', compact('fishes'));
+    }
+
     public function catalog()
     {
         $fishes = Fish::all();
@@ -50,11 +56,9 @@ class FishController extends Controller
             $validated['image'] = $this->uploadImage($request->file('image'));
         }
 
-        Fish::create($validated);
+        $fish = Fish::create($validated);
 
-        return redirect()
-            ->route('admin.fish.index')
-            ->with('success', 'Zivs veiksmīgi pievienota!');
+        return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi pievienota!');
     }
 
     public function edit(string $id)
@@ -78,9 +82,7 @@ class FishController extends Controller
 
         $fish->update($validated);
 
-        return redirect()
-            ->route('admin.fish.index')
-            ->with('success', 'Zivs veiksmīgi atjaunināta!');
+        return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi atjaunināta!');
     }
 
     public function destroy(string $id)
@@ -93,9 +95,7 @@ class FishController extends Controller
 
         $fish->delete();
 
-        return redirect()
-            ->route('admin.fish.index')
-            ->with('success', 'Zivs veiksmīgi dzēsta!');
+        return redirect()->route('admin.fish.index')->with('success', 'Zivs veiksmīgi dzēsta!');
     }
 
     private function uploadImage($file): string

@@ -13,6 +13,12 @@ class ProductManagementTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware();
+    }
+
     /**
      * Test 1: Produktu kataloga skatīšana bez autentifikācijas
      */
@@ -29,8 +35,8 @@ class ProductManagementTest extends TestCase
      */
     public function test_admin_can_create_product()
     {
-        // Izveidojam administratoru (bez role lauka)
-        $admin = User::factory()->create();
+        // Izveidojam administratoru
+        $admin = User::factory()->admin()->create();
 
         Storage::fake('public');
         $image = UploadedFile::fake()->image('fish.jpg');
@@ -77,7 +83,7 @@ class ProductManagementTest extends TestCase
      */
     public function test_product_creation_fails_with_negative_price()
     {
-        $admin = User::factory()->create();
+        $admin = User::factory()->admin()->create();
 
         $response = $this->actingAs($admin)->post('/admin/products', [
             'name' => 'Siļķe',
@@ -107,7 +113,7 @@ class ProductManagementTest extends TestCase
      */
     public function test_admin_can_update_product_price()
     {
-        $admin = User::factory()->create();
+        $admin = User::factory()->admin()->create();
         $fish = Fish::factory()->create([
             'name' => 'Lasis',
             'price' => 12.99
@@ -130,7 +136,7 @@ class ProductManagementTest extends TestCase
      */
     public function test_admin_can_delete_product()
     {
-        $admin = User::factory()->create();
+        $admin = User::factory()->admin()->create();
         $fish = Fish::factory()->create(['name' => 'Vecs produkts']);
 
         $response = $this->actingAs($admin)->delete("/admin/products/{$fish->id}");

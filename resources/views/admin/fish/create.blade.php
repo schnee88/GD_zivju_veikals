@@ -29,7 +29,6 @@
             <div class="p-6 md:p-8 space-y-6">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <span>📝</span>
                         <span>Pamata informācija</span>
                     </h2>
 
@@ -99,7 +98,6 @@
                 <!-- Order Settings Section -->
                 <div class="pt-6 border-t border-gray-200">
                     <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <span>⚙️</span>
                         <span>Pasūtījumu iestatījumi</span>
                     </h2>
 
@@ -186,7 +184,6 @@
                 <!-- Image Section -->
                 <div class="pt-6 border-t border-gray-200">
                     <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <span>📷</span>
                         <span>Produkta attēls</span>
                     </h2>
 
