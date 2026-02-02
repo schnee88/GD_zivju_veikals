@@ -53,8 +53,7 @@ class Fish extends Model
 
     public function scopeInStock($query)
     {
-        return $query->where('is_orderable', true)
-                     ->where('stock_quantity', '>', 0);
+        return $query->where('stock_quantity', '>', 0);
     }
 
     // ACCESSORS
