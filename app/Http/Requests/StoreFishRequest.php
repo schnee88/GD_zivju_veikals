@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// StoreFishRequest ir klase, kas validē un autorizē datus
+// PIRMS tie nonāk tavā controllerī.
+
 class StoreFishRequest extends FormRequest
 {
     public function authorize(): bool

@@ -15,7 +15,9 @@ class ShoppingCartTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withoutMiddleware();
+        $this->withoutMiddleware([
+            \App\Http\Middleware\AdminMiddleware::class,
+        ]);
     }
 
     /**

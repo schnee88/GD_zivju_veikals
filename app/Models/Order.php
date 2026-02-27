@@ -61,33 +61,33 @@ class Order extends Model
     }
 
     public function scopeFilterByDateRange($query, $startDate = null, $endDate = null)
-{
-    if ($startDate) {
-        $start = \Carbon\Carbon::createFromFormat('d/m/Y', $startDate)->startOfDay();
-        $query->where('created_at', '>=', $start);
+    {
+        if ($startDate) {
+            $start = \Carbon\Carbon::createFromFormat('d/m/Y', $startDate)->startOfDay();
+            $query->where('created_at', '>=', $start);
+        }
+
+        if ($endDate) {
+            $end = \Carbon\Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
+            $query->where('created_at', '<=', $end);
+        }
+
+        return $query;
     }
 
-    if ($endDate) {
-        $end = \Carbon\Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
-        $query->where('created_at', '<=', $end);
+    public function scopeFilterByStatus($query, $status = null)
+    {
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        return $query;
     }
 
-    return $query;
-}
-
-public function scopeFilterByStatus($query, $status = null)
-{
-    if ($status) {
-        $query->where('status', $status);
+    public function scopeWithRelations($query)
+    {
+        return $query->with(['user', 'items.fish']);
     }
-
-    return $query;
-}
-
-public function scopeWithRelations($query)
-{
-    return $query->with(['user', 'items.fish']);
-}
 
     // ACCESSORS
 

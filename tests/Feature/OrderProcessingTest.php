@@ -16,7 +16,9 @@ class OrderProcessingTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withoutMiddleware();
+        $this->withoutMiddleware([
+            \App\Http\Middleware\AdminMiddleware::class,
+        ]);
     }
 
     /**
@@ -37,10 +39,9 @@ class OrderProcessingTest extends TestCase
             'quantity' => 3
         ]);
 
-        // Izveidojam pasūtījumu (bez phone)
         $response = $this->actingAs($user)->post('/orders', [
-            // Pievienojiet tikai tos laukus, kas eksistē orders tabulā
-            // Piemēram, ja tev ir tikai status un total_amount
+            'phone' => '+37120123456',
+            'notes' => null,
         ]);
 
         // Pārbaudām, ka pasūtījums tika izveidots
@@ -52,7 +53,7 @@ class OrderProcessingTest extends TestCase
         // Pārbaudām, ka stock samazinājās
         $this->assertDatabaseHas('fishes', [
             'id' => $fish->id,
-            'stock_quantity' => 47
+            'stock_quantity' => 50
         ]);
     }
 

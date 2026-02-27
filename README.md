@@ -22,6 +22,11 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan db:seed
+npm install
+
+Start up commands:
+php artisan serve
+npm run dev
 
 If you need to refresh the database and reseed everything, run:
 php artisan migrate:fresh --seed

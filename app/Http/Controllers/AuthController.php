@@ -53,8 +53,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect()->intended(route('home'))
                 ->with('success', 'Veiksmīgi pieslēgties!');
-        }
-
+        } 
         return back()->withErrors([
             'email' => 'Nepareizs e-pasts vai parole.',
         ])->onlyInput('email');
@@ -70,3 +69,4 @@ class AuthController extends Controller
             ->with('success', 'Veiksmīgi atvienots!');
     }
 }
+ 

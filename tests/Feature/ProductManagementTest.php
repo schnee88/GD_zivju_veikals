@@ -16,7 +16,9 @@ class ProductManagementTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withoutMiddleware();
+        $this->withoutMiddleware([
+            \App\Http\Middleware\AdminMiddleware::class,
+        ]);
     }
 
     /**
@@ -46,7 +48,8 @@ class ProductManagementTest extends TestCase
             'description' => 'Svaigs lasis no Norvēģijas',
             'price' => 12.99,
             'stock_quantity' => 50,
-            'image' => $image
+            'is_orderable' => true,
+            'stock_unit' => 'kg',
         ]);
 
         // Pārbaudām, ka produkts tika izveidots

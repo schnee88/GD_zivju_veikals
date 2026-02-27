@@ -59,7 +59,6 @@ class OrderController extends Controller
     {
         $user = Auth::user();
 
-        // Pārbauda vai nav pārāk daudz aktīvo pasūtījumu
         if ($user->hasMaxActiveOrders(3)) {
             return back()->with('error', 'Jums jau ir 3 aktīvie pasūtījumi. Lūdzu, gaidiet to apstrādi.');
         }
@@ -102,9 +101,6 @@ class OrderController extends Controller
         return view('orders.success', compact('order'));
     }
 
-    /**
-     * Atcelt pasūtījumu
-     */
     public function cancel(Order $order)
     {
         if ($order->user_id !== Auth::id()) {
@@ -126,9 +122,6 @@ class OrderController extends Controller
     // ADMIN SKATS
     // ============================================
 
-    /**
-     * Parādīt visus pasūtījumus (admin)
-     */
     public function adminIndex(Request $request)
     {
         $orders = Order::query()
