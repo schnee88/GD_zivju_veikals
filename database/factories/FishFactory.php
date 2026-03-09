@@ -51,8 +51,9 @@ class FishFactory extends Factory
             'name' => fake()->randomElement($fishNames),
             'description' => fake()->randomElement($descriptions),
             'price' => fake()->randomFloat(2, 3.99, 29.99),
+            'is_orderable' => true,
             'stock_quantity' => fake()->numberBetween(10, 100),
-            // 'image_path' => 'fish_images/default.jpg', // Izkomentēts
+            'stock_unit' => 'kg',
             'created_at' => now(),
             'updated_at' => now(),
         ];

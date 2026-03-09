@@ -41,6 +41,11 @@ class CartController extends Controller
             ['quantity' => 0]
         );
 
+        $totalQuantity = $cartItem->quantity + $validated['quantity'];
+        if (!$fish->hasStock($totalQuantity)) {
+            return back()->withErrors(['quantity' => 'Nav pietiekami daudz noliktavā. Pieejams: ' . $fish->stock_quantity . ' ' . ($fish->stock_unit == 'kg' ? 'kg' : 'gab.')]);
+        }
+
         $cartItem->increment('quantity', $validated['quantity']);
 
         return redirect()->back()->with('success', 'Produkts pievienots grozam!');

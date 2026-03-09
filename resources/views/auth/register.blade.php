@@ -80,7 +80,7 @@
                     </p>
                 @enderror
                 <p class="mt-2 text-xs text-gray-500">
-                    Minimums 8 simboli
+                    Minimums 6 simboli
                 </p>
             </div>
 
