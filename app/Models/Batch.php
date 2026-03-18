@@ -25,7 +25,7 @@ class Batch extends Model
     public function fishes()
     {
         return $this->belongsToMany(Fish::class, 'batch_fish')
-            ->withPivot('quantity', 'unit')
+            ->withPivot('quantity', 'unit') // Ielādē pivot tabulas papildlaukus
             ->withTimestamps();
     }
 
@@ -76,7 +76,7 @@ class Batch extends Model
         array $fishes,
         ?string $description = null
     ): static {
-        DB::beginTransaction();
+        DB::beginTransaction(); // Ja kaut kas neizdodas - viss tiek atcelts
 
         try {
             $batchDate = Carbon::createFromFormat('d/m/Y H:i', $batchDateString);
@@ -102,7 +102,7 @@ class Batch extends Model
             return $batch;
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::rollBack(); // Atceļ visas izmaiņas ja radās kļūda
             throw $e;
         }
     }
@@ -126,7 +126,7 @@ class Batch extends Model
 
             // Atjaunināt zivis
             if (!empty($fishes)) {
-                $this->fishes()->detach();
+                $this->fishes()->detach(); // Izdzēš vecās saites pirms pievieno jauno
 
                 foreach ($fishes as $fishData) {
                     if (!empty($fishData['fish_id']) && !empty($fishData['quantity'])) {

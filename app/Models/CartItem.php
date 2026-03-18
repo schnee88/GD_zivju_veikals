@@ -15,8 +15,6 @@ class CartItem extends Model
         'quantity',
     ];
 
-    // RELATIONSHIPS
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -34,9 +32,10 @@ class CartItem extends Model
         return $this->quantity * $this->fish->price;
     }
 
-    public function getUnit(): string
+    public function getUnit(): string  
     {
-        return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
+        // Ja nav kg, pēc noklusējuma ir gab.
+        return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.'; 
     }
 
     public function getAvailableQuantity(): int

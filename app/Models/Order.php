@@ -20,7 +20,7 @@ class Order extends Model
         'total_amount',
     ];
 
-    // Order statusi ka konstantes
+    // Order statusi - konstantes
     const STATUS_PENDING = 'pending';
     const STATUS_CONFIRMED = 'confirmed';
     const STATUS_COMPLETED = 'completed';
@@ -156,7 +156,7 @@ class Order extends Model
             return false;
         }
 
-        // Pārbauda vai visas zivis ir pieejamas
+        // Vispirms pārbauda VISAS zivis - ja kaut viena nav pieejama, nekas netiek samazināts
         foreach ($this->items as $item) {
             if (!$item->fish->hasStock($item->quantity)) {
                 return false;
@@ -212,14 +212,13 @@ class Order extends Model
             throw new \Exception('Grozs ir tukšs');
         }
 
-        // Pārbauda pieejamību
+        // Cena tiek fiksēta pasūtījuma brīdī - ja zivs cena mainās vēlāk, pasūtījums saglabā sākotnējo cenu
         foreach ($cartItems as $cartItem) {
             if (!$cartItem->fish->hasStock($cartItem->quantity)) {
                 throw new \Exception("Zivs \"{$cartItem->fish->name}\" vairs nav pietiekamā daudzumā.");
             }
         }
 
-        // Aprēķina kopējo summu
         $totalAmount = $cartItems->sum(fn($item) => $item->quantity * $item->fish->price);
 
         $order = static::create([

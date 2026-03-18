@@ -41,12 +41,12 @@ class BatchController extends Controller
             'batch_date' => 'required|date_format:d/m/Y H:i',
             'description' => 'nullable|string',
             'fishes' => 'required|array|min:1',
-            'fishes.*.fish_id' => 'required|exists:fishes,id',
-            'fishes.*.quantity' => 'required|numeric|min:0.1',
+            'fishes.*.fish_id' => 'required|exists:fishes,id', // Pārbauda vai zivs eksistē DB
+            'fishes.*.quantity' => 'required|numeric|min:0.1', // * validē katru elementu masīvā
             'fishes.*.unit' => 'required|in:kg,pieces'
         ]);
 
-        // Izveidot partiju caur modeli
+        // Biznesa loģika pieder modelim
         $batch = Batch::createWithFishes(
             $validated['name'],
             $validated['batch_date'],
@@ -103,7 +103,7 @@ class BatchController extends Controller
         } catch (\Exception $e) {
             return back()
                 ->with('error', 'Kļūda atjauninot partiju: ' . $e->getMessage())
-                ->withInput(); // saglabā ievadītos datus
+                ->withInput(); // Saglabā ievadītos datus lai lietotājs nepārraksta visu no jauna
         }
     }
 

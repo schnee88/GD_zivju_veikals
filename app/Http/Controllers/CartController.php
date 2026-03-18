@@ -38,9 +38,10 @@ class CartController extends Controller
                 'user_id' => auth()->id(),
                 'fish_id' => $validated['fish_id'],
             ],
-            ['quantity' => 0]
+            ['quantity' => 0] // Ja ieraksts jau eksistē, quantity netiek mainīts
         );
 
+        // Pārbauda kopējo daudzumu - gan groza, gan jauno
         $totalQuantity = $cartItem->quantity + $validated['quantity'];
         if (!$fish->hasStock($totalQuantity)) {
             return back()->withErrors(['quantity' => 'Nav pietiekami daudz noliktavā. Pieejams: ' . $fish->stock_quantity . ' ' . ($fish->stock_unit == 'kg' ? 'kg' : 'gab.')]);

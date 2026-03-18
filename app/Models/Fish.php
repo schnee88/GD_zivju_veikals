@@ -22,7 +22,7 @@ class Fish extends Model
     ];
 
     protected $casts = [
-        'is_orderable' => 'boolean',
+        'is_orderable' => 'boolean', // DB glabā 0/1(false, true)
         'stock_quantity' => 'integer',
     ];
 
@@ -93,12 +93,11 @@ class Fish extends Model
         if (!$this->hasStock($quantity)) {
             return false;
         }
-
-        $this->decrement('stock_quantity', $quantity);
+        // Neatdalāma operācija - droša pret vienlaicīgiem pieprasījumiem
+        $this->decrement('stock_quantity', $quantity); 
         return true;
     }
-
-    public function increaseStock(float $quantity): void
+      public function increaseStock(float $quantity): void
     {
         $this->increment('stock_quantity', $quantity);
     }
@@ -112,12 +111,12 @@ class Fish extends Model
 
     public function validateQuantity(float $quantity): bool
     {
-        // For pieces, quantity must be a whole number
+        // Gabali - tikai veseli skaitļi
         if ($this->stock_unit === 'pieces') {
             return floor($quantity) == $quantity;
         }
         
-        // For kg, allow decimals
+        // Kg - atļauj decimāldaļas
         return $quantity > 0;
     }
 

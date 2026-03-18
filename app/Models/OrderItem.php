@@ -30,7 +30,7 @@ class OrderItem extends Model
     {
         return $this->quantity * $this->price;
     }
-    
+
     public function getUnit(): string
     {
         return $this->fish->stock_unit == 'kg' ? 'kg' : 'gab.';
@@ -66,7 +66,7 @@ class OrderItem extends Model
         }
 
         if (!empty($filters['customer_name'])) {
-            $query->whereHas('order.user', function ($q) use ($filters) {
+            $query->whereHas('order.user', function ($q) use ($filters) { // Ligzdots whereHas - filtrē caur divām relācijām
                 $q->where('name', 'LIKE', '%' . $filters['customer_name'] . '%');
             });
         }
@@ -89,7 +89,7 @@ class OrderItem extends Model
     }
 
     /**
-     * Aprēķināt produktu statistiku pārskatam
+     * Aprēķināt produktu statistiku - grupē pēc zivs un summē daudzumu un summu
      */
     public static function getProductStats($orderItems)
     {
@@ -102,6 +102,6 @@ class OrderItem extends Model
                     return $item->quantity * $item->price;
                 }),
             ];
-        })->sortByDesc('total_amount');
+        })->sortByDesc('total_amount'); // Populārākas zivis pēc apgrozījuma
     }
 }

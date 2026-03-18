@@ -29,7 +29,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password), // Parole tiek šifrēta pirms saglabāšanas
         ]);
         auth()->login($user);
 
@@ -50,7 +50,7 @@ class AuthController extends Controller
         ]);
 
         if (auth()->attempt($credentials)) {
-            $request->session()->regenerate();
+            $request->session()->regenerate(); // Novērš session fixation (id) uzbrukumus
             return redirect()->intended(route('home'))
                 ->with('success', 'Veiksmīgi pieslēgties!');
         } 
@@ -62,8 +62,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         auth()->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session()->invalidate(); // Izdzēšs visus session datus
+        $request->session()->regenerateToken(); // Ģenerē jaunu CSRF token
 
         return redirect()->route('home')
             ->with('success', 'Veiksmīgi atvienots!');

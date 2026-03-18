@@ -36,7 +36,7 @@ class ReportController extends Controller
 
         $orderItems = $query->get();
 
-        // Kārtošana pēc summas
+        // Kārtošana pēc summas tiek veikta atmiņā, jo summa nav DB kolonna
         if ($sortBy == 'amount') {
             $orderItems = $orderItems->sortBy(function ($item) {
                 return $item->quantity * $item->price;

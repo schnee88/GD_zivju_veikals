@@ -31,7 +31,7 @@ class OrderController extends Controller
         $order = Order::with(['items.fish', 'user'])
             ->findOrFail($id);
 
-        // Pārbaudām autorizāciju
+        // Pārbaudām autorizāciju - lietotājs var redzēt tikai savus pasūtījumus
         if ($order->user_id !== Auth::id() && !Auth::user()->is_admin) {
             abort(403);
         }
@@ -154,7 +154,7 @@ class OrderController extends Controller
         $oldStatus = $order->status;
         $newStatus = $validated['status'];
 
-        // Pārvaldīt statusa maiņu
+        // Statusa maiņa - tikai atļautās pārejas (pending-confirmed, confirmed-cancelled)
         if ($oldStatus === Order::STATUS_PENDING && $newStatus === Order::STATUS_CONFIRMED) {
             if (!$order->confirm()) {
                 return back()->with('error', 'Nav pietiekami daudz produktu noliktavā!');

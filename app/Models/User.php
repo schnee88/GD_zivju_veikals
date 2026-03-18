@@ -20,7 +20,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password',
+        'password', // Parole nekad netiek atgriezta API atbildēs vai JSON
         'remember_token',
     ];
 
@@ -28,7 +28,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed', // Laravel automātiski šifrē paroli pie saglabāšanas
             'is_admin' => 'boolean',
         ];
     }
