@@ -82,7 +82,6 @@ class OrderController extends Controller
             DB::commit();
 
             return redirect()->route('orders.success', $order->id);
-
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Order creation error: ' . $e->getMessage());
@@ -144,28 +143,17 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $order = Order::with('items')->findOrFail($id);
+        $order = Order::findOrFail($id);
 
         $validated = $request->validate([
             'status' => 'required|in:pending,confirmed,completed,cancelled',
             'admin_notes' => 'nullable|string|max:1000',
         ]);
 
-        $oldStatus = $order->status;
-        $newStatus = $validated['status'];
-
-        // Statusa maiņa - tikai atļautās pārejas (pending-confirmed, confirmed-cancelled)
-        if ($oldStatus === Order::STATUS_PENDING && $newStatus === Order::STATUS_CONFIRMED) {
-            if (!$order->confirm()) {
-                return back()->with('error', 'Nav pietiekami daudz produktu noliktavā!');
-            }
-        } elseif ($oldStatus === Order::STATUS_CONFIRMED && $newStatus === Order::STATUS_CANCELLED) {
-            $order->cancel();
-        } else {
-            $order->update(['status' => $newStatus]);
+        if (!$order->changeStatus($validated['status'])) {
+            return back()->with('error', 'Nav pietiekami daudz produktu noliktavā!');
         }
 
-        // Atjaunināt admin piezīmes
         if ($request->filled('admin_notes')) {
             $order->update(['admin_notes' => $validated['admin_notes']]);
         }

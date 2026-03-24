@@ -252,4 +252,23 @@ class Order extends Model
             ->whereDate('created_at', today())
             ->count() >= $limit;
     }
+
+    public function changeStatus(string $newStatus): bool
+    {
+        $oldStatus = $this->status;
+
+        if ($oldStatus === self::STATUS_PENDING && $newStatus === self::STATUS_CONFIRMED) {
+            return $this->confirm();
+        }
+        
+        if ($oldStatus === self::STATUS_CONFIRMED && $newStatus === self::STATUS_CANCELLED) {
+            $this->cancel();
+            return true;
+        }
+
+        // default
+        $this->update(['status' => $newStatus]);
+
+        return true;
+    }
 }
