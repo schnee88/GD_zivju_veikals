@@ -187,16 +187,26 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 @push('scripts')
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let fishIndex = {
-            {
-                $batch - > fishes - > count()
-            }
-        };
+        let fishIndex = {{ $batch->fishes->count() }};
+        
+        // zivs opcijas no Blade uz JS ka JSON
+        const fishOptions = @json($fishes);
+        
+        // Helper funkcija lai generatu <option> elementus dinamiski
+        function generateFishOptions(selectedId = '') {
+            return fishOptions.map(fish => {
+                const isSelected = fish.id == selectedId ? 'selected' : '';
+                return `<option value="${fish.id}" ${isSelected}>${fish.name}</option>`;
+            }).join('');
+        }
 
-        // Initialize Flatpickr
+        // Inicjalizē Flatpickr priekš date input
         flatpickr("#batch_date", {
             enableTime: true,
             dateFormat: "d/m/Y H:i",
@@ -205,24 +215,25 @@
             defaultDate: "{{ $batch->batch_date->format('d/m/Y H:i') }}"
         });
 
-        // Add new fish row
         document.getElementById('add-fish').addEventListener('click', function() {
             const container = document.getElementById('fishes-container');
             const newRow = document.createElement('div');
             newRow.className = 'fish-row p-4 bg-gray-50 rounded-xl border-2 border-gray-200';
+            
             newRow.innerHTML = `
                 <div class="grid md:grid-cols-12 gap-4">
+                    <!-- Fish Select -->
                     <div class="md:col-span-5">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Zivs *</label>
                         <select name="fishes[${fishIndex}][fish_id]" 
                                 required
                                 class="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none">
                             <option value="">Izvēlieties zivi</option>
-                            @foreach($fishes as $fishOption)
-                                <option value="{{ $fishOption->id }}">{{ $fishOption->name }}</option>
-                            @endforeach
+                            ${generateFishOptions()}
                         </select>
                     </div>
+
+                    <!-- Quantity -->
                     <div class="md:col-span-3">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Daudzums *</label>
                         <input type="number" 
@@ -232,6 +243,8 @@
                                required
                                class="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none">
                     </div>
+
+                    <!-- Unit -->
                     <div class="md:col-span-3">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Mērvienība *</label>
                         <select name="fishes[${fishIndex}][unit]" 
@@ -241,6 +254,8 @@
                             <option value="pieces">gab.</option>
                         </select>
                     </div>
+
+                    <!-- Remove Button -->
                     <div class="md:col-span-1 flex items-end">
                         <button type="button" 
                                 class="remove-fish w-full px-3 py-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 border-2 border-red-200 transition-colors font-bold">
@@ -254,10 +269,11 @@
             fishIndex++;
         });
 
-        // Remove fish row
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-fish') || e.target.closest('.remove-fish')) {
-                const button = e.target.classList.contains('remove-fish') ? e.target : e.target.closest('.remove-fish');
+                const button = e.target.classList.contains('remove-fish') 
+                    ? e.target 
+                    : e.target.closest('.remove-fish');
                 const rows = document.querySelectorAll('.fish-row');
 
                 if (rows.length > 1) {

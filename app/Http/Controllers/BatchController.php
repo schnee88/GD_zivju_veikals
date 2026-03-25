@@ -72,7 +72,11 @@ class BatchController extends Controller
 
     public function edit(Batch $batch)
     {
-        $fishes = Fish::orderBy('name')->get();
+        
+        $fishes = Fish::orderBy('name')
+        ->select('id', 'name')
+        ->get();
+
         return view('admin.batches.edit', compact('batch', 'fishes'));
     }
 
