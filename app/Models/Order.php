@@ -246,7 +246,7 @@ class Order extends Model
         return $order;
     }
 
-    public static function hasExceededIpLimit(string $ipAddress, int $limit = 5): bool
+    public static function hasExceededIpLimit(string $ipAddress, int $limit = 3 ): bool
     {
         return static::where('ip_address', $ipAddress)
             ->whereDate('created_at', today())
